@@ -6,19 +6,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Charts Images from URL</title>
   <style>
-    body {
-      font-family: 'Proxima Nova Soft','Helvetica Neue',Arial,Helvetica,sans-serif;
-      margin: 0 auto;
-      padding-left: 1em;
-      max-width: 1024px;
+    html, body {
+      margin: 0;
     }
 
-    p {
-      padding-left: 0.1em;
+    body {
+      font-family: 'Proxima Nova Soft','Helvetica Neue',Arial,Helvetica,sans-serif;
     }
 
     .centered {
       text-align: center;
+    }
+
+    .header {
+      background-color: linen;
+      padding: 1em;
+      margin-bottom: 1em;
+    }
+
+    .container {
+      margin: 0 auto;
+      max-width: 1024px;
+      padding: 0 1em;
     }
 
     .hero {
@@ -44,7 +53,7 @@
 
     .sandbox-input {
       width: 98%;
-      height: 20em;
+      height: 17em;
 
       -webkit-box-shadow: 0 0 10px rgba(255,0,0,0.2);
       -moz-box-shadow: 0 0 10px rgba(255,0,0,0.2);
@@ -52,6 +61,7 @@
 
     .sandbox-tag {
       font-size: 10px;
+      margin-bottom: 1em;
     }
 
     .panel {
@@ -80,6 +90,15 @@
       max-width: 100%;
     }
 
+    footer {
+      color: #aaa;
+      background-color: #eee;
+    }
+
+    .footer-content {
+      padding: 1em;
+    }
+
     @media (max-width: 400px) {
       .hero {
         display: block;
@@ -95,38 +114,46 @@
   </style>
 </head>
 <body>
-  <h1 class="centered">Generate a Chart Image by URL</h1>
-  <p>
-    Quickly create and embed static charts in websites, emails, powerpoints, and more.  A single URL generates a fully customizable chart.  Use this service instead of the <a href="https://developers.google.com/chart/image/">Google Image Charts API</a>, which is scheduled to turn off on March 14, 2019.
-  </p>
-  <div class="hero">
-    <div class="col">
-      <p>
-        Embedding your chart is easy.  Charts are created with a regular HTML image tag:
-      </p>
-      <p>
-        <code>
-    &lt;img src="https://quickchart.io/chart?c=<span class="hl">{type:'bar',data:{labels:['January','February','March','April', 'May'], datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500]}]}}"&gt;</span>
-        </code>
-      </p>
-    </div>
-    <div class="arrowcol"></div>
-    <div class="col">
-      <img class="img-example" src="/chart?c={type:'bar',data:{labels:['January\n','February','March','April', 'May'],datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500]}]}}"/>
-    </div>
+  <div class="header centered">
+    <h1>Generate a Chart Image</h1>
+    <p>
+<!--
+      Fast &amp; Reliable &middot; One URL &middot; Easy to Save &middot; Easy to Embed
+-->
+      Create and embed static charts in reports, emails, websites, and more.
+    </p>
   </div>
-  <hr/>
-  <h2>How it Works</h2>
-  <p>
-    The charts are defined by a JSON object.  The JSON object follows all the rules of popular open-source graphing library Chart.js.  Simply follow the <a href="https://www.chartjs.org/docs/latest/charts/">documentation</a> to define your chart.
-  </p>
-  <p>
-    Once you've written your JSON, render it as an image with <code class="hl">&lt;img src=&quot;https://quickchart.io/chart?c=[[insert json here]]&quot;&gt;</code>.  Try our realtime editor below!
-  </p>
-  <div class="hero panel">
-    <div class="col">
-      <textarea id="sandbox-input" class="sandbox-input">
-// Edit me!
+  <div class="container">
+    <div class="hero">
+      <div class="col">
+        <h2>
+          Create a chart using an HTML image tag
+        </h2>
+        <p>
+          <code>
+      &lt;img src="https://quickchart.io/chart?c=<span class="hl">{type:'bar',data:{labels:['January','February','March','April', 'May'], datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500]}]}}"&gt;</span>
+          </code>
+        </p>
+      </div>
+      <div class="arrowcol"></div>
+      <div class="col">
+        <img class="img-example" src="/chart?c={type:'bar',data:{labels:['January\n','February','March','April', 'May'],datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500]}]}}"/>
+      </div>
+    </div>
+    <p>
+      This service is a replacement for the <a href="https://developers.google.com/chart/image/">Google Image Charts API</a>, which is scheduled to turn off on March 14, 2019.
+    </p>
+    <hr/>
+    <h2>Building a Chart from URL</h2>
+    <p>
+      The charts are defined by a JSON object in a URL.  The JSON object follows all the rules of popular open-source graphing library Chart.js.  Simply follow the <a href="https://www.chartjs.org/docs/latest/charts/">documentation</a> to define your chart.
+    </p>
+    <p>
+      Once you've written your JSON, render it as an image with <code class="hl">&lt;img src=&quot;https://quickchart.io/chart?c=[[insert json here]]&quot;&gt;</code>.  Try our realtime editor below!
+    </p>
+    <div class="hero panel">
+      <div class="col">
+        <textarea id="sandbox-input" class="sandbox-input">// Edit me!
 {
   type: 'bar',
   data: {
@@ -139,178 +166,183 @@
       data: [ 100, 200, 300, 400, 500 ]
     }]
   }
-}
-      </textarea>
+}</textarea>
+      </div>
+      <div class="arrowcol"></div>
+      <div class="col">
+        <div id="sandbox-tag" class="sandbox-tag"></div>
+        <img class="img-example" id="sandbox-img"/>
+      </div>
     </div>
-    <div class="arrowcol"></div>
-    <div class="col">
-      <img class="img-example" id="sandbox-img"/>
-      <span id="sandbox-tag" class="sandbox-tag"></span>
-    </div>
-  </div>
-  <h2>Customizing your Chart</h2>
-  <p>
-    You can use any <a href="https://www.chartjs.org/docs/latest/configuration/">customization options</a> that you're used to from Chart.js.  The best place to learn the extent of customization options is through the <a href="https://www.chartjs.org/docs/latest/configuration/">documentation</a>.
-  </p>
-  <p>
-    We can get very creative.  The example below uses custom background colors, title, stacked bars, and data labels:
-  </p>
-  <div class="hero">
-    <div class="col">
-      <pre class="json">
-{
-  type: 'bar',
-  data: {
-    labels: ['January', 'February', 'March', 'April', 'May'],
-    datasets: [{
-      label: 'Dogs',
-      backgroundColor: 'chartreuse',
-      data: [ 50, 60, 70, 180, 190 ]
-    }, {
-      label: 'Cats',
-      backgroundColor: 'gold',
-      data: [ 100, 200, 300, 400, 500 ]
-    }]
-  },
-  options: {
-    title: {
-      display: true,
-      text: 'Total Revenue (billions)',
-      fontColor: 'hotpink',
-      fontSize: 32,
+    <h2>Customizing your Chart</h2>
+    <p>
+      You can use any <a href="https://www.chartjs.org/docs/latest/configuration/">customization options</a> that you're used to from Chart.js.  The best place to learn the extent of customization options is through the <a href="https://www.chartjs.org/docs/latest/configuration/">documentation</a>.
+    </p>
+    <p>
+      We can get very creative.  The example below uses custom background colors, title, stacked bars, and data labels:
+    </p>
+    <div class="hero">
+      <div class="col">
+        <pre class="json">
+  {
+    type: 'bar',
+    data: {
+      labels: ['January', 'February', 'March', 'April', 'May'],
+      datasets: [{
+        label: 'Dogs',
+        backgroundColor: 'chartreuse',
+        data: [ 50, 60, 70, 180, 190 ]
+      }, {
+        label: 'Cats',
+        backgroundColor: 'gold',
+        data: [ 100, 200, 300, 400, 500 ]
+      }]
     },
-    scales: {
-      xAxes: [{stacked: true}],
-      yAxes: [{stacked: true}],
-    },
-    plugins: {
-      datalabels: {
+    options: {
+      title: {
         display: true,
-        font: {
-          style: 'bold',
+        text: 'Total Revenue (billions)',
+        fontColor: 'hotpink',
+        fontSize: 32,
+      },
+      scales: {
+        xAxes: [{stacked: true}],
+        yAxes: [{stacked: true}],
+      },
+      plugins: {
+        datalabels: {
+          display: true,
+          font: {
+            style: 'bold',
+          },
         },
       },
     },
-  },
-}
-      </pre>
-    </div>
-    <div class="arrowcol"></div>
-    <div class="col">
-          <img class="img-example" src="/chart?c=
-      {
-        type: 'bar',
-        data: {
-          labels: ['January', 'February', 'March', 'April', 'May'],
-          datasets: [{
-            label: 'Dogs',
-            backgroundColor: 'chartreuse',
-            data: [ 50, 60, 70, 180, 190 ]
-          }, {
-            label: 'Cats',
-            backgroundColor: 'gold',
-            data: [ 100, 200, 300, 400, 500 ]
-          }]
-        },
-        options: {
-          title: {
-            display: true,
-            text: 'Total Revenue (billions)',
-            fontColor: 'hotpink',
-            fontSize: 32,
+  }
+        </pre>
+      </div>
+      <div class="arrowcol"></div>
+      <div class="col">
+            <img class="img-example" src="/chart?c=
+        {
+          type: 'bar',
+          data: {
+            labels: ['January', 'February', 'March', 'April', 'May'],
+            datasets: [{
+              label: 'Dogs',
+              backgroundColor: 'chartreuse',
+              data: [ 50, 60, 70, 180, 190 ]
+            }, {
+              label: 'Cats',
+              backgroundColor: 'gold',
+              data: [ 100, 200, 300, 400, 500 ]
+            }]
           },
-          scales: {
-            xAxes: [{stacked: true}],
-            yAxes: [{stacked: true}],
-          },
-          plugins: {
-            datalabels: {
+          options: {
+            title: {
               display: true,
-              font: {
-                style: 'bold',
+              text: 'Total Revenue (billions)',
+              fontColor: 'hotpink',
+              fontSize: 32,
+            },
+            scales: {
+              xAxes: [{stacked: true}],
+              yAxes: [{stacked: true}],
+            },
+            plugins: {
+              datalabels: {
+                display: true,
+                font: {
+                  style: 'bold',
+                },
               },
             },
           },
-        },
-      }
-      "/>
+        }
+        "/>
+      </div>
+    </div>
+    <p>
+      A couple things to remember when customizing your chart:
+      <ul>
+        <li>Interactivity and animations are not supported (this service produces static images)</li>
+        <li><em>We recommend that you <a href="https://meyerweb.com/eric/tools/dencoder/">URL-encode</a> the entire JSON block.</em>  If not URL-encoded, you must escape all hex characters, e.g. <code>#ff0000</code> &rarr; <code>%23ff0000</code>, or just use the <code>rgb(255, 0, 0)</code> equivalent</li>
+      </ul>
+    </p>
+    <hr/>
+    <h2>Chart Types</h2>
+    <p>
+      Customization can be very simple.  By changing <code class="hl">type: bar</code> to <code class="hl">type: line</code>, for example, we can instantly produce an equivalent line graph:
+    </p>
+    <div class="hero panel">
+      <div class="col">
+        <h3>Bar Graph</h3>
+        <code>
+    &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'bar'</span>,data:{labels:['January','February','March','April', 'May'], datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500]}]}}"&gt;
+        </code>
+      </div>
+      <div class="arrowcol"></div>
+      <div class="col">
+        <img class="img-example" src="/chart?c={type:'bar',data:{labels:['January','February','March','April', 'May'],datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500]}]}}"/>
+      </div>
+    </div>
+    <div class="hero panel">
+      <div class="col">
+        <h3>Line Graph</h3>
+        <code>
+    &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'line'</span>,data:{labels:['January','February','March','April', 'May'], datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500]}]}}"&gt;
+        </code>
+      </div>
+      <div class="arrowcol"></div>
+      <div class="col">
+        <img class="img-example" src="/chart?c={type:'line',data:{labels:['January','February','March','April', 'May'],datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500]}]}}"/>
+      </div>
+    </div>
+    <p>
+      There are many other chart types as well:
+    </p>
+    <div class="hero panel">
+      <div class="col">
+        <h3>Radar Chart</h3>
+        <code>
+    &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'radar'</span>,data:{labels:['January','February','March','April', 'May'], datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500]}]}}"&gt;
+        </code>
+      </div>
+      <div class="arrowcol"></div>
+      <div class="col">
+        <img class="img-example" src="/chart?c={type:'radar',data:{labels:['January','February','March','April', 'May'],datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500]}]}}"/>
+      </div>
+    </div>
+    <div class="hero panel">
+      <div class="col">
+        <h3>Pie Charts</h3>
+        <code>
+    &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'pie'</span>,data:{labels:['January','February','March','April', 'May'], datasets:[{data:[50,60,70,180,190]}]}}"&gt;
+        </code>
+      </div>
+      <div class="arrowcol"></div>
+      <div class="col">
+        <img class="img-example" src="/chart?c={type:'pie',data:{labels:['January','February','March','April', 'May'],datasets:[{data:[50,60,70,180,190]}]}}"/>
+      </div>
+    </div>
+    <div class="hero panel">
+      <div class="col">
+        <h3>Doughnut Charts</h3>
+        <code>
+    &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'doughnut'</span>,data:{labels:['January','February','March','April', 'May'], datasets:[{data:[50,60,70,180,190]}]}}"&gt;
+        </code>
+      </div>
+      <div class="arrowcol"></div>
+      <div class="col">
+        <img class="img-example" src="/chart?c={type:'doughnut',data:{labels:['January','February','March','April', 'May'],datasets:[{data:[50,60,70,180,190]}]}}"/>
+      </div>
     </div>
   </div>
-  <p>
-    A couple things to remember when customizing your chart:
-    <ul>
-      <li>Interactivity and animations are not supported (this service produces static images)</li>
-      <li><em>We recommend that you URL-encode the entire JSON block.</em>  If not URL-encoded, you must escape all hex color codes, e.g. <code>#ff0000</code> &rarr; <code>%23ff0000</code>, or just use the <code>rgb(255, 0, 0)</code> equivalent</li>
-    </ul>
-  </p>
-  <hr/>
-  <h2>Chart Types</h2>
-  <p>
-    Customization can be very simple.  By changing <code class="hl">type: bar</code> to <code class="hl">type: line</code>, for example, we can instantly produce an equivalent line graph:
-  </p>
-  <div class="hero panel">
-    <div class="col">
-      <h3>Bar Graph</h3>
-      <code>
-  &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'bar'</span>,data:{labels:['January','February','March','April', 'May'], datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500]}]}}"&gt;
-      </code>
+  <footer>
+    <div class="footer-content">
+      &copy; Ian Webster 2019
     </div>
-    <div class="arrowcol"></div>
-    <div class="col">
-      <img class="img-example" src="/chart?c={type:'bar',data:{labels:['January','February','March','April', 'May'],datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500]}]}}"/>
-    </div>
-  </div>
-  <div class="hero panel">
-    <div class="col">
-      <h3>Line Graph</h3>
-      <code>
-  &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'line'</span>,data:{labels:['January','February','March','April', 'May'], datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500]}]}}"&gt;
-      </code>
-    </div>
-    <div class="arrowcol"></div>
-    <div class="col">
-      <img class="img-example" src="/chart?c={type:'line',data:{labels:['January','February','March','April', 'May'],datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500]}]}}"/>
-    </div>
-  </div>
-  <p>
-    There are many other chart types as well:
-  </p>
-  <div class="hero panel">
-    <div class="col">
-      <h3>Radar Chart</h3>
-      <code>
-  &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'radar'</span>,data:{labels:['January','February','March','April', 'May'], datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500]}]}}"&gt;
-      </code>
-    </div>
-    <div class="arrowcol"></div>
-    <div class="col">
-      <img class="img-example" src="/chart?c={type:'radar',data:{labels:['January','February','March','April', 'May'],datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500]}]}}"/>
-    </div>
-  </div>
-  <div class="hero panel">
-    <div class="col">
-      <h3>Pie Charts</h3>
-      <code>
-  &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'pie'</span>,data:{labels:['January','February','March','April', 'May'], datasets:[{data:[50,60,70,180,190]}]}}"&gt;
-      </code>
-    </div>
-    <div class="arrowcol"></div>
-    <div class="col">
-      <img class="img-example" src="/chart?c={type:'pie',data:{labels:['January','February','March','April', 'May'],datasets:[{data:[50,60,70,180,190]}]}}"/>
-    </div>
-  </div>
-  <div class="hero panel">
-    <div class="col">
-      <h3>Doughnut Charts</h3>
-      <code>
-  &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'doughnut'</span>,data:{labels:['January','February','March','April', 'May'], datasets:[{data:[50,60,70,180,190]}]}}"&gt;
-      </code>
-    </div>
-    <div class="arrowcol"></div>
-    <div class="col">
-      <img class="img-example" src="/chart?c={type:'doughnut',data:{labels:['January','February','March','April', 'May'],datasets:[{data:[50,60,70,180,190]}]}}"/>
-    </div>
-  </div>
+  </footer>
   <script>
     var input = document.getElementById('sandbox-input');
     var img = document.getElementById('sandbox-img');
