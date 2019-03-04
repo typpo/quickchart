@@ -40,7 +40,7 @@ function failPng(res, msg) {
   res.writeHead(500, {
     'Content-Type': 'image/png',
   });
-  res.end(text2png(msg));
+  res.end(text2png(`Chart Error: ${msg}`));
 }
 
 app.get('/chart', (req, res) => {

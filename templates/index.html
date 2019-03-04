@@ -38,6 +38,10 @@
       height: 20em;
     }
 
+    .sandbox-tag {
+      font-size: 10px;
+    }
+
     .panel {
       padding: 1em;
       margin-bottom: 2em;
@@ -126,6 +130,7 @@
     </div>
     <div class="col">
       <img class="img-example" id="sandbox-img"/>
+      <span id="sandbox-tag" class="sandbox-tag"></span>
     </div>
   </div>
   <hr/>
@@ -304,8 +309,13 @@
   <script>
     var input = document.getElementById('sandbox-input');
     var img = document.getElementById('sandbox-img');
+    var tag = document.getElementById('sandbox-tag');
     function updateImage() {
       img.src = '/chart?c=' + encodeURIComponent(input.value);
+      var lines = input.value.split('\n').filter(function(line) {
+        return line.slice(0, 2) !== '//';
+      });
+      tag.innerHTML = '&lt;img src="' + lines.join('') + '"&gt;';
     }
     input.onkeyup = updateImage;
     updateImage();
