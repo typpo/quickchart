@@ -106,9 +106,16 @@ app.get('/chart', (req, res) => {
 
   chart.options.plugins = chart.options.plugins || {};
   if (!chart.options.plugins.datalabels) {
-    chart.options.plugins.datalabels = {
-      display: false,
-    };
+    chart.options.plugins.datalabels = {};
+    if (chart.type === 'pie' || chart.type === 'doughnut') {
+      chart.options.plugins.datalabels = {
+        display: true,
+      };
+    } else {
+      chart.options.plugins.datalabels = {
+        display: false,
+      };
+    }
   }
 
   chart.plugins = [chartDataLabels];
