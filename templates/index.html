@@ -33,6 +33,11 @@
       font-size: 5em;
     }
 
+    .sandbox {
+      width: 98%;
+      height: 20em;
+    }
+
     .panel {
       padding: 1em;
       margin-bottom: 2em;
@@ -52,6 +57,11 @@
     pre.json {
       background-color: #eee;
       overflow: scroll;
+    }
+
+    code {
+      overflow-x: scroll;
+      max-width: 100%;
     }
 
     @media (max-width: 400px) {
@@ -87,10 +97,15 @@
   <hr/>
   <h2>How it Works</h2>
   <p>
-    The charts are defined by a JSON object.  The JSON object follows all the rules of popular open-source graphing library Chart.js.  Simplify follow the <a href="https://www.chartjs.org/docs/latest/charts/">documentation</a> to define your chart:
+    The charts are defined by a JSON object.  The JSON object follows all the rules of popular open-source graphing library Chart.js.  Simplify follow the <a href="https://www.chartjs.org/docs/latest/charts/">documentation</a> to define your chart
   </p>
   <p>
-    <pre class="json">
+    Once you have the JSON, render it as an image with <code class="hl">&lt;img src=&quot;https://quickchart.io/chart?c=[[insert json here]]&quot;&gt;</code>.  Try it below!
+  </p>
+  <div class="hero">
+    <div class="col">
+      <textarea id="sandbox-input" class="sandbox">
+// Edit me!
 {
   type: 'bar',
   data: {
@@ -104,11 +119,15 @@
     }]
   }
 }
-    </pre>
-  </p>
-  <p>
-    Once you have the JSON, render it as an image with <code class="hl">&lt;img src=&quot;https://quickchart.io/chart?c=[[insert json here]]&quot;&gt;</code>.
-  </p>
+      </textarea>
+    </div>
+    <div class="arrowcol">
+      🡆
+    </div>
+    <div class="col">
+      <img class="img-example" id="sandbox-img"/>
+    </div>
+  </div>
   <hr/>
   <h2>Customizing your Chart</h2>
   <p>
@@ -282,5 +301,14 @@
       <img class="img-example" src="/chart?c={type:'doughnut',data:{labels:['January','February','March','April','May'],datasets:[{data:[50,60,70,180,190]}]}}"/>
     </div>
   </div>
+  <script>
+    var input = document.getElementById('sandbox-input');
+    var img = document.getElementById('sandbox-img');
+    function updateImage() {
+      img.src = '/chart?c=' + encodeURIComponent(input.value);
+    }
+    input.onkeyup = updateImage;
+    updateImage();
+  </script>
 </body>
 </html>

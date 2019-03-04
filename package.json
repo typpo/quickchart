@@ -11,6 +11,7 @@
     "express-nunjucks": "^2.2.3",
     "nunjucks": "^3.1.7",
     "really-relaxed-json": "^0.2.24",
+    "text2png": "^2.1.0",
     "winston": "^2.3.1"
   }
 }

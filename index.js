@@ -1,10 +1,11 @@
 const path = require('path');
 
 const ChartjsNode = require('chartjs-node');
+const chartDataLabels = require('chartjs-plugin-datalabels');
 const express = require('express');
 const expressNunjucks = require('express-nunjucks');
+const text2png = require('text2png');
 const winston = require('winston');
-const chartDataLabels = require('chartjs-plugin-datalabels');
 const { toJson } = require('really-relaxed-json');
 
 const { addBackgroundColors, DEFAULT_COLOR_WHEEL } = require('./charts');
@@ -35,9 +36,16 @@ app.get('/robots.txt', (req, res) => {
   res.sendFile(path.join(__dirname, './templates/robots.txt'));
 });
 
+function failPng(res, msg) {
+  res.writeHead(500, {
+    'Content-Type': 'image/png',
+  });
+  res.end(text2png(msg));
+}
+
 app.get('/chart', (req, res) => {
   if (!req.query.c) {
-    res.send('You are missing variable `c`');
+    failPng(res, 'You are missing variable `c`');
     return;
   }
 
@@ -56,7 +64,13 @@ app.get('/chart', (req, res) => {
     }
   }
 
-  const chart = JSON.parse(toJson(req.query.c));
+  let chart;
+  try {
+    chart = JSON.parse(toJson(req.query.c));
+  } catch (err) {
+    failPng(res, 'Invalid JSON input');
+    return;
+  }
 
   if (chart.type === 'donut') {
     // Fix spelling...
@@ -95,8 +109,6 @@ app.get('/chart', (req, res) => {
 
   chart.plugins = [chartDataLabels];
 
-  console.log(JSON.stringify(chart))
-
   const chartNode = new ChartjsNode(width, height);
   chartNode.drawChart(chart).then(() => {
     return chartNode.getImageBuffer('image/png');
@@ -106,6 +118,10 @@ app.get('/chart', (req, res) => {
       'Content-Length': buf.length,
     });
     res.end(buf);
+  }).catch(_ => {
+    failPng(res, 'Invalid chart options');
+    return;
+  }).finally(() => {
     chartNode.destroy();
   });
 });
