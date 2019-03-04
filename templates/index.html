@@ -97,12 +97,12 @@
 <body>
   <h1 class="centered">Generate a Chart Image by URL</h1>
   <p>
-    This service lets you quickly create and embed static charts in websites, emails, powerpoints, and more.  A single URL generates a fully customizable chart.
+    Quickly create and embed static charts in websites, emails, powerpoints, and more.  A single URL generates a fully customizable chart.  You can use this instead of the <a href="https://developers.google.com/chart/image/">Google Image Charts API</a>, which is scheduled to turn off on March 14, 2019.
   </p>
   <div class="hero">
     <div class="col">
       <p>
-        Embedding your chart is easy.  Define your chart in an image URL:
+        Embedding your chart is easy.  Charts are created with a regular HTML image tag:
       </p>
       <p>
         <code>
@@ -118,10 +118,10 @@
   <hr/>
   <h2>How it Works</h2>
   <p>
-    The charts are defined by a JSON object.  The JSON object follows all the rules of popular open-source graphing library Chart.js.  Simplify follow the <a href="https://www.chartjs.org/docs/latest/charts/">documentation</a> to define your chart.
+    The charts are defined by a JSON object.  The JSON object follows all the rules of popular open-source graphing library Chart.js.  Simply follow the <a href="https://www.chartjs.org/docs/latest/charts/">documentation</a> to define your chart.
   </p>
   <p>
-    Once you've written your JSON, render it as an image with <code class="hl">&lt;img src=&quot;https://quickchart.io/chart?c=[[insert json here]]&quot;&gt;</code>.  Try it below!
+    Once you've written your JSON, render it as an image with <code class="hl">&lt;img src=&quot;https://quickchart.io/chart?c=[[insert json here]]&quot;&gt;</code>.  Try our realtime editor below!
   </p>
   <div class="hero panel">
     <div class="col">
@@ -240,7 +240,7 @@
     A couple things to remember when customizing your chart:
     <ul>
       <li>Interactivity and animations are not supported (this service produces static images)</li>
-      <li><em>We recommend that you URL-encode the entire JSON block.</em>  If not URL-encoded, you must escape all hex color codes (e.g. <code>#ff0000</code> &rarr; <code>%23ff0000</code>, or just use the <code>rgb(255, 0, 0)</code> equivalent).</li>
+      <li><em>We recommend that you URL-encode the entire JSON block.</em>  If not URL-encoded, you must escape all hex color codes, e.g. <code>#ff0000</code> &rarr; <code>%23ff0000</code>, or just use the <code>rgb(255, 0, 0)</code> equivalent</li>
     </ul>
   </p>
   <hr/>
@@ -272,6 +272,9 @@
       <img class="img-example" src="/chart?c={type:'line',data:{labels:['January','February','March','April', 'May'],datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500]}]}}"/>
     </div>
   </div>
+  <p>
+    There are many other chart types as well:
+  </p>
   <div class="hero panel">
     <div class="col">
       <h3>Radar Chart</h3>
