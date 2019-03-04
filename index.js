@@ -82,10 +82,7 @@ app.get('/chart', (req, res) => {
   if (chart.type === 'bar' || chart.type === 'line') {
     if (!chart.options.scales) {
       // TODO(ian): Merge default options with provided options
-      if (!chart.options.scales) {
-        chart.options.scales = {};
-      }
-      chart.options.scales.yAxes = {
+      chart.options.scales = {
         yAxes: [{
           ticks: {
             beginAtZero: true,
@@ -98,6 +95,13 @@ app.get('/chart', (req, res) => {
     addBackgroundColors(chart);
   } else if (chart.type === 'pie' || chart.type === 'doughnut') {
     addBackgroundColors(chart);
+  }
+
+  if (chart.type === 'line') {
+    chart.data.datasets.forEach(dataset => {
+      // Make line charts straight lines by default.
+      dataset.lineTension = dataset.lineTension || 0;
+    });
   }
 
   chart.options.plugins = chart.options.plugins || {};
