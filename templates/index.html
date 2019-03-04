@@ -9,7 +9,12 @@
     body {
       font-family: sans-serif;
       margin: 0 auto;
+      padding-left: 1em;
       max-width: 1024px;
+    }
+
+    p {
+      padding-left: 0.1em;
     }
 
     .centered {
@@ -31,6 +36,10 @@
       flex: 0.2;
       color: rgba(72, 56, 74, 0.63);
       font-size: 5em;
+    }
+
+    .arrowcol:before {
+      content: "🡆";
     }
 
     .sandbox-input {
@@ -75,6 +84,13 @@
       .hero {
         display: block;
       }
+      .arrowcol {
+        text-align: center;
+        font-size: 3em;
+      }
+      .arrowcol:before {
+        content: "🠻";
+      }
     }
   </style>
 </head>
@@ -90,15 +106,13 @@
       </p>
       <p>
         <code>
-    &lt;img src="https://quickchart.io/chart?c=<span class="hl">{type:'bar',data:{labels:['January','February','March','April','May'], datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500]}]}}"&gt;</span>
+    &lt;img src="https://quickchart.io/chart?c=<span class="hl">{type:'bar',data:{labels:['January','February','March','April', 'May'], datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500]}]}}"&gt;</span>
         </code>
       </p>
     </div>
-    <div class="arrowcol">
-      🡆
-    </div>
+    <div class="arrowcol"></div>
     <div class="col">
-      <img class="img-example" src="/chart?c={type:'bar',data:{labels:['January\n','February','March','April','May'],datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500]}]}}"/>
+      <img class="img-example" src="/chart?c={type:'bar',data:{labels:['January\n','February','March','April', 'May'],datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500]}]}}"/>
     </div>
   </div>
   <hr/>
@@ -128,9 +142,7 @@
 }
       </textarea>
     </div>
-    <div class="arrowcol">
-      🡆
-    </div>
+    <div class="arrowcol"></div>
     <div class="col">
       <img class="img-example" id="sandbox-img"/>
       <span id="sandbox-tag" class="sandbox-tag"></span>
@@ -183,9 +195,7 @@
 }
       </pre>
     </div>
-    <div class="arrowcol">
-      🡆
-    </div>
+    <div class="arrowcol"></div>
     <div class="col">
           <img class="img-example" src="/chart?c=
       {
@@ -242,70 +252,60 @@
     <div class="col">
       <h3>Bar Graph</h3>
       <code>
-  &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'bar'</span>,data:{labels:['January','February','March','April','May'], datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500]}]}}"&gt;
+  &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'bar'</span>,data:{labels:['January','February','March','April', 'May'], datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500]}]}}"&gt;
       </code>
     </div>
-    <div class="arrowcol">
-      🡆
-    </div>
+    <div class="arrowcol"></div>
     <div class="col">
-      <img class="img-example" src="/chart?c={type:'bar',data:{labels:['January','February','March','April','May'],datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500]}]}}"/>
+      <img class="img-example" src="/chart?c={type:'bar',data:{labels:['January','February','March','April', 'May'],datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500]}]}}"/>
     </div>
   </div>
   <div class="hero panel">
     <div class="col">
       <h3>Line Graph</h3>
       <code>
-  &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'line'</span>,data:{labels:['January','February','March','April','May'], datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500]}]}}"&gt;
+  &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'line'</span>,data:{labels:['January','February','March','April', 'May'], datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500]}]}}"&gt;
       </code>
     </div>
-    <div class="arrowcol">
-      🡆
-    </div>
+    <div class="arrowcol"></div>
     <div class="col">
-      <img class="img-example" src="/chart?c={type:'line',data:{labels:['January','February','March','April','May'],datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500]}]}}"/>
+      <img class="img-example" src="/chart?c={type:'line',data:{labels:['January','February','March','April', 'May'],datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500]}]}}"/>
     </div>
   </div>
   <div class="hero panel">
     <div class="col">
       <h3>Radar Chart</h3>
       <code>
-  &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'radar'</span>,data:{labels:['January','February','March','April','May'], datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500]}]}}"&gt;
+  &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'radar'</span>,data:{labels:['January','February','March','April', 'May'], datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500]}]}}"&gt;
       </code>
     </div>
-    <div class="arrowcol">
-      🡆
-    </div>
+    <div class="arrowcol"></div>
     <div class="col">
-      <img class="img-example" src="/chart?c={type:'radar',data:{labels:['January','February','March','April','May'],datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500]}]}}"/>
+      <img class="img-example" src="/chart?c={type:'radar',data:{labels:['January','February','March','April', 'May'],datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500]}]}}"/>
     </div>
   </div>
   <div class="hero panel">
     <div class="col">
       <h3>Pie Charts</h3>
       <code>
-  &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'pie'</span>,data:{labels:['January','February','March','April','May'], datasets:[{data:[50,60,70,180,190]}]}}"&gt;
+  &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'pie'</span>,data:{labels:['January','February','March','April', 'May'], datasets:[{data:[50,60,70,180,190]}]}}"&gt;
       </code>
     </div>
-    <div class="arrowcol">
-      🡆
-    </div>
+    <div class="arrowcol"></div>
     <div class="col">
-      <img class="img-example" src="/chart?c={type:'pie',data:{labels:['January','February','March','April','May'],datasets:[{data:[50,60,70,180,190]}]}}"/>
+      <img class="img-example" src="/chart?c={type:'pie',data:{labels:['January','February','March','April', 'May'],datasets:[{data:[50,60,70,180,190]}]}}"/>
     </div>
   </div>
   <div class="hero panel">
     <div class="col">
       <h3>Doughnut Charts</h3>
       <code>
-  &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'doughnut'</span>,data:{labels:['January','February','March','April','May'], datasets:[{data:[50,60,70,180,190]}]}}"&gt;
+  &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'doughnut'</span>,data:{labels:['January','February','March','April', 'May'], datasets:[{data:[50,60,70,180,190]}]}}"&gt;
       </code>
     </div>
-    <div class="arrowcol">
-      🡆
-    </div>
+    <div class="arrowcol"></div>
     <div class="col">
-      <img class="img-example" src="/chart?c={type:'doughnut',data:{labels:['January','February','March','April','May'],datasets:[{data:[50,60,70,180,190]}]}}"/>
+      <img class="img-example" src="/chart?c={type:'doughnut',data:{labels:['January','February','March','April', 'May'],datasets:[{data:[50,60,70,180,190]}]}}"/>
     </div>
   </div>
   <script>
