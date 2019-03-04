@@ -33,9 +33,12 @@
       font-size: 5em;
     }
 
-    .sandbox {
+    .sandbox-input {
       width: 98%;
       height: 20em;
+
+      -webkit-box-shadow: 0 0 10px rgba(255,0,0,0.2);
+      -moz-box-shadow: 0 0 10px rgba(255,0,0,0.2);
     }
 
     .sandbox-tag {
@@ -76,14 +79,14 @@
   </style>
 </head>
 <body>
-  <h1 class="centered">Create a Chart Image by URL</h1>
+  <h1 class="centered">Generate a Chart Image by URL</h1>
   <p>
-    This service lets you quickly generate static charts for inclusion in websites, emails, powerpoints, and more.  A single URL generates a fully customizable chart.
+    This service lets you quickly create and embed static charts in websites, emails, powerpoints, and more.  A single URL generates a fully customizable chart.
   </p>
   <div class="hero">
     <div class="col">
       <p>
-        Creating a chart is easy.  Define your chart in an image URL:
+        Embedding your chart is easy.  Define your chart in an image URL:
       </p>
       <p>
         <code>
@@ -101,14 +104,14 @@
   <hr/>
   <h2>How it Works</h2>
   <p>
-    The charts are defined by a JSON object.  The JSON object follows all the rules of popular open-source graphing library Chart.js.  Simplify follow the <a href="https://www.chartjs.org/docs/latest/charts/">documentation</a> to define your chart
+    The charts are defined by a JSON object.  The JSON object follows all the rules of popular open-source graphing library Chart.js.  Simplify follow the <a href="https://www.chartjs.org/docs/latest/charts/">documentation</a> to define your chart.
   </p>
   <p>
-    Once you have the JSON, render it as an image with <code class="hl">&lt;img src=&quot;https://quickchart.io/chart?c=[[insert json here]]&quot;&gt;</code>.  Try it below!
+    Once you've written your JSON, render it as an image with <code class="hl">&lt;img src=&quot;https://quickchart.io/chart?c=[[insert json here]]&quot;&gt;</code>.  Try it below!
   </p>
-  <div class="hero">
+  <div class="hero panel">
     <div class="col">
-      <textarea id="sandbox-input" class="sandbox">
+      <textarea id="sandbox-input" class="sandbox-input">
 // Edit me!
 {
   type: 'bar',
@@ -133,7 +136,6 @@
       <span id="sandbox-tag" class="sandbox-tag"></span>
     </div>
   </div>
-  <hr/>
   <h2>Customizing your Chart</h2>
   <p>
     You can use any <a href="https://www.chartjs.org/docs/latest/configuration/">customization options</a> that you're used to from Chart.js.  The best place to learn the extent of customization options is through the <a href="https://www.chartjs.org/docs/latest/configuration/">documentation</a>.
@@ -315,7 +317,7 @@
       var lines = input.value.split('\n').filter(function(line) {
         return line.slice(0, 2) !== '//';
       });
-      tag.innerHTML = '&lt;img src="' + lines.join('') + '"&gt;';
+      tag.innerHTML = '&lt;img src="/chart?c=' + lines.join('') + '"&gt;';
     }
     input.onkeyup = updateImage;
     updateImage();
