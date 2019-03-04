@@ -179,46 +179,49 @@
       You can use any <a href="https://www.chartjs.org/docs/latest/configuration/">customization options</a> that you're used to from Chart.js.  The best place to learn the extent of customization options is through the <a href="https://www.chartjs.org/docs/latest/configuration/">documentation</a>.
     </p>
     <p>
-      We can get very creative.  The example below uses custom background colors, title, stacked bars, and data labels:
+      We can get very creative.  The example below uses custom background colors, title, legend, stacked bars, and data labels:
     </p>
     <div class="hero">
       <div class="col">
         <pre class="json">
-  {
-    type: 'bar',
-    data: {
-      labels: ['January', 'February', 'March', 'April', 'May'],
-      datasets: [{
-        label: 'Dogs',
-        backgroundColor: 'chartreuse',
-        data: [ 50, 60, 70, 180, 190 ]
-      }, {
-        label: 'Cats',
-        backgroundColor: 'gold',
-        data: [ 100, 200, 300, 400, 500 ]
-      }]
+{
+  type: 'bar',
+  data: {
+    labels: ['January', 'February', 'March', 'April', 'May'],
+    datasets: [{
+      label: 'Dogs',
+      backgroundColor: 'chartreuse',
+      data: [ 50, 60, 70, 180, 190 ]
+    }, {
+      label: 'Cats',
+      backgroundColor: 'gold',
+      data: [ 100, 200, 300, 400, 500 ]
+    }]
+  },
+  options: {
+    title: {
+      display: true,
+      text: 'Total Revenue (billions)',
+      fontColor: 'hotpink',
+      fontSize: 32,
     },
-    options: {
-      title: {
+    legend: {
+      position: 'bottom',
+    },
+    scales: {
+      xAxes: [{stacked: true}],
+      yAxes: [{stacked: true}],
+    },
+    plugins: {
+      datalabels: {
         display: true,
-        text: 'Total Revenue (billions)',
-        fontColor: 'hotpink',
-        fontSize: 32,
-      },
-      scales: {
-        xAxes: [{stacked: true}],
-        yAxes: [{stacked: true}],
-      },
-      plugins: {
-        datalabels: {
-          display: true,
-          font: {
-            style: 'bold',
-          },
+        font: {
+          style: 'bold',
         },
       },
     },
-  }
+  },
+}
         </pre>
       </div>
       <div class="arrowcol"></div>
@@ -244,6 +247,9 @@
               text: 'Total Revenue (billions)',
               fontColor: 'hotpink',
               fontSize: 32,
+            },
+            legend: {
+              position: 'bottom',
             },
             scales: {
               xAxes: [{stacked: true}],
