@@ -4,6 +4,7 @@ const ChartjsNode = require('chartjs-node');
 const express = require('express');
 const expressNunjucks = require('express-nunjucks');
 const winston = require('winston');
+const chartDataLabels = require('chartjs-plugin-datalabels');
 const { toJson } = require('really-relaxed-json');
 
 const { addBackgroundColors, DEFAULT_COLOR_WHEEL } = require('./charts');
@@ -62,26 +63,37 @@ app.get('/chart', (req, res) => {
     chart.type === 'doughnut';
   }
 
-  if (typeof chart.options === 'undefined') {
-    // Implement default options
-    chart.options = {};
-    if (chart.type === 'bar' || chart.type === 'line') {
-      chart.options = {
-        scales: {
-          yAxes: [{
-            ticks: {
-              beginAtZero: true,
-            },
-          }],
-        },
+  // Implement default options
+  chart.options = chart.options || {};
+  if (chart.type === 'bar' || chart.type === 'line') {
+    if (!chart.options.scales) {
+      // TODO(ian): Merge default options with provided options
+      if (!chart.options.scales) {
+        chart.options.scales = {};
+      }
+      chart.options.scales.yAxes = {
+        yAxes: [{
+          ticks: {
+            beginAtZero: true,
+          },
+        }],
       };
-      addBackgroundColors(chart);
-    } else if (chart.type === 'radar') {
-      addBackgroundColors(chart);
-    } else if (chart.type === 'pie' || chart.type === 'doughnut') {
-      addBackgroundColors(chart);
     }
+    addBackgroundColors(chart);
+  } else if (chart.type === 'radar') {
+    addBackgroundColors(chart);
+  } else if (chart.type === 'pie' || chart.type === 'doughnut') {
+    addBackgroundColors(chart);
   }
+
+  chart.options.plugins = chart.options.plugins || {};
+  if (!chart.options.plugins.datalabels) {
+    chart.options.plugins.datalabels = {
+      display: false,
+    };
+  }
+
+  chart.plugins = [chartDataLabels];
 
   console.log(JSON.stringify(chart))
 

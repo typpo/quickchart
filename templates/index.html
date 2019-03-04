@@ -62,9 +62,9 @@
   </style>
 </head>
 <body>
-  <h1 class="centered">Create a Chart Image with a URL</h1>
+  <h1 class="centered">Create a Chart Image by URL</h1>
   <p>
-    One url generates a chart.  This service lets you quickly generate static charts for inclusion in websites, emails, powerpoints, and more.
+    This service lets you quickly generate static charts for inclusion in websites, emails, powerpoints, and more.  A single URL generates a fully customizable chart.
   </p>
   <div class="hero">
     <div class="col">
@@ -107,29 +107,111 @@
     </pre>
   </p>
   <p>
-    Once you have the JSON, render it as an image with <code class="hl">&lt;img src=&quot;https://quickchart.io/chart?c=[[insert json here]]&quot;&gt;</code>.  Here's what we get:
+    Once you have the JSON, render it as an image with <code class="hl">&lt;img src=&quot;https://quickchart.io/chart?c=[[insert json here]]&quot;&gt;</code>.
   </p>
-  <p class="centered">
-    <img class="img-example" src="/chart?c={type:'bar',data:{labels:['January','February','March','April','May'],datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500]}]}}"/>
+  <hr/>
+  <h2>Customizing your Chart</h2>
+  <p>
+    You can use any <a href="https://www.chartjs.org/docs/latest/configuration/">customization options</a> that you're used to from Chart.js.  The best place to learn the extent of customization options is through the <a href="https://www.chartjs.org/docs/latest/configuration/">documentation</a>.
   </p>
   <p>
-    Your chart is very customizable.  By changing <code class="hl">type: bar</code> to <code class="hl">type: line</code>, for example, we can instantly produce the equivalent line graph:
+    We can get very creative.  The example below uses custom background colors, title, stacked bars, and data labels:
   </p>
-  <div class="hero panel">
+  <div class="hero">
     <div class="col">
-      <code>
-  &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'line'</span>,data:{labels:['January','February','March','April','May'], datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500]}]}}"&gt;
-      </code>
+      <pre class="json">
+{
+  type: 'bar',
+  data: {
+    labels: ['January', 'February', 'March', 'April', 'May'],
+    datasets: [{
+      label: 'Dogs',
+      backgroundColor: 'chartreuse',
+      data: [ 50, 60, 70, 180, 190 ]
+    }, {
+      label: 'Cats',
+      backgroundColor: 'gold',
+      data: [ 100, 200, 300, 400, 500 ]
+    }]
+  },
+  options: {
+    title: {
+      display: true,
+      text: 'Total Revenue (millions)',
+      fontColor: 'hotpink',
+      fontSize: 32,
+    },
+    scales: {
+      xAxes: [{stacked: true}],
+      yAxes: [{stacked: true}],
+    },
+    plugins: {
+      datalabels: {
+        display: true,
+        font: {
+          style: 'bold',
+        },
+      },
+    },
+  },
+}
+      </pre>
     </div>
     <div class="arrowcol">
       🡆
     </div>
     <div class="col">
-      <img class="img-example" src="/chart?c={type:'line',data:{labels:['January','February','March','April','May'],datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500]}]}}"/>
+          <img class="img-example" src="/chart?c=
+      {
+        type: 'bar',
+        data: {
+          labels: ['January', 'February', 'March', 'April', 'May'],
+          datasets: [{
+            label: 'Dogs',
+            backgroundColor: 'chartreuse',
+            data: [ 50, 60, 70, 180, 190 ]
+          }, {
+            label: 'Cats',
+            backgroundColor: 'gold',
+            data: [ 100, 200, 300, 400, 500 ]
+          }]
+        },
+        options: {
+          title: {
+            display: true,
+            text: 'Total Revenue (millions)',
+            fontColor: 'hotpink',
+            fontSize: 32,
+          },
+          scales: {
+            xAxes: [{stacked: true}],
+            yAxes: [{stacked: true}],
+          },
+          plugins: {
+            datalabels: {
+              display: true,
+              font: {
+                style: 'bold',
+              },
+            },
+          },
+        },
+      }
+      "/>
     </div>
   </div>
+  <p>
+    A couple things to remember when customizing your chart:
+    <ul>
+      <li>Interactivity and animations are not supported (this service produces static images)</li>
+      <li><em>We recommend that you URL-encode the entire JSON block.</em>  If not URL-encoded, you must escape all hex color codes (e.g. <code>#ff0000</code> &rarr; <code>%23ff0000</code>, or just use the <code>rgb(255, 0, 0)</code> equivalent).</li>
+    </ul>
+  </p>
   <hr/>
   <h2>Chart Types</h2>
+  <p>
+    Customization can be very simple.  By changing <code class="hl">type: bar</code> to <code class="hl">type: line</code>, for example, we can instantly produce an equivalent line graph:
+  </p>
   <div class="hero panel">
     <div class="col">
       <h3>Bar Graph</h3>
