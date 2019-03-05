@@ -389,7 +389,7 @@
       var lines = input.value.split('\n').filter(function(line) {
         return line.slice(0, 2) !== '//';
       });
-      tag.innerHTML = '&lt;img src="/chart?c=' + lines.join('') + '"&gt;';
+      tag.innerHTML = '&lt;img src="https://quickchart.io/chart?c=' + lines.join('') + '"&gt;';
     }
     input.onkeyup = updateImage;
     updateImage();
