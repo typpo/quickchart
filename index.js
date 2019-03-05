@@ -118,8 +118,8 @@ app.get('/chart', (req, res) => {
     }
   }
 
-  chart.plugins = [chartDataLabels];
   logger.info('Chart:', chart);
+  chart.plugins = [chartDataLabels];
 
   const chartNode = new ChartjsNode(width, height);
   chartNode.drawChart(chart).then(() => {
