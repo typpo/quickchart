@@ -14,6 +14,10 @@
       font-family: 'Proxima Nova Soft','Helvetica Neue',Arial,Helvetica,sans-serif;
     }
 
+    a, a:visited {
+      color: darkblue;
+    }
+
     .centered {
       text-align: center;
     }
@@ -99,6 +103,13 @@
       padding: 1em;
     }
 
+    .mobile-only {
+      display: none;
+    }
+    .desktop-only {
+      display: block;
+    }
+
     @media (max-width: 400px) {
       .container {
         padding: 0 0.5em;
@@ -113,17 +124,26 @@
       .arrowcol:before {
         content: "⇣";
       }
+      .mobile-only {
+        display: block;
+      }
+      .desktop-only {
+        display: none;
+      }
     }
   </style>
 </head>
 <body>
   <div class="header centered">
-    <h1>Generate a Chart Image</h1>
+    <h1>Generate Chart Image from URL</h1>
     <p>
 <!--
       Fast &amp; Reliable &middot; One URL &middot; Easy to Save &middot; Easy to Embed
 -->
-      Create and embed static charts in email, SMS, reports, and more.
+      <strong>Create static charts for embedding in email, SMS, reports, and more.</strong>
+    </p>
+    <p>
+      <a href="#build-from-url">How It Works</a> &middot; <a href="#customize">Customize Your Chart</a> &middot; <a href="#chart-types">Chart Types</a> &middot; <a href="#about">More Info</a>
     </p>
   </div>
   <div class="container">
@@ -147,12 +167,12 @@
       This service is a replacement for the <a href="https://developers.google.com/chart/image/">Google Image Charts API</a>, which is scheduled to turn off on March 14, 2019.
     </p>
     <hr/>
-    <h2>Building a Chart from URL</h2>
+    <h2 id="build-from-url">How It Works</h2>
     <p>
-      The charts are defined by a JSON object in a URL.  The JSON object follows all the rules of popular open-source graphing library Chart.js.  Simply follow the <a href="https://www.chartjs.org/docs/latest/charts/">documentation</a> to define your chart.
+      Chart images are defined by their URLs.  Each URL contains a JSON object that includes all the data and display options. These options follow the popular open-source graphing library Chart.js.  Use the <a href="https://www.chartjs.org/docs/latest/charts/">documentation</a> to define your chart.
     </p>
     <p>
-      Once you've written your JSON, render it as an image with <code class="hl">&lt;img src=&quot;https://quickchart.io/chart?c=[[insert json here]]&quot;&gt;</code>.  Try our realtime editor below!
+      Once you've written your JSON, render it as an image with <code class="hl">&lt;img src=&quot;https://quickchart.io/chart?c=[[insert json here]]&quot;&gt;</code>.  Try the realtime editor below:
     </p>
     <div class="hero panel">
       <div class="col">
@@ -177,7 +197,7 @@
         <img class="img-example" id="sandbox-img"/>
       </div>
     </div>
-    <h2>Customizing your Chart</h2>
+    <h2 id="customize">Customize Your Chart</h2>
     <p>
       You can use any <a href="https://www.chartjs.org/docs/latest/configuration/">customization options</a> that you're used to from Chart.js.  The best place to learn the extent of customization options is through the <a href="https://www.chartjs.org/docs/latest/configuration/">documentation</a>.
     </p>
@@ -279,7 +299,7 @@
       </ul>
     </p>
     <hr/>
-    <h2>Chart Types</h2>
+    <h2 id="chart-types">Chart Types</h2>
     <p>
       Customization can be very simple.  By changing <code class="hl">type: bar</code> to <code class="hl">type: line</code>, for example, we can instantly produce an equivalent line graph:
     </p>
@@ -346,6 +366,13 @@
         <img class="img-example" src="/chart?c={type:'doughnut',data:{labels:['January','February','March','April', 'May'],datasets:[{data:[50,60,70,180,190]}]}}"/>
       </div>
     </div>
+    <h2 id="about">About QuickChart.io</h2>
+    <p>
+      QuickChart is a free service built and maintained by Ian Webster.  It is funded entirely by its sponsors, <a href="http://alioth.io/">Alioth LLC</a> and <a href="https://www.zenysis.com/">Zenysis</a>.  You are welcome to use images produced by this website for any purpose.
+    </p>
+    <p>
+      QuickChart is also <a href="https://github.com/typpo/quickchart">open source</a>, dual licensed under the GNU GPLv3 and a commercial license.  That means you can run your own QuickChart server if desired.  If you would like to use the QuickChart project commercially, please <a href="mailto:ian@alioth.io">contact us</a> for a license.
+    </p>
   </div>
   <footer>
     <div class="footer-content">
