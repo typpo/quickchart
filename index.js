@@ -66,7 +66,7 @@ app.get('/chart', (req, res) => {
 
   let chart;
   try {
-    chart = JSON.parse(toJson(req.query.c));
+    chart = JSON.parse(toJson(decodeURIComponent(req.query.c)));
   } catch (err) {
     failPng(res, 'Invalid JSON input');
     return;
