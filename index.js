@@ -119,7 +119,7 @@ app.get('/chart', (req, res) => {
   }
 
   chart.plugins = [chartDataLabels];
-  logger.debug('Chart:', chart);
+  logger.info('Chart:', chart);
 
   const chartNode = new ChartjsNode(width, height);
   chartNode.drawChart(chart).then(() => {
@@ -128,6 +128,9 @@ app.get('/chart', (req, res) => {
     res.writeHead(200, {
       'Content-Type': 'image/png',
       'Content-Length': buf.length,
+
+      // 1 week cache
+      'Cache-Control': 'public, max-age=604800',
     });
     res.end(buf);
   }).catch(_ => {
