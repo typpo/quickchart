@@ -149,7 +149,6 @@ if (!isDev) {
       process.exit();
     });
 
-    // if after
     setTimeout(() => {
       logger.error('Could not close connections in time, forcefully shutting down');
       process.exit();

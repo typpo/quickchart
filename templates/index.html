@@ -299,6 +299,14 @@
         <li><em>We recommend that you <a href="https://meyerweb.com/eric/tools/dencoder/">URL-encode</a> the entire JSON block.</em>  If not URL-encoded, you must escape all hex characters, e.g. <code>#ff0000</code> &rarr; <code>%23ff0000</code>, or just use the <code>rgb(255, 0, 0)</code> equivalent</li>
       </ul>
     </p>
+    <p>
+      We also provide these additional options as query parameters:
+      <ul>
+        <li><code><strong>&amp;width</strong>=500</code>: Set the width of the image. Abbreviated as "w"</li>
+        <li><code><strong>&amp;height</strong>=300</code>: Set the height of the image. Abbreviated as "h"</li>
+      </ul>
+      Combine these parameters in your query string. For example: <code>/chart?width=500&amp;height=300&amp;c={...}</code>
+    </p>
     <hr/>
     <h2 id="chart-types">Chart Types</h2>
     <p>
