@@ -51,14 +51,14 @@ app.get('/chart', (req, res) => {
 
   let height = 300;
   let width = 500;
-  if (req.h || req.height) {
-    const heightNum = parseInt(req.h || req.height, 10);
+  if (req.query.h || req.query.height) {
+    const heightNum = parseInt(req.query.h || req.query.height, 10);
     if (!isNaN(heightNum)) {
       height = heightNum;
     }
   }
-  if (req.w || req.width) {
-    const heightNum = parseInt(req.w || req.width, 10);
+  if (req.query.w || req.query.width) {
+    const widthNum = parseInt(req.query.w || req.query.width, 10);
     if (!isNaN(widthNum)) {
       width = widthNum;
     }
