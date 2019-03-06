@@ -4,6 +4,7 @@ const ChartjsNode = require('chartjs-node');
 const chartDataLabels = require('chartjs-plugin-datalabels');
 const express = require('express');
 const expressNunjucks = require('express-nunjucks');
+const qr = require('qr-image');
 const text2png = require('text2png');
 const winston = require('winston');
 const { toJson } = require('really-relaxed-json');
@@ -139,6 +140,22 @@ app.get('/chart', (req, res) => {
   }).finally(() => {
     chartNode.destroy();
   });
+});
+
+app.get('/qr', (req, res) => {
+  let format = 'png';
+  if (req.query.format === 'svg') {
+    format = 'svg';
+  }
+  const buf = qr.imageSync(decodeURIComponent(req.query.text), { type: format });
+  res.writeHead(200, {
+    'Content-Type': `image/${format}`,
+    'Content-Length': buf.length,
+
+    // 1 week cache
+    'Cache-Control': 'public, max-age=604800',
+  });
+  res.end(buf);
 });
 
 if (!isDev) {

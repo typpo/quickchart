@@ -377,6 +377,21 @@
         <img class="img-example" src="/chart?c={type:'doughnut',data:{labels:['January','February','March','April', 'May'],datasets:[{data:[50,60,70,180,190]}]}}"/>
       </div>
     </div>
+    <h2 id="qr">QR codes</h2>
+    <p>
+      Just like the old Google Image Charts API, we also do QR codes.  Generate a QR code like so:
+    </p>
+    <div class="centered">
+      <p>
+        <code>https://quickchart.io/qr?text=Here's my text</code>
+      </p>
+      <p>
+        <img src="/qr?text=Here's my text">
+      </p>
+    </div>
+    <p>
+      Remember the URL-encode your <code>text</code> parameter for more complex strings.  The QR endpoint produces a PNG image by default.  You may optionally set the query parameter <code>format=svg</code> for SVG format.
+    </p>
     <h2 id="about">About QuickChart.io</h2>
     <p>
       QuickChart is a free service built and maintained by Ian Webster.  You may use images produced by this website for any purpose.
