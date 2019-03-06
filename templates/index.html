@@ -473,9 +473,25 @@
             tag.innerHTML = '&lt;img src="https://quickchart.io/chart?bkg=white&c=' + lines.join('') + '"&gt;';
           }
         }
-        input.onkeyup = updateImage;
+        input.onkeyup = debounce(updateImage, 100);
       })();
     }
+
+    function debounce(func, wait, immediate) {
+      var timeout;
+      return function executedFunction() {
+        var context = this;
+        var args = arguments;
+        var later = function() {
+          timeout = null;
+          if (!immediate) func.apply(context, args);
+        };
+        var callNow = immediate && !timeout;
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+        if (callNow) func.apply(context, args);
+      }
+    };
   </script>
   {% include "tracking.html" %}
   {% include "feedback.html" %}
