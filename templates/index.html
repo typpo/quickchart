@@ -60,6 +60,7 @@
       width: 98%;
       height: 17em;
 
+      background-color: #fdffe6;
       -webkit-box-shadow: 0 0 10px rgba(255,0,0,0.2);
       -moz-box-shadow: 0 0 10px rgba(255,0,0,0.2);
     }
@@ -83,11 +84,6 @@
 
     .img-example {
       max-width: 100%;
-    }
-
-    pre.json {
-      background-color: #eee;
-      overflow: scroll;
     }
 
     code {
@@ -179,7 +175,7 @@
     </p>
     <div class="hero panel">
       <div class="col">
-        <textarea id="sandbox-input" class="sandbox-input">// Edit me!
+        <textarea id="sandbox-input" class="sandbox-input" data-image-id="sandbox-img" data-tag-id="sandbox-tag">// Edit me!
 {
   type: 'bar',
   data: {
@@ -197,7 +193,19 @@
       <div class="arrowcol"></div>
       <div class="col">
         <div id="sandbox-tag" class="sandbox-tag"></div>
-        <img class="img-example" id="sandbox-img"/>
+        <img class="img-example" id="sandbox-img" src="/chart?c={
+  type: 'bar',
+  data: {
+    labels: ['January', 'February', 'March', 'April', 'May'],
+    datasets: [{
+      label: 'Dogs',
+      data: [ 50, 60, 70, 180, 190 ]
+    }, {
+      label: 'Cats',
+      data: [ 100, 200, 300, 400, 500 ]
+    }]
+  }
+}"/>
       </div>
     </div>
     <h2 id="customize">Customize Your Chart</h2>
@@ -206,8 +214,7 @@
     </p>
     <div class="hero">
       <div class="col">
-        <pre class="json">
-{
+        <textarea class="sandbox-input" data-image-id="sandbox-customize">{
   type: 'bar',
   data: {
     labels: ['January', 'February', 'March', 'April', 'May'],
@@ -244,12 +251,11 @@
       },
     },
   },
-}
-        </pre>
+}</textarea>
       </div>
       <div class="arrowcol"></div>
       <div class="col">
-            <img class="img-example" src="/chart?bkg=white&c=
+            <img id="sandbox-customize" class="img-example" src="/chart?bkg=white&c=
         {
           type: 'bar',
           data: {
@@ -412,12 +418,12 @@
       <div class="col">
         <h3>Mixed Charts</h3>
         <code>
-    &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'bar'</span>,data:{labels:['January','February','March','April','May'],datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500],},{<span class="hl">type:'line'</span>,fill:false,label:'Potatoes',data:[100,400,200,400,700],}]}}"&gt;
+    &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'bar'</span>,data:{labels:['January','February','March','April', 'May'], datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500],},{<span class="hl">type:'line'</span>,fill:false, label:'Potatoes',data:[100,400,200,400,700]}]}}"&gt;
         </code>
       </div>
       <div class="arrowcol"></div>
       <div class="col">
-        <img class="img-example" src="/chart?bkg=white&c={type:'bar',data:{labels:['January','February','March','April','May'],datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500],},{type:'line',fill:false,label:'Potatoes',data:[100,400,200,400,700],}]}}"/>
+        <img class="img-example" src="/chart?bkg=white&c={type:'bar',data:{labels:['January','February','March','April','May'],datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500],},{type:'line',fill:false,label:'Potatoes',data:[100,400,200,400,700]}]}}"/>
       </div>
     </div>
     <h2 id="qr">QR codes</h2>
@@ -452,18 +458,24 @@
     </div>
   </footer>
   <script>
-    var input = document.getElementById('sandbox-input');
-    var img = document.getElementById('sandbox-img');
-    var tag = document.getElementById('sandbox-tag');
-    function updateImage() {
-      img.src = '/chart?bkg=white&c=' + encodeURIComponent(input.value);
-      var lines = input.value.split('\n').filter(function(line) {
-        return line.slice(0, 2) !== '//';
-      });
-      tag.innerHTML = '&lt;img src="https://quickchart.io/chart?bkg=white&c=' + lines.join('') + '"&gt;';
+    var elts = document.getElementsByClassName('sandbox-input')
+    for (var i=0; i < elts.length; i++) {
+      (function() {
+        var input = elts[i];
+        var img = document.getElementById(input.dataset.imageId);
+        var tag = input.dataset.tagId ? document.getElementById(input.dataset.tagId) : undefined;
+        var updateImage = function() {
+          img.src = '/chart?bkg=white&c=' + encodeURIComponent(input.value);
+          var lines = input.value.split('\n').filter(function(line) {
+            return line.slice(0, 2) !== '//';
+          });
+          if (tag) {
+            tag.innerHTML = '&lt;img src="https://quickchart.io/chart?bkg=white&c=' + lines.join('') + '"&gt;';
+          }
+        }
+        input.onkeyup = updateImage;
+      })();
     }
-    input.onkeyup = updateImage;
-    updateImage();
   </script>
   {% include "tracking.html" %}
   {% include "feedback.html" %}
