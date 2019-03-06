@@ -80,7 +80,7 @@ app.get('/chart', (req, res) => {
 
   // Implement default options
   chart.options = chart.options || {};
-  if (chart.type === 'bar' || chart.type === 'line') {
+  if (chart.type === 'bar' || chart.type === 'line' || chart.type === 'scatter' || chart.type === 'bubble') {
     if (!chart.options.scales) {
       // TODO(ian): Merge default options with provided options
       chart.options.scales = {
