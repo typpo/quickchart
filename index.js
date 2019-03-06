@@ -126,7 +126,7 @@ app.get('/chart', (req, res) => {
   logger.info('Chart:', JSON.stringify(chart));
   chart.plugins = [chartDataLabels];
 
-  const backgroundColor = req.query.backgroundColor || req.query.bkgC;
+  const backgroundColor = req.query.backgroundColor || req.query.bkg;
   if (backgroundColor) {
     chart.options.plugins.beforeDraw = (chartInstance, easing) => {
       var ctx = chartInstance.chart.ctx;
