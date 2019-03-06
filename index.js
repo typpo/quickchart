@@ -96,6 +96,10 @@ app.get('/chart', (req, res) => {
     addBackgroundColors(chart);
   } else if (chart.type === 'pie' || chart.type === 'doughnut') {
     addBackgroundColors(chart);
+  } else if (chart.type === 'scatter') {
+    addBackgroundColors(chart);
+  } else if (chart.type === 'bubble') {
+    addBackgroundColors(chart);
   }
 
   if (chart.type === 'line') {
@@ -119,7 +123,7 @@ app.get('/chart', (req, res) => {
     }
   }
 
-  logger.info('Chart:', chart);
+  logger.info('Chart:', JSON.stringify(chart));
   chart.plugins = [chartDataLabels];
 
   const chartNode = new ChartjsNode(width, height);

@@ -355,7 +355,7 @@
     </div>
     <div class="hero panel">
       <div class="col">
-        <h3>Pie Charts</h3>
+        <h3>Pie Chart</h3>
         <code>
     &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'pie'</span>,data:{labels:['January','February','March','April', 'May'], datasets:[{data:[50,60,70,180,190]}]}}"&gt;
         </code>
@@ -367,7 +367,7 @@
     </div>
     <div class="hero panel">
       <div class="col">
-        <h3>Doughnut Charts</h3>
+        <h3>Doughnut Chart</h3>
         <code>
     &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'doughnut'</span>,data:{labels:['January','February','March','April', 'May'], datasets:[{data:[50,60,70,180,190]}]}}"&gt;
         </code>
@@ -377,9 +377,51 @@
         <img class="img-example" src="/chart?c={type:'doughnut',data:{labels:['January','February','March','April', 'May'],datasets:[{data:[50,60,70,180,190]}]}}"/>
       </div>
     </div>
+    <div class="hero panel">
+      <div class="col">
+        <h3>Scatter Plot</h3>
+        <code>
+    &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'scatter'</span>,data:{datasets:[{label:'Data 1',data:[{x:2,y:4},{x:3,y:3},{x:-10,y:0},{x:0,y:10},{x:10,y:5}]}]}}"&gt;
+        </code>
+      </div>
+      <div class="arrowcol"></div>
+      <div class="col">
+        <img class="img-example" src="/chart?c={type:'scatter',data:{datasets:[{label:'My Data',data:[{x:2,y:4},{x:3,y:3},{x:-10,y:-2},{x:2,y:10},{x:10,y:5}]}]}}"/>
+      </div>
+    </div>
+    <div class="hero panel">
+      <div class="col">
+        <h3>Bubble Chart</h3>
+        <p>
+          The <code>r</code> variable defines bubble radius in pixels:
+        </p>
+        <code>
+    &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'bubble'</span>,data:{datasets:[{label:'Data 1',data:[{x:1,y:4,r:9},{x:2,y:4,r:6},{x:3,y:3,r:3},{x:0,y:10,r:1},{x:10,y:5,r:5}]}]}}"&gt;
+        </code>
+      </div>
+      <div class="arrowcol"></div>
+      <div class="col">
+        <img class="img-example" src="/chart?c={type:'bubble',data:{datasets:[{label:'Data 1',data:[{x:1,y:4,r:9},{x:2,y:4,r:6},{x:3,y:3,r:3},{x:0,y:10,r:1},{x:10,y:5,r:5}]}]}}"/>
+      </div>
+    </div>
+    <p>
+      You can combine charts together by specifying different <code>type</code>s:
+    </p>
+    <div class="hero panel">
+      <div class="col">
+        <h3>Mixed Charts</h3>
+        <code>
+    &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'bar'</span>,data:{labels:['January','February','March','April','May'],datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500],},{<span class="hl">type:'line'</span>,fill:false,label:'Potatoes',data:[100,400,200,400,700],}]}}"&gt;
+        </code>
+      </div>
+      <div class="arrowcol"></div>
+      <div class="col">
+        <img class="img-example" src="/chart?c={type:'bar',data:{labels:['January','February','March','April','May'],datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500],},{type:'line',fill:false,label:'Potatoes',data:[100,400,200,400,700],}]}}"/>
+      </div>
+    </div>
     <h2 id="qr">QR codes</h2>
     <p>
-      Just like the old Google Image Charts API, we also do QR codes.  Generate a QR code like so:
+      We also support QR code generation.  You can render a QR code like so:
     </p>
     <div class="centered">
       <p>
