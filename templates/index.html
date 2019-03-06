@@ -297,8 +297,8 @@
     <p>
       A couple things to remember when customizing your chart:
       <ul>
+        <li><strong>We recommend that you <a href="https://meyerweb.com/eric/tools/dencoder/">URL-encode</a> the entire JSON block.</strong>  If not URL-encoded, you must escape all hex characters, e.g. <code>#ff0000</code> &rarr; <code>%23ff0000</code>, or just use the <code>rgb(255, 0, 0)</code> equivalent</li>
         <li>Interactivity and animations are not supported (this service produces static images)</li>
-        <li><em>We recommend that you <a href="https://meyerweb.com/eric/tools/dencoder/">URL-encode</a> the entire JSON block.</em>  If not URL-encoded, you must escape all hex characters, e.g. <code>#ff0000</code> &rarr; <code>%23ff0000</code>, or just use the <code>rgb(255, 0, 0)</code> equivalent</li>
       </ul>
     </p>
     <p>
@@ -306,6 +306,7 @@
       <ul>
         <li><code><strong>&amp;width</strong>=500</code>: Set the width of the image. Abbreviated as "w"</li>
         <li><code><strong>&amp;height</strong>=300</code>: Set the height of the image. Abbreviated as "h"</li>
+        <li><code><strong>&amp;backgroundColor</strong>=transparent</code>: Set the background of the chart canvas. Abbreviated as "bkgC"</li>
       </ul>
       Combine these parameters in your query string. For example: <code>/chart?width=500&amp;height=300&amp;c={...}</code>
     </p>

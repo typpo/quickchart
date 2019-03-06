@@ -126,6 +126,15 @@ app.get('/chart', (req, res) => {
   logger.info('Chart:', JSON.stringify(chart));
   chart.plugins = [chartDataLabels];
 
+  const backgroundColor = req.query.backgroundColor || req.query.bkgC;
+  if (backgroundColor) {
+    chart.options.plugins.beforeDraw = (chartInstance, easing) => {
+      var ctx = chartInstance.chart.ctx;
+      ctx.fillStyle = backgroundColor;
+      ctx.fillRect(0, 0, chartInstance.chart.width, chartInstance.chart.height);
+    };
+  }
+
   const chartNode = new ChartjsNode(width, height);
   chartNode.drawChart(chart).then(() => {
     return chartNode.getImageBuffer('image/png');
@@ -138,7 +147,8 @@ app.get('/chart', (req, res) => {
       'Cache-Control': 'public, max-age=604800',
     });
     res.end(buf);
-  }).catch(_ => {
+  }).catch(err => {
+    logger.error(err);
     failPng(res, 'Invalid chart options');
     return;
   }).finally(() => {
