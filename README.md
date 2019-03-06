@@ -49,4 +49,4 @@ Once you have system dependencies installed, run `yarn install` or `npm install`
 
 ## License
 
-QuickChart is open source, licensed under version 3 of the GNU GPL.  If you would like to use this project for commercial purposes, please [contact me](https://www.ianww.com/).
+QuickChart is open source, licensed under version 3 of the GNU GPL.  If you would like to modify this project for commercial purposes (and not release the source code), please [contact me](https://www.ianww.com/).
