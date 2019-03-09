@@ -1,8 +1,8 @@
 {
-  "name": "staticchart",
+  "name": "quickchart",
   "version": "1.0.0",
   "main": "index.js",
-  "license": "None",
+  "license": "GPLv3",
   "dependencies": {
     "chart.js": "^2.7.3",
     "chartjs-node-canvas": "^2.0.1",
