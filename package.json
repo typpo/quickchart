@@ -5,7 +5,7 @@
   "license": "None",
   "dependencies": {
     "chart.js": "^2.7.3",
-    "chartjs-node": "^1.7.1",
+    "chartjs-node-canvas": "^2.0.1",
     "chartjs-plugin-datalabels": "^0.5.0",
     "express": "^4.16.4",
     "express-nunjucks": "^2.2.3",

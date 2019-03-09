@@ -37,9 +37,9 @@ Chart configuration is compatible with the popular Chart.js API.  Check out the 
 
 ## Dependencies and Installation
 
-Chart generation requires several system dependencies: Cairo, Pango, libjpeg, and libgif.  Run `./scripts/setup.sh` for a fresh install on Linux machines (note that this also installs yarn and node).  
+Chart generation requires several system dependencies: Cairo, Pango, libjpeg, and libgif.  Run `./scripts/setup.sh` for a fresh install on Linux machines (note that this also installs yarn and node).
 
-To install system dependencies on Mac OSX, you probably just need to `brew install cairo`.
+To install system dependencies on Mac OSX, you probably just need to `brew install cairo pango libffi`.  You may have to `export PKG_CONFIG_PATH="/usr/local/opt/libffi/lib/pkgconfig"` before installing node packages.
 
 Once you have system dependencies installed, run `yarn install` or `npm install` to install the node dependencies.
 

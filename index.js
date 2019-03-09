@@ -1,6 +1,6 @@
 const path = require('path');
 
-const ChartjsNode = require('chartjs-node');
+const { CanvasRenderService } = require('chartjs-node-canvas');
 const chartDataLabels = require('chartjs-plugin-datalabels');
 const express = require('express');
 const expressNunjucks = require('express-nunjucks');
@@ -80,6 +80,7 @@ app.get('/chart', (req, res) => {
 
   // Implement default options
   chart.options = chart.options || {};
+  chart.options.devicePixelRatio = 2.0;
   if (chart.type === 'bar' || chart.type === 'line' || chart.type === 'scatter' || chart.type === 'bubble') {
     if (!chart.options.scales) {
       // TODO(ian): Merge default options with provided options
@@ -135,10 +136,8 @@ app.get('/chart', (req, res) => {
     };
   }
 
-  const chartNode = new ChartjsNode(width, height);
-  chartNode.drawChart(chart).then(() => {
-    return chartNode.getImageBuffer('image/png');
-  }).then(buf => {
+  const canvasRenderService = new CanvasRenderService(width, height, ChartJS => {});
+  canvasRenderService.renderToBuffer(chart).then(buf => {
     res.writeHead(200, {
       'Content-Type': 'image/png',
       'Content-Length': buf.length,
@@ -152,7 +151,7 @@ app.get('/chart', (req, res) => {
     failPng(res, 'Invalid chart options');
     return;
   }).finally(() => {
-    chartNode.destroy();
+    //chartNode.destroy();
   });
 });
 
