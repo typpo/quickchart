@@ -136,7 +136,7 @@ app.get('/chart', (req, res) => {
     };
   }
 
-  const canvasRenderService = new CanvasRenderService(width, height, ChartJS => {});
+  let canvasRenderService = new CanvasRenderService(width, height);
   canvasRenderService.renderToBuffer(chart).then(buf => {
     res.writeHead(200, {
       'Content-Type': 'image/png',
@@ -151,7 +151,7 @@ app.get('/chart', (req, res) => {
     failPng(res, 'Invalid chart options');
     return;
   }).finally(() => {
-    //chartNode.destroy();
+    canvasRenderService = undefined;
   });
 });
 
