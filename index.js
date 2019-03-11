@@ -139,20 +139,28 @@ app.get('/chart', (req, res) => {
       });
     }
 	});
-  canvasRenderService.renderToBuffer(chart).then(buf => {
-    res.writeHead(200, {
-      'Content-Type': 'image/png',
-      'Content-Length': buf.length,
+  try {
+    canvasRenderService.renderToBuffer(chart).then(buf => {
+      res.writeHead(200, {
+        'Content-Type': 'image/png',
+        'Content-Length': buf.length,
 
-      // 1 week cache
-      'Cache-Control': 'public, max-age=604800',
+        // 1 week cache
+        'Cache-Control': 'public, max-age=604800',
+      });
+      res.end(buf);
+    }).catch(err => {
+      logger.error(err);
+      failPng(res, 'Invalid chart options');
+      return;
     });
-    res.end(buf);
-  }).catch(err => {
+  } catch(err) {
+    // canvasRenderService doesn't seem to be throwing errors correctly for
+    // certain chart errors.
     logger.error(err);
     failPng(res, 'Invalid chart options');
     return;
-  });
+  }
 });
 
 app.get('/qr', (req, res) => {
