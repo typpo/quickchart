@@ -171,7 +171,7 @@
       Chart images are defined by their URLs.  Each URL contains a JSON object that includes all the data and display options. These options follow the popular open-source graphing library Chart.js.  Use the <a href="https://www.chartjs.org/docs/latest/charts/">documentation</a> to define your chart.
     </p>
     <p>
-      Once you've written your JSON, render it as an image with <code class="hl">&lt;img src=&quot;https://quickchart.io/chart?c=[[insert json here]]&quot;&gt;</code>.  Try the realtime editor below:
+      Once you've written your JSON, render it as an image with <code class="hl">https://quickchart.io/chart?c=[[insert json here]]</code>.  Try the realtime editor below:
     </p>
     <div class="hero panel">
       <div class="col">
@@ -465,12 +465,13 @@
         var img = document.getElementById(input.dataset.imageId);
         var tag = input.dataset.tagId ? document.getElementById(input.dataset.tagId) : undefined;
         var updateImage = function() {
-          img.src = '/chart?bkg=white&c=' + encodeURIComponent(input.value);
+					var url = '/chart?bkg=white&c=' + encodeURIComponent(input.value);
+          img.src = url;
           var lines = input.value.split('\n').filter(function(line) {
             return line.slice(0, 2) !== '//';
           });
           if (tag) {
-            tag.innerHTML = '&lt;img src="https://quickchart.io/chart?bkg=white&c=' + lines.join('') + '"&gt;';
+            tag.innerHTML = '<a href="' + url + '">https://quickchart.io/chart?bkg=white&c=' + lines.join('') + '</a>';
           }
         }
         input.onkeyup = debounce(updateImage, 100);
