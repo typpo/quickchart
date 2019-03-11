@@ -127,16 +127,18 @@ app.get('/chart', (req, res) => {
   logger.info('Chart:', JSON.stringify(chart));
   chart.plugins = [chartDataLabels];
 
-  const backgroundColor = req.query.backgroundColor || req.query.bkg;
-  if (backgroundColor) {
-    chart.options.plugins.beforeDraw = (chartInstance, easing) => {
-      var ctx = chartInstance.chart.ctx;
-      ctx.fillStyle = backgroundColor;
-      ctx.fillRect(0, 0, chartInstance.chart.width, chartInstance.chart.height);
-    };
-  }
-
-  let canvasRenderService = new CanvasRenderService(width, height);
+  let canvasRenderService = new CanvasRenderService(width, height, (ChartJS) => {
+    const backgroundColor = req.query.backgroundColor || req.query.bkg;
+    if (backgroundColor) {
+      ChartJS.pluginService.register({
+        beforeDraw: (chartInstance, easing) => {
+          var ctx = chartInstance.chart.ctx;
+          ctx.fillStyle = backgroundColor;
+          ctx.fillRect(0, 0, chartInstance.chart.width, chartInstance.chart.height);
+        },
+      });
+    }
+	});
   canvasRenderService.renderToBuffer(chart).then(buf => {
     res.writeHead(200, {
       'Content-Type': 'image/png',
