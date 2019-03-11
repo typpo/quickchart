@@ -152,8 +152,6 @@ app.get('/chart', (req, res) => {
     logger.error(err);
     failPng(res, 'Invalid chart options');
     return;
-  }).finally(() => {
-    canvasRenderService = undefined;
   });
 });
 
