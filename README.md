@@ -1,7 +1,7 @@
 QuickChart
 ---
 
-QuickChart is a service that generates images of charts from a URL.  Because these charts are simple images, they are very easy to embed in non-dynamic environments such as email, SMS, chat rooms, and so on.
+[QuickChart](https://quickchart.io/) is a service that generates images of charts from a URL.  Because these charts are simple images, they are very easy to embed in non-dynamic environments such as email, SMS, chat rooms, and so on.
 
 ## See it in action
 
@@ -33,7 +33,9 @@ As you can see, the JSON contained in the URL defines the chart:
 }
 ```
 
-Chart configuration is compatible with the popular Chart.js API.  Check out the [Chart.js documentation](https://www.chartjs.org/docs/latest/charts/) for more information on how to customize your chart, or see [QuickChart.io](https://quickchart.io/) for more examples.
+## Configuring your chart
+
+The chart configuration object is based on the popular Chart.js API.  Check out the [Chart.js documentation](https://www.chartjs.org/docs/latest/charts/) for more information on how to customize your chart, or see [QuickChart.io](https://quickchart.io/) for more examples.
 
 ## Dependencies and Installation
 
