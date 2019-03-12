@@ -471,7 +471,11 @@
             return line.slice(0, 2) !== '//';
           });
           if (tag) {
-            tag.innerHTML = '<a href="' + url + '">https://quickchart.io/chart?bkg=white&c=' + lines.join('') + '</a>';
+            let linkText = 'https://quickchart.io/chart?bkg=white&c=' + lines.join('');
+            if (linkText.length > 500) {
+              linkText = linkText.slice(0, 100) + ' ... ' + linkText.slice(linkText.length - 100);
+            }
+            tag.innerHTML = '<a href="' + url + '">' + linkText + '</a>';
           }
         }
         input.onkeyup = debounce(updateImage, 100);
