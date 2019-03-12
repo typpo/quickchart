@@ -10,7 +10,7 @@ const winston = require('winston');
 const { toJson } = require('really-relaxed-json');
 const { NodeVM } = require('vm2');
 
-const { addBackgroundColors, DEFAULT_COLOR_WHEEL } = require('./charts');
+const { addBackgroundColors } = require('./charts');
 
 const logger = new (winston.Logger)({
   transports: [
@@ -55,13 +55,13 @@ app.get('/chart', (req, res) => {
   let width = 500;
   if (req.query.h || req.query.height) {
     const heightNum = parseInt(req.query.h || req.query.height, 10);
-    if (!isNaN(heightNum)) {
+    if (!Number.isNaN(heightNum)) {
       height = heightNum;
     }
   }
   if (req.query.w || req.query.width) {
     const widthNum = parseInt(req.query.w || req.query.width, 10);
-    if (!isNaN(widthNum)) {
+    if (!Number.isNaN(widthNum)) {
       width = widthNum;
     }
   }
@@ -77,14 +77,14 @@ app.get('/chart', (req, res) => {
     }
     chart = vm.run(`module.exports = ${untrustedInput}`);
   } catch (err) {
-    logger.error('Input Error', err)
+    logger.error('Input Error', err);
     failPng(res, 'Invalid input');
     return;
   }
 
   if (chart.type === 'donut') {
     // Fix spelling...
-    chart.type === 'doughnut';
+    chart.type = 'doughnut';
   }
 
   // Implement default options
@@ -113,9 +113,10 @@ app.get('/chart', (req, res) => {
   }
 
   if (chart.type === 'line') {
-    chart.data.datasets.forEach(dataset => {
+    chart.data.datasets.forEach((dataset) => {
+      const data = dataset;
       // Make line charts straight lines by default.
-      dataset.lineTension = dataset.lineTension || 0;
+      data.lineTension = data.lineTension || 0;
     });
   }
 
@@ -136,21 +137,21 @@ app.get('/chart', (req, res) => {
   logger.info('Chart:', JSON.stringify(chart));
   chart.plugins = [chartDataLabels];
 
-  let canvasRenderService = new CanvasRenderService(width, height, (ChartJS) => {
+  const canvasRenderService = new CanvasRenderService(width, height, (ChartJS) => {
     const backgroundColor = req.query.backgroundColor || req.query.bkg;
     if (backgroundColor) {
       ChartJS.pluginService.register({
-        beforeDraw: (chartInstance, easing) => {
-          var ctx = chartInstance.chart.ctx;
+        beforeDraw: (chartInstance) => {
+          const { ctx } = chartInstance.chart;
           ctx.fillStyle = backgroundColor;
           ctx.fillRect(0, 0, chartInstance.chart.width, chartInstance.chart.height);
         },
       });
     }
-	});
+  });
 
   try {
-    canvasRenderService.renderToBuffer(chart).then(buf => {
+    canvasRenderService.renderToBuffer(chart).then((buf) => {
       res.writeHead(200, {
         'Content-Type': 'image/png',
         'Content-Length': buf.length,
@@ -159,17 +160,15 @@ app.get('/chart', (req, res) => {
         'Cache-Control': 'public, max-age=604800',
       });
       res.end(buf);
-    }).catch(err => {
+    }).catch((err) => {
       logger.error('Chart error', err);
       failPng(res, 'Invalid chart options');
-      return;
     });
-  } catch(err) {
+  } catch (err) {
     // canvasRenderService doesn't seem to be throwing errors correctly for
     // certain chart errors.
     logger.error('Render error', err);
     failPng(res, 'Invalid chart options');
-    return;
   }
 });
 
@@ -189,8 +188,13 @@ app.get('/qr', (req, res) => {
   res.end(buf);
 });
 
+const port = process.env.PORT || 3400;
+const server = app.listen(port);
+logger.info('NODE_ENV:', process.env.NODE_ENV);
+logger.info('Running on port', port);
+
 if (!isDev) {
-  function gracefulShutdown() {
+  const gracefulShutdown = function gracefulShutdown() {
     logger.info('Received kill signal, shutting down gracefully.');
     server.close(() => {
       logger.info('Closed out remaining connections.');
@@ -201,7 +205,7 @@ if (!isDev) {
       logger.error('Could not close connections in time, forcefully shutting down');
       process.exit();
     }, 10 * 1000);
-  }
+  };
 
   // listen for TERM signal .e.g. kill
   process.on('SIGTERM', gracefulShutdown);
@@ -209,10 +213,5 @@ if (!isDev) {
   // listen for INT signal e.g. Ctrl-C
   process.on('SIGINT', gracefulShutdown);
 }
-
-const port = process.env.PORT || 3400;
-const server = app.listen(port);
-logger.info('NODE_ENV:', process.env.NODE_ENV);
-logger.info('Running on port', port);
 
 module.exports = app;

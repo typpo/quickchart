@@ -12,16 +12,17 @@ const DEFAULT_COLOR_WHEEL = Object.values(DEFAULT_COLORS);
 
 function addBackgroundColors(chart) {
   if (chart.data && chart.data.datasets && Array.isArray(chart.data.datasets)) {
-    chart.data.datasets.forEach((dataset, idx) => {
-      if (!dataset.backgroundColor) {
+    chart.data.datasets.forEach((dataset, dataIdx) => {
+      const data = dataset;
+      if (!data.backgroundColor) {
         if (chart.type === 'pie' || chart.type === 'doughnut') {
-          dataset.backgroundColor = dataset.data.map((_, idx) => {
-            // Return a color for each value.
-            return DEFAULT_COLOR_WHEEL[idx % DEFAULT_COLOR_WHEEL.length];
-          });
+          // Return a color for each value.
+          data.backgroundColor = data.data.map(
+            (_, colorIdx) => DEFAULT_COLOR_WHEEL[colorIdx % DEFAULT_COLOR_WHEEL.length],
+          );
         } else {
-          // Return a color for each dataset.
-          dataset.backgroundColor = DEFAULT_COLOR_WHEEL[idx % DEFAULT_COLOR_WHEEL.length];
+          // Return a color for each data.
+          data.backgroundColor = DEFAULT_COLOR_WHEEL[dataIdx % DEFAULT_COLOR_WHEEL.length];
         }
       }
     });
