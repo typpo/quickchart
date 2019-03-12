@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "GPLv3",
+  "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix ."
+  },
   "dependencies": {
     "chart.js": "^2.7.3",
     "chartjs-node-canvas": "https://github.com/typpo/ChartjsNodeCanvas.git",
@@ -16,5 +20,10 @@
     "text2png": "^2.1.0",
     "vm2": "^3.6.10",
     "winston": "^2.3.1"
+  },
+  "devDependencies": {
+    "eslint": "^5.15.1",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.16.0"
   }
 }
