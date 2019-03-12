@@ -210,7 +210,7 @@
     </div>
     <h2 id="customize">Customize Your Chart</h2>
     <p>
-      Let's get creative.  The example below uses custom background colors, title, legend, stacked bars, and data labels:
+      Let's get creative.  The example below uses custom background colors, title, legend, stacked bars, axis labels, and data labels:
     </p>
     <div class="hero">
       <div class="col">
@@ -240,7 +240,14 @@
     },
     scales: {
       xAxes: [{stacked: true}],
-      yAxes: [{stacked: true}],
+      yAxes: [{
+        stacked: true,
+        ticks: {
+          callback: function(value) {
+            return '$' + value;
+          }
+        }
+      }],
     },
     plugins: {
       datalabels: {
@@ -282,7 +289,14 @@
             },
             scales: {
               xAxes: [{stacked: true}],
-              yAxes: [{stacked: true}],
+              yAxes: [{
+                stacked: true,
+                ticks: {
+                  callback: function(value) {
+                    return '$' %2B value;
+                  }
+                }
+              }],
             },
             plugins: {
               datalabels: {
