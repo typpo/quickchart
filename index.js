@@ -8,6 +8,7 @@ const qr = require('qr-image');
 const text2png = require('text2png');
 const winston = require('winston');
 const { toJson } = require('really-relaxed-json');
+const { NodeVM } = require('vm2');
 
 const { addBackgroundColors, DEFAULT_COLOR_WHEEL } = require('./charts');
 
@@ -67,9 +68,17 @@ app.get('/chart', (req, res) => {
 
   let chart;
   try {
-    chart = JSON.parse(toJson(decodeURIComponent(req.query.c)));
+    const vm = new NodeVM();
+
+    const untrustedInput = decodeURIComponent(req.query.c);
+    if (untrustedInput.match(/(for|while)\(/gi)) {
+      failPng(res, 'Input is not allowed');
+      return;
+    }
+    chart = vm.run(`module.exports = ${untrustedInput}`);
   } catch (err) {
-    failPng(res, 'Invalid JSON input');
+    logger.error('Input Error', err)
+    failPng(res, 'Invalid input');
     return;
   }
 
@@ -139,6 +148,7 @@ app.get('/chart', (req, res) => {
       });
     }
 	});
+
   try {
     canvasRenderService.renderToBuffer(chart).then(buf => {
       res.writeHead(200, {
@@ -150,14 +160,14 @@ app.get('/chart', (req, res) => {
       });
       res.end(buf);
     }).catch(err => {
-      logger.error(err);
+      logger.error('Chart error', err);
       failPng(res, 'Invalid chart options');
       return;
     });
   } catch(err) {
     // canvasRenderService doesn't seem to be throwing errors correctly for
     // certain chart errors.
-    logger.error(err);
+    logger.error('Render error', err);
     failPng(res, 'Invalid chart options');
     return;
   }
