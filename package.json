@@ -14,6 +14,7 @@
     "really-relaxed-json": "^0.2.24",
     "static-eval": "^2.0.2",
     "text2png": "^2.1.0",
+    "vm2": "^3.6.10",
     "winston": "^2.3.1"
   }
 }
