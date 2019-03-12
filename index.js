@@ -7,7 +7,6 @@ const expressNunjucks = require('express-nunjucks');
 const qr = require('qr-image');
 const text2png = require('text2png');
 const winston = require('winston');
-const { toJson } = require('really-relaxed-json');
 const { NodeVM } = require('vm2');
 
 const { addBackgroundColors } = require('./charts');
