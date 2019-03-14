@@ -168,10 +168,10 @@
     <hr/>
     <h2 id="build-from-url">How It Works</h2>
     <p>
-      Chart images are defined by their URLs.  Each URL contains a JSON object that includes all the data and display options. These options follow the popular open-source graphing library Chart.js.  Use the <a href="https://www.chartjs.org/docs/latest/charts/">documentation</a> to define your chart.
+      Chart images are defined by their URLs.  Each URL contains a JSON/Javascript object that includes all the data and display options. These options follow the popular open-source graphing library Chart.js.  Use the <a href="https://www.chartjs.org/docs/latest/charts/">documentation</a> to define your chart.
     </p>
     <p>
-      Once you've written your JSON, render it as an image with <code class="hl">https://quickchart.io/chart?c=[[insert json here]]</code>.  Try the realtime editor below:
+      Once you've written your config, render it as an image with <code class="hl">https://quickchart.io/chart?c=[[insert config here]]</code>.  Try the realtime editor below:
     </p>
     <div class="hero panel">
       <div class="col">
@@ -317,7 +317,7 @@
     <p>
       A couple things to remember when customizing your chart:
       <ul>
-        <li><strong>We recommend that you <a href="https://meyerweb.com/eric/tools/dencoder/">URL-encode</a> the entire JSON block.</strong>  If not URL-encoded, you must escape all hex characters, e.g. <code>#ff0000</code> &rarr; <code>%23ff0000</code>, or just use the <code>rgb(255, 0, 0)</code> equivalent</li>
+        <li><strong>We recommend that you <a href="https://meyerweb.com/eric/tools/dencoder/">URL-encode</a> the entire JSON config block.</strong>  If not URL-encoded, you must escape all hex characters, e.g. <code>#ff0000</code> &rarr; <code>%23ff0000</code>, or just use the <code>rgb(255, 0, 0)</code> equivalent</li>
         <li>Interactivity and animations are not supported (this service produces static images)</li>
       </ul>
     </p>
@@ -460,7 +460,7 @@
       QuickChart is a free service built and maintained by Ian Webster.  You may use images produced by this website for any purpose.
     </p>
     <p>
-      This service was built in response to the Google Image Charts shutdown and is supported by its sponsors: <a href="https://arthena.com/">Arthena</a> and <a href="https://skepticalinvestments.biz/">Skeptical Investments</a>.
+      This service was built in response to the Google Image Charts shutdown and is supported by <a href="https://arthena.com/">Arthena</a> and <a href="https://skepticalinvestments.biz/">Skeptical Investments</a>.
     </p>
     <p>
       QuickChart is <a href="https://github.com/typpo/quickchart">open source</a>, dual licensed under the GNU GPLv3 and a commercial license.  This means that QuickChart is never going away; anyone can host this service with minimal resource requirements.  If you would like to modify QuickChart source code for commercial use, please <a href="mailto:ian@alioth.io">contact us</a> for a license.
