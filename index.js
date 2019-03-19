@@ -176,7 +176,16 @@ app.get('/qr', (req, res) => {
   if (req.query.format === 'svg') {
     format = 'svg';
   }
-  const buf = qr.imageSync(decodeURIComponent(req.query.text), { type: format });
+
+  const margin = parseInt(req.query.margin, 10) || 4;
+  const ecLevel = req.query.ecLevel || undefined;
+  const size = Math.min(300, parseInt(req.query.size, 10)) || 5;
+  const buf = qr.imageSync(decodeURIComponent(req.query.text), {
+    type: format,
+    margin,
+    size,
+    ec_level: ecLevel,
+  });
   res.writeHead(200, {
     'Content-Type': `image/${format}`,
     'Content-Length': buf.length,

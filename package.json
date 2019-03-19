@@ -5,8 +5,8 @@
   "license": "GPL-3.0",
   "homepage": "https://quickchart.io/",
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/typpo/quickchart.git"
+    "type": "git",
+    "url": "https://github.com/typpo/quickchart.git"
   },
   "scripts": {
     "lint": "eslint .",

@@ -142,7 +142,7 @@
       <strong>Create static charts for embedding in email, SMS, reports, and more.</strong>
     </p>
     <p>
-      <a href="#build-from-url">How It Works</a> &middot; <a href="#customize">Customize Your Chart</a> &middot; <a href="#chart-types">Chart Types</a> &middot; <a href="#about">Open Source</a>
+      <a href="#build-from-url">How It Works</a> &middot; <a href="#customize">Customize Your Chart</a> &middot; <a href="#chart-types">Chart Types</a> &middot; <a href="#qr">QR Codes</a> &middot; <a href="#about">Open Source</a>
     </p>
   </div>
   <div class="container">
@@ -426,7 +426,7 @@
       </div>
     </div>
     <p>
-      You can combine charts together by specifying different <code>type</code>s:
+      You can combine charts together by specifying different "types":
     </p>
     <div class="hero panel">
       <div class="col">
@@ -446,14 +446,17 @@
     </p>
     <div class="centered">
       <p>
-        <code>https://quickchart.io/qr?text=Here's my text</code>
+        <code><strong>https://quickchart.io/qr?text=</strong>Here's my text</code>
       </p>
       <p>
         <img src="/qr?text=Here's my text">
       </p>
     </div>
     <p>
-      Remember the URL-encode your <code>text</code> parameter for more complex strings.  The QR endpoint produces a PNG image by default.  You may optionally set the query parameter <code>format=svg</code> for SVG format.
+      Remember the URL-encode your <code>text</code> parameter for more complex strings.  The QR endpoint produces a PNG image by default.  You may optionally set the query parameter <code><strong>format</strong>=svg</code> for SVG format.
+    </p>
+    <p>
+      Specify the whitespace around QR image in modules with query parameter <code><strong>margin</strong></code> (defaults to 4), <code><strong>size</strong></code> of each module in pixels (defaults to 5), and error correction level with <code><strong>ecLevel</strong>=M</code> (valid values: L, M, Q, H).
     </p>
     <h2 id="about">About QuickChart.io</h2>
     <p>
