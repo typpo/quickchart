@@ -46,7 +46,7 @@ The service also produces QR codes.  For example, https://quickchart.io/qr?text=
 The `/qr` endpoint has the following query parameters:
   - `text` - QR code data (required)
   - `format` - png or svg (png default)
-  - `size` - size of a single QR module (square) in pixels (defaults to 5)
+  - `size` - size in pixels of one side of the square image (defaults to 150)
   - `margin` - size of the QR image margin in modules (defaults to 4)
   - `ecLevel` - Error correction level (defaults to M)
 
