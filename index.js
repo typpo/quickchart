@@ -72,7 +72,7 @@ app.get('/chart', (req, res) => {
   let untrustedInput;
   try {
     untrustedInput = decodeURIComponent(req.query.c);
-  } catch(err) {
+  } catch (err) {
     logger.error('URI malformed', err);
     failPng(res, 'URI malformed');
     return;
@@ -88,7 +88,7 @@ app.get('/chart', (req, res) => {
     chart = vm.run(`module.exports = ${untrustedInput}`);
   } catch (err) {
     logger.error('Input Error', err);
-    failPng(res, 'Invalid input');
+    failPng(res, `Invalid input\n${err}`);
     return;
   }
 
@@ -205,7 +205,7 @@ app.get('/qr', (req, res) => {
   let qrData;
   try {
     qrData = decodeURIComponent(req.query.text);
-  } catch(err) {
+  } catch (err) {
     logger.error('URI malformed', err);
     failPng(res, 'URI malformed');
     return;
