@@ -37,6 +37,19 @@ As you can see, the Javascript or JSON object contained in the URL defines the c
 
 The chart configuration object is based on the popular Chart.js API.  Check out the [Chart.js documentation](https://www.chartjs.org/docs/latest/charts/) for more information on how to customize your chart, or see [QuickChart.io](https://quickchart.io/) for more examples.
 
+## QR Codes
+
+The service also produces QR codes.  For example, https://quickchart.io/qr?text=Hello+world produces:
+
+![https://quickchart.io/qr?text=Hello+world](https://quickchart.io/qr?text=Hello+world)
+
+The `/qr` endpoint has the following query parameters:
+  - `text` - QR code data (required)
+  - `format` - png or svg (png default)
+  - `size` - size of a single QR module (square) in pixels (defaults to 5)
+  - `margin` - size of the QR image margin in modules (defaults to 4)
+  - `ecLevel` - Error correction level (defaults to M)
+
 ## Dependencies and Installation
 
 Chart generation requires several system dependencies: Cairo, Pango, libjpeg, and libgif.  Run `./scripts/setup.sh` for a fresh install on Linux machines (note that this also installs yarn and node).
