@@ -72,6 +72,7 @@ app.get('/chart', (req, res) => {
   } catch(err) {
     logger.error('URI malformed', err);
     failPng(res, 'URI malformed');
+    return;
   }
 
   let chart;
@@ -199,6 +200,7 @@ app.get('/qr', (req, res) => {
   } catch(err) {
     logger.error('URI malformed', err);
     failPng(res, 'URI malformed');
+    return;
   }
   const qrOpts = {
     margin,
