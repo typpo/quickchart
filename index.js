@@ -5,7 +5,7 @@ const chartDataLabels = require('chartjs-plugin-datalabels');
 const chartRadialGauge = require('chartjs-chart-radial-gauge');
 const express = require('express');
 const expressNunjucks = require('express-nunjucks');
-const qr = require('qr-image');
+const qrcode = require('qrcode');
 const text2png = require('text2png');
 const winston = require('winston');
 const { NodeVM } = require('vm2');
@@ -183,21 +183,48 @@ app.get('/qr', (req, res) => {
 
   const margin = parseInt(req.query.margin, 10) || 4;
   const ecLevel = req.query.ecLevel || undefined;
-  const size = Math.min(300, parseInt(req.query.size, 10)) || 5;
-  const buf = qr.imageSync(decodeURIComponent(req.query.text), {
-    type: format,
-    margin,
-    size,
-    ec_level: ecLevel,
-  });
-  res.writeHead(200, {
-    'Content-Type': `image/${format}`,
-    'Content-Length': buf.length,
+  const size = Math.min(3000, parseInt(req.query.size, 10)) || 150;
+  const darkColor = req.query.dark || undefined;
+  const lightColor = req.query.light || undefined;
 
-    // 1 week cache
-    'Cache-Control': 'public, max-age=604800',
-  });
-  res.end(buf);
+  const qrData = decodeURIComponent(req.query.text);
+  const qrOpts = {
+    margin,
+    width: size,
+    errorCorrectionLevel: ecLevel,
+    color: {
+      dark: darkColor,
+      light: lightColor,
+    },
+  };
+  logger.info('QR code', format, qrOpts);
+
+  const respFn = (sendBuf) => {
+    res.writeHead(200, {
+      'Content-Type': `image/${format}`,
+      'Content-Length': sendBuf.length,
+
+      // 1 week cache
+      'Cache-Control': 'public, max-age=604800',
+    });
+    res.end(sendBuf);
+  };
+
+  if (format === 'svg') {
+    qrcode.toString(qrData, qrOpts).then(str => {
+      respFn(Buffer.from(str, 'utf8'));
+    }).catch(err => {
+      logger.error('QR render error (PNG)', err);
+      failPng(res, 'Error generating QR code');
+    });
+  } else {
+    qrcode.toDataURL(qrData, qrOpts).then(dataUrl => {
+      respFn(Buffer.from(dataUrl.split(',')[1], 'base64'));
+    }).catch(err => {
+      logger.error('QR render error (PNG)', err);
+      failPng(res, 'Error generating QR code');
+    });
+  }
 });
 
 const port = process.env.PORT || 3400;
