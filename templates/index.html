@@ -473,6 +473,17 @@
     <p>
       Specify the whitespace around QR image in modules with query parameter <code><strong>margin</strong></code> (defaults to 4), <code><strong>size</strong></code> in pixels of the square QR image (defaults to 150), and error correction level with <code><strong>ecLevel</strong>=M</code> (valid values: L, M, Q, H).
     </p>
+    <p>
+      If you'd like to customize the color of your QR code, use <code><strong>dark=</strong>000000</code> and <code><strong>light=</strong>ffffff</code>. The parameters must be hex color codes.  Here's the same code as above but with slimmer margins, more error protection, and colors:
+    </p>
+    <div class="centered">
+      <p>
+        <code>https://quickchart.io/qr?text=Here's%20my%20text&amp;dark=f00&amp;light=0ff&amp;ecLevel=Q</code>
+      </p>
+      <p>
+        <img src="/qr?text=Here's%20my%20text&dark=f00&light=0ff&ecLevel=Q&margin=2">
+      </p>
+    </div>
     <h2 id="about">About QuickChart.io</h2>
     <p>
       QuickChart is a free service built and maintained by Ian Webster.  You may use images produced by this website for any purpose.

@@ -199,8 +199,8 @@ app.get('/qr', (req, res) => {
   const margin = parseInt(req.query.margin, 10) || 4;
   const ecLevel = req.query.ecLevel || undefined;
   const size = Math.min(3000, parseInt(req.query.size, 10)) || 150;
-  const darkColor = req.query.dark || undefined;
-  const lightColor = req.query.light || undefined;
+  const darkColor = req.query.dark || '000';
+  const lightColor = req.query.light || 'fff';
 
   let qrData;
   try {
@@ -237,14 +237,14 @@ app.get('/qr', (req, res) => {
       respFn(Buffer.from(str, 'utf8'));
     }).catch((err) => {
       logger.error('QR render error (PNG)', err);
-      failPng(res, 'Error generating QR code');
+      failPng(res, `Error generating QR code\n${err}`);
     });
   } else {
     qrcode.toDataURL(qrData, qrOpts).then((dataUrl) => {
       respFn(Buffer.from(dataUrl.split(',')[1], 'base64'));
     }).catch((err) => {
       logger.error('QR render error (PNG)', err);
-      failPng(res, 'Error generating QR code');
+      failPng(res, `Error generating QR code\n${err}`);
     });
   }
 });
