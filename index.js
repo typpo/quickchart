@@ -211,16 +211,16 @@ app.get('/qr', (req, res) => {
   };
 
   if (format === 'svg') {
-    qrcode.toString(qrData, qrOpts).then(str => {
+    qrcode.toString(qrData, qrOpts).then((str) => {
       respFn(Buffer.from(str, 'utf8'));
-    }).catch(err => {
+    }).catch((err) => {
       logger.error('QR render error (PNG)', err);
       failPng(res, 'Error generating QR code');
     });
   } else {
-    qrcode.toDataURL(qrData, qrOpts).then(dataUrl => {
+    qrcode.toDataURL(qrData, qrOpts).then((dataUrl) => {
       respFn(Buffer.from(dataUrl.split(',')[1], 'base64'));
-    }).catch(err => {
+    }).catch((err) => {
       logger.error('QR render error (PNG)', err);
       failPng(res, 'Error generating QR code');
     });
