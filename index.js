@@ -2,6 +2,7 @@ const path = require('path');
 
 const { CanvasRenderService } = require('chartjs-node-canvas');
 const chartDataLabels = require('chartjs-plugin-datalabels');
+const chartRadialGauge = require('chartjs-chart-radial-gauge');
 const express = require('express');
 const expressNunjucks = require('express-nunjucks');
 const qr = require('qr-image');
@@ -135,6 +136,9 @@ app.get('/chart', (req, res) => {
 
   logger.info('Chart:', JSON.stringify(chart));
   chart.plugins = [chartDataLabels];
+  if (chart.type === 'radialGauge') {
+    chart.plugins.push(chartRadialGauge);
+  }
 
   const canvasRenderService = new CanvasRenderService(width, height, (ChartJS) => {
     const backgroundColor = req.query.backgroundColor || req.query.bkg;

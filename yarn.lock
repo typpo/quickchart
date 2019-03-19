@@ -284,6 +284,11 @@ chart.js@^2.7.3:
     chartjs-color "^2.1.0"
     moment "^2.10.2"
 
+chartjs-chart-radial-gauge@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/chartjs-chart-radial-gauge/-/chartjs-chart-radial-gauge-1.0.3.tgz#13233f7439d511740155af7469b70396f590d18e"
+  integrity sha512-orm3XGWww46rmsKvAnwyOhXA5MtVfjsxfD463iE/gBBVOfozeFnsydZWx8Rqj5fy3DoxZROYUCR02RexvoMsHQ==
+
 chartjs-color-string@^0.5.0:
   version "0.5.0"
   resolved "https://registry.yarnpkg.com/chartjs-color-string/-/chartjs-color-string-0.5.0.tgz#8d3752d8581d86687c35bfe2cb80ac5213ceb8c1"
