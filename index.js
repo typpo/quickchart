@@ -42,7 +42,10 @@ function failPng(res, msg) {
   res.writeHead(500, {
     'Content-Type': 'image/png',
   });
-  res.end(text2png(`Chart Error: ${msg}`));
+  res.end(text2png(`Chart Error: ${msg}`, {
+    padding: 10,
+    backgroundColor: '#fff',
+  }));
 }
 
 app.get('/chart', (req, res) => {
