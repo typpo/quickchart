@@ -186,6 +186,11 @@ app.get('/chart', (req, res) => {
 });
 
 app.get('/qr', (req, res) => {
+  if (!req.query.text) {
+    failPng(res, 'You are missing variable `text`');
+    return;
+  }
+
   let format = 'png';
   if (req.query.format === 'svg') {
     format = 'svg';
