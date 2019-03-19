@@ -66,15 +66,21 @@ app.get('/chart', (req, res) => {
     }
   }
 
+  let untrustedInput;
+  try {
+    untrustedInput = decodeURIComponent(req.query.c);
+  } catch(err) {
+    logger.error('URI malformed', err);
+    failPng(res, 'URI malformed');
+  }
+
   let chart;
   try {
-    const vm = new NodeVM();
-
-    const untrustedInput = decodeURIComponent(req.query.c);
     if (untrustedInput.match(/(for|while)\(/gi)) {
       failPng(res, 'Input is not allowed');
       return;
     }
+    const vm = new NodeVM();
     chart = vm.run(`module.exports = ${untrustedInput}`);
   } catch (err) {
     logger.error('Input Error', err);
@@ -187,7 +193,13 @@ app.get('/qr', (req, res) => {
   const darkColor = req.query.dark || undefined;
   const lightColor = req.query.light || undefined;
 
-  const qrData = decodeURIComponent(req.query.text);
+  let qrData;
+  try {
+    qrData = decodeURIComponent(req.query.text);
+  } catch(err) {
+    logger.error('URI malformed', err);
+    failPng(res, 'URI malformed');
+  }
   const qrOpts = {
     margin,
     width: size,
