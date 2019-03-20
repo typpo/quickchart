@@ -35,6 +35,11 @@ acorn-jsx@^5.0.0:
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/acorn-jsx/-/acorn-jsx-5.0.1.tgz#32a064fd925429216a09b141102bfdd185fae40e"
 
+acorn@^0.9.0:
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/acorn/-/acorn-0.9.0.tgz#67728e0acad6cc61dfb901c121837694db5b926b"
+  integrity sha1-Z3KOCsrWzGHfuQHBIYN2lNtbkms=
+
 acorn@^6.0.7:
   version "6.1.1"
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-6.1.1.tgz#7d25ae05bb8ad1f9b699108e1094ecd7884adc1f"
@@ -154,6 +159,13 @@ assign-symbols@^1.0.0:
 astral-regex@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/astral-regex/-/astral-regex-1.0.0.tgz#6c8c3fb827dd43ee3918f27b82782ab7658a6fd9"
+
+astw@^1.2.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/astw/-/astw-1.3.0.tgz#015774a6427ad3b9ec46d7a2b41ae73dac624ca5"
+  integrity sha1-AVd0pkJ607nsRteitBrnPaxiTKU=
+  dependencies:
+    esprima "^2.1.0"
 
 async-each@^1.0.0, async-each@^1.0.1:
   version "1.0.1"
@@ -313,7 +325,7 @@ chartjs-color@^2.1.0:
 
 "chartjs-node-canvas@https://github.com/typpo/ChartjsNodeCanvas.git":
   version "2.0.1"
-  resolved "https://github.com/typpo/ChartjsNodeCanvas.git#c34802fc3c30e4d1992678134d3ee10d160f65f4"
+  resolved "https://github.com/typpo/ChartjsNodeCanvas.git#f4fc04a80e804a010f653d948d649376c54155b2"
   dependencies:
     canvas "^2.3.1"
 
@@ -635,7 +647,7 @@ escape-string-regexp@^1.0.5:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/escape-string-regexp/-/escape-string-regexp-1.0.5.tgz#1b61c0562190a8dff6ae3bb2cf0200ca130b86d4"
 
-escodegen@^1.8.1:
+escodegen@^1.4.1, escodegen@^1.8.1:
   version "1.11.1"
   resolved "https://registry.yarnpkg.com/escodegen/-/escodegen-1.11.1.tgz#c485ff8d6b4cdb89e27f4a856e91f118401ca510"
   dependencies:
@@ -750,6 +762,11 @@ espree@^5.0.1:
     acorn "^6.0.7"
     acorn-jsx "^5.0.0"
     eslint-visitor-keys "^1.0.0"
+
+esprima@^2.1.0:
+  version "2.7.3"
+  resolved "https://registry.yarnpkg.com/esprima/-/esprima-2.7.3.tgz#96e3b70d5779f6ad49cd032673d1c312767ba581"
+  integrity sha1-luO3DVd59q1JzQMmc9HDEnZ7pYE=
 
 esprima@^3.1.3:
   version "3.1.3"
@@ -1008,6 +1025,20 @@ fragment-cache@^0.2.1:
   dependencies:
     map-cache "^0.2.2"
 
+fresh-require@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/fresh-require/-/fresh-require-1.0.3.tgz#5a0613c023a2b0dce4373864ba539bade45122c3"
+  integrity sha1-WgYTwCOisNzkNzhkulObreRRIsM=
+  dependencies:
+    acorn "^0.9.0"
+    astw "^1.2.0"
+    escodegen "^1.4.1"
+    is-require "0.0.1"
+    resolve "^1.0.0"
+    shallow-copy "0.0.1"
+    sleuth "^0.1.1"
+    through2 "^0.6.3"
+
 fresh@0.5.2:
   version "0.5.2"
   resolved "https://registry.yarnpkg.com/fresh/-/fresh-0.5.2.tgz#3d8cadd90d976569fa835ab1f8e4b23a105605a7"
@@ -1201,7 +1232,7 @@ inflight@^1.0.4:
     once "^1.3.0"
     wrappy "1"
 
-inherits@2, inherits@2.0.3, inherits@^2.0.1, inherits@^2.0.3, inherits@~2.0.3:
+inherits@2, inherits@2.0.3, inherits@^2.0.1, inherits@^2.0.3, inherits@~2.0.1, inherits@~2.0.3:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/inherits/-/inherits-2.0.3.tgz#633c2c83e3da42a502f52466022480f4208261de"
 
@@ -1397,6 +1428,11 @@ is-regex@^1.0.4:
   dependencies:
     has "^1.0.1"
 
+is-require@0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/is-require/-/is-require-0.0.1.tgz#0d1e6d93e380b35386f474543fffc9a66d41825e"
+  integrity sha1-DR5tk+OAs1OG9HRUP//Jpm1Bgl4=
+
 is-stream@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/is-stream/-/is-stream-1.1.0.tgz#12d4a3dd4e68e0b79ceb8dbc84173ae80d91ca44"
@@ -1410,6 +1446,11 @@ is-symbol@^1.0.2:
 is-windows@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/is-windows/-/is-windows-1.0.2.tgz#d1850eb9791ecd18e6182ce12a30f396634bb19d"
+
+isarray@0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/isarray/-/isarray-0.0.1.tgz#8a18acfca9a8f4177e09abfc6038939b05d1eedf"
+  integrity sha1-ihis/Kmo9Bd+Cav8YDiTmwXR7t8=
 
 isarray@1.0.0, isarray@^1.0.0, isarray@~1.0.0:
   version "1.0.0"
@@ -2149,6 +2190,16 @@ read-pkg@^2.0.0:
     normalize-package-data "^2.3.2"
     path-type "^2.0.0"
 
+"readable-stream@>=1.0.33-1 <1.1.0-0":
+  version "1.0.34"
+  resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-1.0.34.tgz#125820e34bc842d2f2aaafafe4c2916ee32c157c"
+  integrity sha1-Elgg40vIQtLyqq+v5MKRbuMsFXw=
+  dependencies:
+    core-util-is "~1.0.0"
+    inherits "~2.0.1"
+    isarray "0.0.1"
+    string_decoder "~0.10.x"
+
 readable-stream@^2.0.2, readable-stream@^2.0.6:
   version "2.3.6"
   resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-2.3.6.tgz#b11c27d88b8ff1fbe070643cf94b0c79ae1b0aaf"
@@ -2214,7 +2265,7 @@ resolve-url@^0.2.1:
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/resolve-url/-/resolve-url-0.2.1.tgz#2c637fe77c893afd2a663fe21aa9080068e2052a"
 
-resolve@^1.10.0, resolve@^1.5.0, resolve@^1.9.0:
+resolve@^1.0.0, resolve@^1.10.0, resolve@^1.5.0, resolve@^1.9.0:
   version "1.10.0"
   resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.10.0.tgz#3bdaaeaf45cc07f375656dfd2e54ed0810b101ba"
   dependencies:
@@ -2324,6 +2375,11 @@ setprototypeof@1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/setprototypeof/-/setprototypeof-1.1.0.tgz#d0bd85536887b6fe7c0d818cb962d9d91c54e656"
 
+shallow-copy@0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/shallow-copy/-/shallow-copy-0.0.1.tgz#415f42702d73d810330292cc5ee86eae1a11a170"
+  integrity sha1-QV9CcC1z2BAzApLMXuhurhoRoXA=
+
 shebang-command@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/shebang-command/-/shebang-command-1.2.0.tgz#44aac65b695b03398968c39f363fee5deafdf1ea"
@@ -2337,6 +2393,14 @@ shebang-regex@^1.0.0:
 signal-exit@^3.0.0, signal-exit@^3.0.2:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-3.0.2.tgz#b5fdc08f1287ea1178628e415e25132b73646c6d"
+
+sleuth@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/sleuth/-/sleuth-0.1.1.tgz#406efb86730ba5c27147b570186d72c83b0d8cc0"
+  integrity sha1-QG77hnMLpcJxR7VwGG1yyDsNjMA=
+  dependencies:
+    is-require "0.0.1"
+    static-eval "~0.1.0"
 
 slice-ansi@^2.1.0:
   version "2.1.0"
@@ -2437,6 +2501,11 @@ static-eval@^2.0.2:
   dependencies:
     escodegen "^1.8.1"
 
+static-eval@~0.1.0:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/static-eval/-/static-eval-0.1.1.tgz#2f3c9e727604a61ac761b9663562a76c61f5c523"
+  integrity sha1-LzyecnYEphrHYblmNWKnbGH1xSM=
+
 static-extend@^0.1.1:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/static-extend/-/static-extend-0.1.2.tgz#60809c39cbff55337226fd5e0b520f341f1fb5c6"
@@ -2474,6 +2543,11 @@ string-width@^3.0.0:
     emoji-regex "^7.0.1"
     is-fullwidth-code-point "^2.0.0"
     strip-ansi "^5.1.0"
+
+string_decoder@~0.10.x:
+  version "0.10.31"
+  resolved "https://registry.yarnpkg.com/string_decoder/-/string_decoder-0.10.31.tgz#62e203bc41766c6c28c9fc84301dab1c5310fa94"
+  integrity sha1-YuIDvEF2bGwoyfyEMB2rHFMQ+pQ=
 
 string_decoder@~1.1.1:
   version "1.1.1"
@@ -2548,6 +2622,14 @@ text2png@^2.1.0:
   dependencies:
     canvas "^2.0.1"
     commander "^2.19.0"
+
+through2@^0.6.3:
+  version "0.6.5"
+  resolved "https://registry.yarnpkg.com/through2/-/through2-0.6.5.tgz#41ab9c67b29d57209071410e1d7a7a968cd3ad48"
+  integrity sha1-QaucZ7KdVyCQcUEOHXp6lozTrUg=
+  dependencies:
+    readable-stream ">=1.0.33-1 <1.1.0-0"
+    xtend ">=4.0.0 <4.1.0-0"
 
 through@^2.3.6:
   version "2.3.8"
@@ -2714,6 +2796,11 @@ write@1.0.3:
   resolved "https://registry.yarnpkg.com/write/-/write-1.0.3.tgz#0800e14523b923a387e415123c865616aae0f5c3"
   dependencies:
     mkdirp "^0.5.1"
+
+"xtend@>=4.0.0 <4.1.0-0":
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/xtend/-/xtend-4.0.1.tgz#a5c6d532be656e23db820efb943a1f04998d63af"
+  integrity sha1-pcbVMr5lbiPbgg77lDofBJmNY68=
 
 y18n@^3.2.0:
   version "3.2.1"
