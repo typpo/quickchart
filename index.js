@@ -152,7 +152,7 @@ app.get('/chart', (req, res) => {
 
   const canvasRenderService = new CanvasRenderService(width, height, (ChartJS) => {
     const backgroundColor = req.query.backgroundColor || req.query.bkg;
-    if (backgroundColor) {
+    if (backgroundColor && backgroundColor !== 'transparent') {
       ChartJS.pluginService.register({
         beforeDraw: (chartInstance) => {
           const { ctx } = chartInstance.chart;
