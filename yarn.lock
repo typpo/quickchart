@@ -311,9 +311,9 @@ chartjs-color@^2.1.0:
     chartjs-color-string "^0.5.0"
     color-convert "^0.5.3"
 
-"chartjs-node-canvas@https://github.com/typpo/ChartjsNodeCanvas.git":
+"chartjs-node-canvas@https://github.com/typpo/ChartjsNodeCanvas.git#c34802fc3c30e4d1992678134d3ee10d160f65f4":
   version "2.0.1"
-  resolved "https://github.com/typpo/ChartjsNodeCanvas.git#1887eea3eab9432a6fd144f5fa958789b08669fd"
+  resolved "https://github.com/typpo/ChartjsNodeCanvas.git#c34802fc3c30e4d1992678134d3ee10d160f65f4"
   dependencies:
     canvas "^2.3.1"
 

@@ -183,7 +183,7 @@ app.get('/chart', (req, res) => {
     logger.error('Render error', err);
     failPng(res, 'Invalid chart options');
   } finally {
-    canvasRenderService.destroy();
+    //canvasRenderService.destroy();
   }
 });
 
