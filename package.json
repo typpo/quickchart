@@ -15,7 +15,8 @@
   "dependencies": {
     "chart.js": "^2.7.3",
     "chartjs-chart-radial-gauge": "^1.0.3",
-    "chartjs-node-canvas": "https://github.com/typpo/ChartjsNodeCanvas.git#c34802fc3c30e4d1992678134d3ee10d160f65f4",
+    "chartjs-node": "^1.7.1",
+    "chartjs-node-canvas": "https://github.com/typpo/ChartjsNodeCanvas.git#bkg",
     "chartjs-plugin-datalabels": "^0.5.0",
     "express": "^4.16.4",
     "express-nunjucks": "^2.2.3",

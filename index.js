@@ -1,6 +1,7 @@
 const path = require('path');
 
 const { CanvasRenderService } = require('chartjs-node-canvas');
+const ChartjsNode = require('chartjs-node');
 const chartDataLabels = require('chartjs-plugin-datalabels');
 const chartRadialGauge = require('chartjs-chart-radial-gauge');
 const express = require('express');
@@ -145,11 +146,33 @@ app.get('/chart', (req, res) => {
   }
 
   logger.info('Chart:', JSON.stringify(chart));
+  /*
   chart.plugins = [chartDataLabels];
   if (chart.type === 'radialGauge') {
     chart.plugins.push(chartRadialGauge);
   }
+ */
 
+  const chartNode = new ChartjsNode(width, height);
+  chartNode.drawChart(chart).then(() => {
+    return chartNode.getImageBuffer('image/png');
+  }).then(buf => {
+    res.writeHead(200, {
+      'Content-Type': 'image/png',
+      'Content-Length': buf.length,
+
+      // 1 week cache
+      'Cache-Control': 'public, max-age=604800',
+    });
+    res.end(buf);
+  }).catch(err => {
+    logger.error(err);
+    failPng(res, 'Invalid chart options');
+  }).finally(() => {
+    chartNode.destroy();
+  });
+
+  /*
   const canvasRenderService = new CanvasRenderService(width, height, (ChartJS) => {
     const backgroundColor = req.query.backgroundColor || req.query.bkg;
     if (backgroundColor && backgroundColor !== 'transparent') {
@@ -185,6 +208,7 @@ app.get('/chart', (req, res) => {
   } finally {
     //canvasRenderService.destroy();
   }
+ */
 });
 
 app.get('/qr', (req, res) => {
