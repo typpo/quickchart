@@ -150,18 +150,17 @@ app.get('/chart', (req, res) => {
     chart.plugins.push(chartRadialGauge);
   }
 
-  const canvasRenderService = new CanvasRenderService(width, height, (ChartJS) => {
-    const backgroundColor = req.query.backgroundColor || req.query.bkg;
-    if (backgroundColor && backgroundColor !== 'transparent') {
-      ChartJS.pluginService.register({
-        beforeDraw: (chartInstance) => {
-          const { ctx } = chartInstance.chart;
-          ctx.fillStyle = backgroundColor;
-          ctx.fillRect(0, 0, chartInstance.chart.width, chartInstance.chart.height);
-        },
-      });
-    }
+  const backgroundColor = req.query.backgroundColor || req.query.bkg || 'transparent';
+  chart.plugins.push({
+    id: 'background',
+    beforeDraw: (chartInstance) => {
+      const { ctx } = chartInstance.chart;
+      ctx.fillStyle = backgroundColor;
+      ctx.fillRect(0, 0, chartInstance.chart.width, chartInstance.chart.height);
+    },
   });
+
+  const canvasRenderService = new CanvasRenderService(width, height);
 
   try {
     canvasRenderService.renderToBuffer(chart).then((buf) => {
