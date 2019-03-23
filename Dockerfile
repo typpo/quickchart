@@ -14,8 +14,7 @@ RUN yarn install --production
 
 RUN apk del .build-deps
 
-COPY index.js .
-COPY charts.js .
+COPY *.js ./
 COPY templates templates/
 COPY LICENSE .
 
