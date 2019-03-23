@@ -60,7 +60,28 @@ Once you have system dependencies installed, run `yarn install` or `npm install`
 
 ## Running the server
 
-`node index.js` will start the server on port 3400.
+`node index.js` will start the server on port 3400.  Set your `PORT` environmental variable to change this port.
+
+## Docker
+
+#### Building
+
+`Dockerfile` sets up a server that provides chart and qr code web endpoints.  It is not parameterized and provides exactly the same web service as https://quickchart.io/.
+
+The Docker image for this project is built with the following command:
+```
+docker build -t ianw/quickchart .
+```
+
+#### Running
+
+The server runs on port 3400 within the container.  This command will expose the server on port 8080 on your host (hostport:containerport):
+
+```
+docker run -p 8080:3400 ianw/quickchart
+```
+
+The production service on QuickChart.io runs behind an NGINX reverse proxy via the config available in `nginx/`.  You should modify this for your own purposes or use a docker image such as [nginx-proxy](https://github.com/jwilder/nginx-proxy).  Of course, you can always serve traffic directly from Node, but it is generally best practice to put something in front of it.
 
 ## License
 
