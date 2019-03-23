@@ -5,8 +5,8 @@ const expressNunjucks = require('express-nunjucks');
 const text2png = require('text2png');
 const winston = require('winston');
 
-const { renderChart } = require('./charts');
-const { renderQr } = require('./qr');
+const { renderChart } = require('./lib/charts');
+const { renderQr } = require('./lib/qr');
 
 const logger = new (winston.Logger)({
   transports: [
