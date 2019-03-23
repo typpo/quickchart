@@ -9,6 +9,7 @@
     "url": "https://github.com/typpo/quickchart.git"
   },
   "scripts": {
+    "start": "node index.js",
     "lint": "eslint .",
     "lint:fix": "eslint --fix ."
   },
