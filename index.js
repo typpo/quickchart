@@ -1,16 +1,12 @@
 const path = require('path');
 
-const { CanvasRenderService } = require('chartjs-node-canvas');
-const chartDataLabels = require('chartjs-plugin-datalabels');
-const chartRadialGauge = require('chartjs-chart-radial-gauge');
 const express = require('express');
 const expressNunjucks = require('express-nunjucks');
-const qrcode = require('qrcode');
 const text2png = require('text2png');
 const winston = require('winston');
-const { NodeVM } = require('vm2');
 
-const { addBackgroundColors } = require('./charts');
+const { renderChart } = require('./charts');
+const { renderQr } = require('./qr');
 
 const logger = new (winston.Logger)({
   transports: [
@@ -78,112 +74,21 @@ app.get('/chart', (req, res) => {
     return;
   }
 
-  let chart;
-  try {
-    if (untrustedInput.match(/(for|while)\(/gi)) {
-      failPng(res, 'Input is not allowed');
-      return;
-    }
-    const vm = new NodeVM();
-    chart = vm.run(`module.exports = ${untrustedInput}`);
-  } catch (err) {
-    logger.error('Input Error', err);
-    failPng(res, `Invalid input\n${err}`);
-    return;
-  }
-
-  if (chart.type === 'donut') {
-    // Fix spelling...
-    chart.type = 'doughnut';
-  }
-
-  // Implement default options
-  chart.options = chart.options || {};
-  chart.options.devicePixelRatio = 2.0;
-  if (chart.type === 'bar' || chart.type === 'line' || chart.type === 'scatter' || chart.type === 'bubble') {
-    if (!chart.options.scales) {
-      // TODO(ian): Merge default options with provided options
-      chart.options.scales = {
-        yAxes: [{
-          ticks: {
-            beginAtZero: true,
-          },
-        }],
-      };
-    }
-    addBackgroundColors(chart);
-  } else if (chart.type === 'radar') {
-    addBackgroundColors(chart);
-  } else if (chart.type === 'pie' || chart.type === 'doughnut') {
-    addBackgroundColors(chart);
-  } else if (chart.type === 'scatter') {
-    addBackgroundColors(chart);
-  } else if (chart.type === 'bubble') {
-    addBackgroundColors(chart);
-  }
-
-  if (chart.type === 'line') {
-    chart.data.datasets.forEach((dataset) => {
-      const data = dataset;
-      // Make line charts straight lines by default.
-      data.lineTension = data.lineTension || 0;
-    });
-  }
-
-  chart.options.plugins = chart.options.plugins || {};
-  if (!chart.options.plugins.datalabels) {
-    chart.options.plugins.datalabels = {};
-    if (chart.type === 'pie' || chart.type === 'doughnut') {
-      chart.options.plugins.datalabels = {
-        display: true,
-      };
-    } else {
-      chart.options.plugins.datalabels = {
-        display: false,
-      };
-    }
-  }
-
-  logger.info('Chart:', JSON.stringify(chart));
-  chart.plugins = [chartDataLabels];
-  if (chart.type === 'radialGauge') {
-    chart.plugins.push(chartRadialGauge);
-  }
-
   const backgroundColor = req.query.backgroundColor || req.query.bkg || 'transparent';
-  chart.plugins.push({
-    id: 'background',
-    beforeDraw: (chartInstance) => {
-      const { ctx } = chartInstance.chart;
-      ctx.fillStyle = backgroundColor;
-      ctx.fillRect(0, 0, chartInstance.chart.width, chartInstance.chart.height);
-    },
-  });
 
-  const canvasRenderService = new CanvasRenderService(width, height);
+  renderChart(width, height, backgroundColor, untrustedInput).then((buf) => {
+    res.writeHead(200, {
+      'Content-Type': 'image/png',
+      'Content-Length': buf.length,
 
-  try {
-    canvasRenderService.renderToBuffer(chart).then((buf) => {
-      res.writeHead(200, {
-        'Content-Type': 'image/png',
-        'Content-Length': buf.length,
-
-        // 1 week cache
-        'Cache-Control': 'public, max-age=604800',
-      });
-      res.end(buf);
-    }).catch((err) => {
-      logger.error('Chart error', err);
-      failPng(res, 'Invalid chart options');
+      // 1 week cache
+      'Cache-Control': 'public, max-age=604800',
     });
-  } catch (err) {
-    // canvasRenderService doesn't seem to be throwing errors correctly for
-    // certain chart errors.
-    logger.error('Render error', err);
-    failPng(res, 'Invalid chart options');
-  } finally {
-    //canvasRenderService.destroy();
-  }
+    res.end(buf);
+  }).catch((err) => {
+    logger.error('Chart error', err);
+    failPng(res, err);
+  });
 });
 
 app.get('/qr', (req, res) => {
@@ -220,34 +125,19 @@ app.get('/qr', (req, res) => {
       light: lightColor,
     },
   };
-  logger.info('QR code', format, qrOpts);
 
-  const respFn = (sendBuf) => {
+  renderQr(format, qrData, qrOpts).then((buf) => {
     res.writeHead(200, {
       'Content-Type': `image/${format}`,
-      'Content-Length': sendBuf.length,
+      'Content-Length': buf.length,
 
       // 1 week cache
       'Cache-Control': 'public, max-age=604800',
     });
-    res.end(sendBuf);
-  };
-
-  if (format === 'svg') {
-    qrcode.toString(qrData, qrOpts).then((str) => {
-      respFn(Buffer.from(str, 'utf8'));
-    }).catch((err) => {
-      logger.error('QR render error (PNG)', err);
-      failPng(res, `Error generating QR code\n${err}`);
-    });
-  } else {
-    qrcode.toDataURL(qrData, qrOpts).then((dataUrl) => {
-      respFn(Buffer.from(dataUrl.split(',')[1], 'base64'));
-    }).catch((err) => {
-      logger.error('QR render error (PNG)', err);
-      failPng(res, `Error generating QR code\n${err}`);
-    });
-  }
+    res.end(buf);
+  }).catch((err) => {
+    failPng(res, err);
+  });
 });
 
 const port = process.env.PORT || 3400;
