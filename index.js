@@ -2,6 +2,7 @@ const path = require('path');
 
 const express = require('express');
 const expressNunjucks = require('express-nunjucks');
+const qs = require('qs');
 const text2png = require('text2png');
 const winston = require('winston');
 
@@ -18,6 +19,15 @@ const app = express();
 
 const isDev = app.get('env') === 'development';
 
+app.set('query parser', function (str) {
+  return qs.parse(str, {
+    decode: function(s) {
+      // Default express implementation replaces '+' with space. We don't want
+      // that. See https://github.com/expressjs/express/issues/3453
+      return decodeURIComponent(s);
+    },
+  });
+});
 app.set('views', `${__dirname}/templates`);
 app.use(express.static('public'));
 
@@ -67,10 +77,10 @@ app.get('/chart', (req, res) => {
 
   let untrustedInput;
   try {
-    untrustedInput = decodeURIComponent(req.query.c);
+    untrustedInput = req.query.c;
   } catch (err) {
     logger.error('URI malformed', err);
-    failPng(res, 'URI malformed');
+    failPng(res, err);
     return;
   }
 
