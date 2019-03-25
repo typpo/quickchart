@@ -44,6 +44,7 @@
 
     .col {
       flex: 1;
+      text-align: center;
     }
 
     .arrowcol {
@@ -84,6 +85,10 @@
 
     .img-example {
       max-width: 100%;
+    }
+
+    .img-example__sparkline {
+      max-width: 10em;
     }
 
     code {
@@ -438,6 +443,21 @@
       <div class="arrowcol"></div>
       <div class="col">
         <img class="img-example" src="/chart?c={type:'radialGauge',data:{datasets:[{data:[70],backgroundColor:'green'}]}}"/>
+      </div>
+    </div>
+    <div class="hero panel">
+      <div class="col">
+        <h3>Sparklines</h3>
+        <p>
+          A sparkline is a special case of line graph with axes and other labeling removed. All <a href="https://www.chartjs.org/docs/latest/charts/line.html">line graph options</a> can be applied.
+        </p>
+        <code>
+    &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'sparkline'</span>,data:{datasets:[{data:[140,60,274,370,199]}]}}"&gt;
+        </code>
+      </div>
+      <div class="arrowcol"></div>
+      <div class="col">
+        <img class="img-example__sparkline" src="/chart?c={type:'sparkline',data:{datasets:[{data:[140,60,274,370,199]}]}}"/>
       </div>
     </div>
     <p>
