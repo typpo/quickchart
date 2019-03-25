@@ -49,6 +49,8 @@ The `/qr` endpoint has the following query parameters:
   - `size` - size in pixels of one side of the square image (defaults to 150)
   - `margin` - size of the QR image margin in modules (defaults to 4)
   - `ecLevel` - Error correction level (defaults to M)
+  - `dark` - Hex color code for dark portion of QR code (defaults to `000000`)
+  - `light` - Hex color code for light portion of QR code (defauls to `ffffff`)
 
 ## Dependencies and Installation
 
@@ -63,6 +65,8 @@ Once you have system dependencies installed, run `yarn install` or `npm install`
 `node index.js` will start the server on port 3400.  Set your `PORT` environmental variable to change this port.
 
 ## Docker
+
+A docker image is available on dockerhub at [ianw/quickchart](https://hub.docker.com/r/ianw/quickchart).
 
 #### Building
 
