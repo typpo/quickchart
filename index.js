@@ -110,6 +110,8 @@ app.get('/qr', (req, res) => {
     format = 'svg';
   }
 
+  const { mode } = req.query;
+
   const margin = parseInt(req.query.margin, 10) || 4;
   const ecLevel = req.query.ecLevel || undefined;
   const size = Math.min(3000, parseInt(req.query.size, 10)) || 150;
@@ -134,7 +136,7 @@ app.get('/qr', (req, res) => {
     },
   };
 
-  renderQr(format, qrData, qrOpts).then((buf) => {
+  renderQr(format, mode, qrData, qrOpts).then((buf) => {
     res.writeHead(200, {
       'Content-Type': `image/${format}`,
       'Content-Length': buf.length,
