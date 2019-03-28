@@ -475,6 +475,64 @@
         <img class="img-example" src="/chart?bkg=white&c={type:'bar',data:{labels:['January','February','March','April','May'],datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500],},{type:'line',fill:false,label:'Potatoes',data:[100,400,200,400,700]}]}}"/>
       </div>
     </div>
+    <h2 id="qr">Chart Annotations and Plugins</h2>
+    <p>
+      Two additional Chart.js plugins are supported: Data Labels (<a href="https://github.com/chartjs/chartjs-plugin-datalabels">chartjs-plugin-datalabels</a>) and Annotations (<a href="https://github.com/chartjs/chartjs-plugin-annotation">chartjs-plugin-annotation</a>).  These allow you to add various markup to your chart.  Have a look at the documentation for each plugin to learn more about the possibilities.
+    </p>
+    <div class="hero panel">
+      <div class="col">
+        <textarea class="sandbox-input" data-image-id="sandbox-plugin" data-tag-id="plugin-tag">{
+  type: 'line',
+  data: {
+    labels: [1,2,3,4,5],
+    datasets: [{
+      label: 'Rainfall',
+      data: [ 200, 90, 120, 400, 500 ],
+      fill: false,
+      borderColor: 'green',
+      backgroundColor: 'green',
+    }]
+  },
+  options: {
+    annotation: {
+      annotations: [{
+        type: 'line',
+        mode: 'vertical',
+        scaleID: 'x-axis-0',
+        value: 2,
+        borderColor: 'red',
+        borderWidth: 4,
+        label: {
+          enabled: true,
+          content: 'Something changed'
+        }
+      }, {
+        type: 'box',
+  xScaleID: 'x-axis-0',
+  yScaleID: 'y-axis-0',
+        xMin: 3,
+        xMax: 5,
+        backgroundColor: 'rgba(200, 200, 200, 0.2)',
+        borderColor: '#ccc',
+      }]
+    },
+    plugins: {
+      datalabels: {
+        display: true,
+        align: 'bottom',
+        backgroundColor: '#ccc',
+        borderRadius: 3
+      },
+    }
+  }
+}</textarea>
+      </div>
+      <div class="arrowcol"></div>
+      <div class="col">
+        <div id="plugin-tag" class="sandbox-tag"></div>
+        <img class="img-example" id="sandbox-plugin" src="/chart?bkg=white&c=%7B%0A%20%20type%3A%20%27line%27%2C%0A%20%20data%3A%20%7B%0A%20%20%20%20labels%3A%20%5B1%2C2%2C3%2C4%2C5%5D%2C%0A%20%20%20%20datasets%3A%20%5B%7B%0A%20%20%20%20%20%20label%3A%20%27Rainfall%27%2C%0A%20%20%20%20%20%20data%3A%20%5B%20200%2C%2090%2C%20120%2C%20400%2C%20500%20%5D%2C%0A%20%20%20%20%20%20fill%3A%20false%2C%0A%20%20%20%20%20%20borderColor%3A%20%27green%27%2C%0A%20%20%20%20%20%20backgroundColor%3A%20%27green%27%2C%0A%20%20%20%20%7D%5D%0A%20%20%7D%2C%0A%20%20options%3A%20%7B%0A%20%20%20%20annotation%3A%20%7B%0A%20%20%20%20%20%20annotations%3A%20%5B%7B%0A%20%20%20%20%20%20%20%20type%3A%20%27line%27%2C%0A%20%20%20%20%20%20%20%20mode%3A%20%27vertical%27%2C%0A%20%20%20%20%20%20%20%20scaleID%3A%20%27x-axis-0%27%2C%0A%20%20%20%20%20%20%20%20value%3A%202%2C%0A%20%20%20%20%20%20%20%20borderColor%3A%20%27red%27%2C%0A%20%20%20%20%20%20%20%20borderWidth%3A%204%2C%0A%20%20%20%20%20%20%20%20label%3A%20%7B%0A%20%20%20%20%20%20%20%20%20%20enabled%3A%20true%2C%0A%20%20%20%20%20%20%20%20%20%20content%3A%20%27Something%20changed%27%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%7D%2C%20%7B%0A%20%20%20%20%20%20%20%20type%3A%20%27box%27%2C%0A%09xScaleID%3A%20%27x-axis-0%27%2C%0A%09yScaleID%3A%20%27y-axis-0%27%2C%0A%20%20%20%20%20%20%20%20xMin%3A%203%2C%0A%20%20%20%20%20%20%20%20xMax%3A%205%2C%0A%20%20%20%20%20%20%20%20backgroundColor%3A%20%27rgba(200%2C%20200%2C%20200%2C%200.2)%27%2C%0A%20%20%20%20%20%20%20%20borderColor%3A%20%27%23ccc%27%2C%0A%20%20%20%20%20%20%7D%5D%0A%20%20%20%20%7D%2C%0A%20%20%20%20plugins%3A%20%7B%0A%20%20%20%20%20%20datalabels%3A%20%7B%0A%20%20%20%20%20%20%20%20display%3A%20true%2C%0A%20%20%20%20%20%20%20%20align%3A%20%27bottom%27%2C%0A%20%20%20%20%20%20%20%20backgroundColor%3A%20%27%23ccc%27%2C%0A%20%20%20%20%20%20%20%20borderRadius%3A%203%0A%20%20%20%20%20%20%7D%2C%0A%20%20%20%20%7D%0A%20%20%7D%0A%7D"/>
+      </div>
+    </div>
     <h2 id="qr">QR codes</h2>
     <p>
       We also support QR code generation.  You can render a QR code like so:
