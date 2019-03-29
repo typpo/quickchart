@@ -508,8 +508,8 @@
         }
       }, {
         type: 'box',
-  xScaleID: 'x-axis-0',
-  yScaleID: 'y-axis-0',
+        xScaleID: 'x-axis-0',
+        yScaleID: 'y-axis-0',
         xMin: 3,
         xMax: 5,
         backgroundColor: 'rgba(200, 200, 200, 0.2)',
@@ -586,7 +586,7 @@
         var img = document.getElementById(input.dataset.imageId);
         var tag = input.dataset.tagId ? document.getElementById(input.dataset.tagId) : undefined;
         var updateImage = function() {
-					var url = '/chart?bkg=white&c=' + encodeURIComponent(input.value);
+          var url = '/chart?bkg=white&c=' + encodeURIComponent(input.value);
           img.src = url;
           var lines = input.value.split('\n').filter(function(line) {
             return line.slice(0, 2) !== '//';
