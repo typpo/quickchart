@@ -6,7 +6,7 @@ WORKDIR /quickchart
 
 RUN apk add --no-cache --virtual .build-deps git yarn build-base g++ python
 RUN apk add --no-cache --virtual .npm-deps cairo-dev pango-dev libjpeg-turbo-dev
-RUN apk add --no-cache --virtual .fonts libmount ttf-dejavu ttf-droid ttf-freefont ttf-liberation ttf-ubuntu-font-family fontconfig
+RUN apk add --no-cache --virtual .fonts libmount ttf-dejavu ttf-droid ttf-freefont ttf-liberation ttf-ubuntu-font-family ttf-ancient-fonts font-noto fontconfig
 
 COPY package*.json .
 COPY yarn.lock .
