@@ -477,10 +477,13 @@
     </div>
     <h2 id="qr">Chart Annotations and Plugins</h2>
     <p>
-      Two additional Chart.js plugins are supported: Data Labels (<a href="https://github.com/chartjs/chartjs-plugin-datalabels">chartjs-plugin-datalabels</a>) and Annotations (<a href="https://github.com/chartjs/chartjs-plugin-annotation">chartjs-plugin-annotation</a>).  These allow you to add various markup to your chart.  Have a look at the documentation for each plugin to learn more about the possibilities.
+      Three additional Chart.js plugins are supported: Data Labels (<a href="https://github.com/chartjs/chartjs-plugin-datalabels">chartjs-plugin-datalabels</a>), Annotations (<a href="https://github.com/chartjs/chartjs-plugin-annotation">chartjs-plugin-annotation</a>), and Outlabels (<a href="https://github.com/Neckster/chartjs-plugin-piechart-outlabels">chartjs-plugin-piechart-outlabels</a>).  These allow you to add various markup to your chart.  Have a look at the documentation for each plugin to learn more about the possibilities.
     </p>
     <div class="hero panel">
       <div class="col">
+				<p>
+					An example of Chart.js data labels and annotations:
+				</p>
         <textarea class="sandbox-input" data-image-id="sandbox-plugin" data-tag-id="plugin-tag">{
   type: 'line',
   data: {
@@ -531,6 +534,43 @@
       <div class="col">
         <div id="plugin-tag" class="sandbox-tag"></div>
         <img class="img-example" id="sandbox-plugin" src="/chart?bkg=white&c=%7B%0A%20%20type%3A%20%27line%27%2C%0A%20%20data%3A%20%7B%0A%20%20%20%20labels%3A%20%5B1%2C2%2C3%2C4%2C5%5D%2C%0A%20%20%20%20datasets%3A%20%5B%7B%0A%20%20%20%20%20%20label%3A%20%27Rainfall%27%2C%0A%20%20%20%20%20%20data%3A%20%5B%20200%2C%2090%2C%20120%2C%20400%2C%20500%20%5D%2C%0A%20%20%20%20%20%20fill%3A%20false%2C%0A%20%20%20%20%20%20borderColor%3A%20%27green%27%2C%0A%20%20%20%20%20%20backgroundColor%3A%20%27green%27%2C%0A%20%20%20%20%7D%5D%0A%20%20%7D%2C%0A%20%20options%3A%20%7B%0A%20%20%20%20annotation%3A%20%7B%0A%20%20%20%20%20%20annotations%3A%20%5B%7B%0A%20%20%20%20%20%20%20%20type%3A%20%27line%27%2C%0A%20%20%20%20%20%20%20%20mode%3A%20%27vertical%27%2C%0A%20%20%20%20%20%20%20%20scaleID%3A%20%27x-axis-0%27%2C%0A%20%20%20%20%20%20%20%20value%3A%202%2C%0A%20%20%20%20%20%20%20%20borderColor%3A%20%27red%27%2C%0A%20%20%20%20%20%20%20%20borderWidth%3A%204%2C%0A%20%20%20%20%20%20%20%20label%3A%20%7B%0A%20%20%20%20%20%20%20%20%20%20enabled%3A%20true%2C%0A%20%20%20%20%20%20%20%20%20%20content%3A%20%27Something%20changed%27%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%7D%2C%20%7B%0A%20%20%20%20%20%20%20%20type%3A%20%27box%27%2C%0A%09xScaleID%3A%20%27x-axis-0%27%2C%0A%09yScaleID%3A%20%27y-axis-0%27%2C%0A%20%20%20%20%20%20%20%20xMin%3A%203%2C%0A%20%20%20%20%20%20%20%20xMax%3A%205%2C%0A%20%20%20%20%20%20%20%20backgroundColor%3A%20%27rgba(200%2C%20200%2C%20200%2C%200.2)%27%2C%0A%20%20%20%20%20%20%20%20borderColor%3A%20%27%23ccc%27%2C%0A%20%20%20%20%20%20%7D%5D%0A%20%20%20%20%7D%2C%0A%20%20%20%20plugins%3A%20%7B%0A%20%20%20%20%20%20datalabels%3A%20%7B%0A%20%20%20%20%20%20%20%20display%3A%20true%2C%0A%20%20%20%20%20%20%20%20align%3A%20%27bottom%27%2C%0A%20%20%20%20%20%20%20%20backgroundColor%3A%20%27%23ccc%27%2C%0A%20%20%20%20%20%20%20%20borderRadius%3A%203%0A%20%20%20%20%20%20%7D%2C%0A%20%20%20%20%7D%0A%20%20%7D%0A%7D"/>
+      </div>
+    </div>
+    <div class="hero panel">
+      <div class="col">
+				<p>
+					An example of the <code>outlabeledPie</code> type:
+				</p>
+        <textarea class="sandbox-input" data-image-id="sandbox-plugin-2" data-tag-id="plugin-tag-2">{
+  "type": "outlabeledPie",
+  "data": {
+    "labels": ["ONE", "TWO", "THREE", "FOUR", "FIVE"],
+    "datasets": [{
+        "backgroundColor": ["#FF3784", "#36A2EB", "#4BC0C0", "#F77825", "#9966FF"],
+        "data": [1, 2, 3, 4, 5]
+		}]
+  },
+  "options": {
+    "plugins": {
+      "legend": false,
+      "outlabels": {
+        "text": "%l %p",
+        "color": "white",
+        "stretch": 35,
+        "font": {
+          "resizable": true,
+          "minSize": 12,
+          "maxSize": 18
+        }
+      }
+    }
+  }
+}</textarea>
+      </div>
+      <div class="arrowcol"></div>
+      <div class="col">
+        <div id="plugin-tag-2" class="sandbox-tag"></div>
+        <img class="img-example" id="sandbox-plugin-2" src="/chart?bkg=white&c=%7B%0A%20%20%22type%22%3A%20%22outlabeledPie%22%2C%0A%20%20%22data%22%3A%20%7B%0A%20%20%20%20%22labels%22%3A%20%5B%22ONE%22%2C%20%22TWO%22%2C%20%22THREE%22%2C%20%22FOUR%22%2C%20%22FIVE%22%5D%2C%0A%20%20%20%20%22datasets%22%3A%20%5B%7B%0A%20%20%20%20%20%20%20%20%22backgroundColor%22%3A%20%5B%22%23FF3784%22%2C%20%22%2336A2EB%22%2C%20%22%234BC0C0%22%2C%20%22%23F77825%22%2C%20%22%239966FF%22%5D%2C%0A%20%20%20%20%20%20%20%20%22data%22%3A%20%5B1%2C%202%2C%203%2C%204%2C%205%5D%0A%09%09%7D%5D%0A%20%20%7D%2C%0A%20%20%22options%22%3A%20%7B%0A%20%20%20%20%22plugins%22%3A%20%7B%0A%20%20%20%20%20%20%22legend%22%3A%20false%2C%0A%20%20%20%20%20%20%22outlabels%22%3A%20%7B%0A%20%20%20%20%20%20%20%20%22text%22%3A%20%22%25l%20%25p%22%2C%0A%20%20%20%20%20%20%20%20%22color%22%3A%20%22white%22%2C%0A%20%20%20%20%20%20%20%20%22stretch%22%3A%2035%2C%0A%20%20%20%20%20%20%20%20%22font%22%3A%20%7B%0A%20%20%20%20%20%20%20%20%20%20%22resizable%22%3A%20true%2C%0A%20%20%20%20%20%20%20%20%20%20%22minSize%22%3A%2012%2C%0A%20%20%20%20%20%20%20%20%20%20%22maxSize%22%3A%2018%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%0A%20%20%7D%0A%7D"/>
       </div>
     </div>
     <h2 id="qr">QR codes</h2>
