@@ -334,6 +334,11 @@ chartjs-plugin-datalabels@^0.5.0:
   version "0.5.0"
   resolved "https://registry.yarnpkg.com/chartjs-plugin-datalabels/-/chartjs-plugin-datalabels-0.5.0.tgz#b9c7a99857b2a52b6db70f63fc9f3a65d887d523"
 
+chartjs-plugin-piechart-outlabels@^0.1.4:
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/chartjs-plugin-piechart-outlabels/-/chartjs-plugin-piechart-outlabels-0.1.4.tgz#e97e19a12202d74f9040d9e4641987c9d1e458fc"
+  integrity sha1-6X4ZoSIC10+QQNnkZBmHydHkWPw=
+
 chokidar@^1.4.3:
   version "1.7.0"
   resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-1.7.0.tgz#798e689778151c8076b4b360e5edd28cda2bb468"
