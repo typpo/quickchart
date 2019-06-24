@@ -28,6 +28,8 @@ app.set('query parser', str => qs.parse(str, {
 }));
 app.set('views', `${__dirname}/templates`);
 app.use(express.static('public'));
+app.use(express.json());
+app.use(express.urlencoded());
 
 expressNunjucks(app, {
   watch: isDev,
@@ -52,22 +54,22 @@ function failPng(res, msg) {
   }));
 }
 
-app.get('/chart', (req, res) => {
-  if (!req.query.c) {
-    failPng(res, 'You are missing variable `c`');
+function doRenderChart(req, res, opts) {
+  if (!opts.chart) {
+    failPng(res, 'You are missing variable `c` or `chart`');
     return;
   }
 
   let height = 300;
   let width = 500;
-  if (req.query.h || req.query.height) {
-    const heightNum = parseInt(req.query.h || req.query.height, 10);
+  if (opts.height) {
+    const heightNum = parseInt(opts.height, 10);
     if (!Number.isNaN(heightNum)) {
       height = heightNum;
     }
   }
-  if (req.query.w || req.query.width) {
-    const widthNum = parseInt(req.query.w || req.query.width, 10);
+  if (opts.width) {
+    const widthNum = parseInt(opts.width, 10);
     if (!Number.isNaN(widthNum)) {
       width = widthNum;
     }
@@ -75,14 +77,14 @@ app.get('/chart', (req, res) => {
 
   let untrustedInput;
   try {
-    untrustedInput = req.query.c;
+    untrustedInput = opts.chart;
   } catch (err) {
     logger.error('URI malformed', err);
     failPng(res, err);
     return;
   }
 
-  const backgroundColor = req.query.backgroundColor || req.query.bkg || 'transparent';
+  const backgroundColor = opts.backgroundColor || 'transparent';
 
   renderChart(width, height, backgroundColor, untrustedInput).then((buf) => {
     res.writeHead(200, {
@@ -96,6 +98,24 @@ app.get('/chart', (req, res) => {
   }).catch((err) => {
     logger.error('Chart error', err);
     failPng(res, err);
+  });
+}
+
+app.get('/chart', (req, res) => {
+  doRenderChart(req, res, {
+    chart: req.query.c || req.query.chart,
+    height: req.query.h || req.query.height,
+    width: req.query.w || req.query.width,
+    backgroundColor: req.query.backgroundColor || req.query.bkg,
+  });
+});
+
+app.post('/chart', (req, res) => {
+  doRenderChart(req, res, {
+    chart: req.body.c || req.body.chart,
+    height: req.body.h || req.body.height,
+    width: req.body.w || req.body.width,
+    backgroundColor: req.body.backgroundColor || req.body.bkg,
   });
 });
 

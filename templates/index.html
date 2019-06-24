@@ -335,6 +335,23 @@
       </ul>
       Combine these parameters in your query string. For example: <code>/chart?width=500&amp;height=300&amp;c={...}</code>
     </p>
+    <h3>POST endpoint</h3>
+    <p>
+      If your chart is large or complicated, you may prefer to send a <strong>POST request</strong> rather than a GET request.  This avoids limitations on URL length and means you don't have to worry about URL encoding.  The <code>/chart</code> POST endpoint takes the same parameters as above via the following JSON object:
+    </p>
+    <p>
+      <code><pre>
+        {
+          "backgroundColor": "transparent",
+          "width": 500,
+          "height": 300,
+          "chart": {...},
+        }
+      </pre></code>
+    </p>
+    <p>
+      Note that if you want to include Javascript options in <code>chart</code>, you'll have to send the parameter as a string rather than a JSON object.
+    </p>
     <hr/>
     <h2 id="chart-types">Chart Types</h2>
     <p>
