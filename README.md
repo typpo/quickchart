@@ -87,6 +87,14 @@ docker run -p 8080:3400 ianw/quickchart
 
 The production service on QuickChart.io runs behind an NGINX reverse proxy via the config available in `nginx/`.  You should modify this for your own purposes or use a docker image such as [nginx-proxy](https://github.com/jwilder/nginx-proxy).  Of course, you can always serve traffic directly from Node, but it is generally best practice to put something in front of it.
 
+## Deploy
+
+By following the **Docker** instructions above, you can deploy the service to any platform that supports running containers.
+
+Clicking the following will execute the Docker build on a remote machine and deploy the service to [Google Cloud Run](https://cloud.run) an automatically scaled and pay-per-request environment:
+
+[![Run on Google Cloud](https://storage.googleapis.com/cloudrun/button.svg)](https://console.cloud.google.com/cloudshell/editor?shellonly=true&cloudshell_image=gcr.io/cloudrun/button&cloudshell_git_repo=https://github.com/typpo/quickchart)
+
 ## License
 
 QuickChart is open source, licensed under version 3 of the GNU GPL.  If you would like to modify this project for commercial purposes (and not release the source code), please [contact me](https://www.ianww.com/).
