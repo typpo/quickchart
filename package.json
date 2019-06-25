@@ -22,6 +22,7 @@
     "chartjs-plugin-piechart-outlabels": "^0.1.4",
     "express": "^4.16.4",
     "express-nunjucks": "^2.2.3",
+    "express-rate-limit": "^5.0.0",
     "nunjucks": "^3.1.7",
     "qrcode": "^1.3.3",
     "qs": "^6.7.0",

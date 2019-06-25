@@ -3,6 +3,7 @@ const path = require('path');
 const express = require('express');
 const expressNunjucks = require('express-nunjucks');
 const qs = require('qs');
+const rateLimit = require("express-rate-limit");
 const text2png = require('text2png');
 const winston = require('winston');
 
@@ -30,6 +31,16 @@ app.set('views', `${__dirname}/templates`);
 app.use(express.static('public'));
 app.use(express.json());
 app.use(express.urlencoded());
+
+if (process.env.RATE_LIMIT_PER_MIN) {
+  // 120 requests per minute (avg 2 per second)
+  const limiter = rateLimit({
+    windowMs: 60 * 1000,
+    max: parseInt(process.env.RATE_LIMIT_PER_MIN, 10),
+    message: 'Please slow down your requests! This is a shared public endpoint. Contact ian@alioth.io for rate limit exceptions or to purchase a commercial license.',
+  });
+  app.use('/chart', limiter);
+}
 
 expressNunjucks(app, {
   watch: isDev,

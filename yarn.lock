@@ -337,7 +337,6 @@ chartjs-plugin-datalabels@^0.5.0:
 chartjs-plugin-piechart-outlabels@^0.1.4:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/chartjs-plugin-piechart-outlabels/-/chartjs-plugin-piechart-outlabels-0.1.4.tgz#e97e19a12202d74f9040d9e4641987c9d1e458fc"
-  integrity sha1-6X4ZoSIC10+QQNnkZBmHydHkWPw=
 
 chokidar@^1.4.3:
   version "1.7.0"
@@ -843,6 +842,10 @@ express-nunjucks@^2.2.3:
   dependencies:
     assign-deep "^0.4.5"
     nunjucks-async-loader "^1.1.1"
+
+express-rate-limit@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/express-rate-limit/-/express-rate-limit-5.0.0.tgz#9a6f4cacc388c1a1da7ba2f65db69f7395e9b04e"
 
 express@^4.16.4:
   version "4.16.4"
