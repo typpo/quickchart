@@ -33,11 +33,17 @@ app.use(express.json());
 app.use(express.urlencoded());
 
 if (process.env.RATE_LIMIT_PER_MIN) {
+  const limitMax = parseInt(process.env.RATE_LIMIT_PER_MIN, 10);
+  logger.info('Enabling rate limit:', limitMax);
+
   // 120 requests per minute (avg 2 per second)
   const limiter = rateLimit({
     windowMs: 60 * 1000,
-    max: parseInt(process.env.RATE_LIMIT_PER_MIN, 10),
+    max: limitMax,
     message: 'Please slow down your requests! This is a shared public endpoint. Contact ian@alioth.io for rate limit exceptions or to purchase a commercial license.',
+    onLimitReached: () => {
+      logger.info('User hit rate limit!');
+    },
   });
   app.use('/chart', limiter);
 }
