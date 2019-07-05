@@ -3,7 +3,7 @@ const path = require('path');
 const express = require('express');
 const expressNunjucks = require('express-nunjucks');
 const qs = require('qs');
-const rateLimit = require("express-rate-limit");
+const rateLimit = require('express-rate-limit');
 const text2png = require('text2png');
 const winston = require('winston');
 
