@@ -44,6 +44,9 @@
 
     .col {
       flex: 1;
+    }
+
+    .col h3, .col code {
       text-align: center;
     }
 
@@ -64,6 +67,10 @@
       background-color: #fdffe6;
       -webkit-box-shadow: 0 0 10px rgba(255,0,0,0.2);
       -moz-box-shadow: 0 0 10px rgba(255,0,0,0.2);
+    }
+
+    .CodeMirror-scroll {
+      background-color: #fdffe6;
     }
 
     .sandbox-tag {
@@ -635,6 +642,9 @@
       &copy; Ian Webster 2019
     </div>
   </footer>
+  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.48.0/lib/codemirror.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.48.0/mode/javascript/javascript.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.48.0/lib/codemirror.css">
   <script>
     var elts = document.getElementsByClassName('sandbox-input')
     for (var i=0; i < elts.length; i++) {
@@ -642,10 +652,10 @@
         var input = elts[i];
         var img = document.getElementById(input.dataset.imageId);
         var tag = input.dataset.tagId ? document.getElementById(input.dataset.tagId) : undefined;
-        var updateImage = function() {
-          var url = '/chart?bkg=white&c=' + encodeURIComponent(input.value);
+        var updateImage = function(val) {
+          var url = '/chart?bkg=white&c=' + encodeURIComponent(val);
           img.src = url;
-          var lines = input.value.split('\n').filter(function(line) {
+          var lines = val.split('\n').filter(function(line) {
             return line.slice(0, 2) !== '//';
           });
           if (tag) {
@@ -656,7 +666,15 @@
             tag.innerHTML = '<a href="' + url + '">' + linkText + '</a>';
           }
         }
-        input.onkeyup = debounce(updateImage, 350);
+        input.onkeyup = debounce(function() {
+          updateImage(this.value);
+        }, 350);
+        CodeMirror.fromTextArea(input, {
+          lineNumbers: true,
+          lineWrapping: true
+        }).on('change', debounce(function(editor) {
+          updateImage(editor.getValue());
+        }), 350);
       })();
     }
 
