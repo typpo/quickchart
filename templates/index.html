@@ -13,6 +13,7 @@
 
     body {
       font-family: 'Proxima Nova Soft','Helvetica Neue',Arial,Helvetica,sans-serif;
+      line-height: 1.2;
     }
 
     a, a:visited {
@@ -31,6 +32,19 @@
 
     .nav {
       line-height: 1.6;
+    }
+
+    .toc {
+      border: 1px solid #a2a9b1;
+      background-color: #f8f9fa;
+      padding: 1em 0 0 0;
+      max-width: 400px;
+      line-height: 1.6;
+    }
+
+    .toc p {
+      text-align: center;
+      font-weight: bold;
     }
 
     .container {
@@ -154,7 +168,7 @@
     <p>
       <strong>Create static charts for embedding in email, SMS, reports, and more.</strong>
     </p>
-    <p class="nav">
+    <p class="nav desktop-only">
       <a href="#build-from-url">How It Works</a> &middot; <a href="#customize">Customize Your Chart</a> &middot; <a href="#chart-types">Chart Types</a> &middot; <a href="#qr">QR Codes</a> &middot; <a href="#faq">FAQ</a> &middot; <a href="#about">Open Source</a>
     </p>
   </div>
@@ -178,6 +192,19 @@
     <p>
       This service is a replacement for the <a href="https://developers.google.com/chart/image/">Google Image Charts API</a>, which turned off on March 14, 2019.
     </p>
+    <div class="toc mobile-only">
+      <p>
+        Contents
+      </p>
+      <ul>
+        <li><a href="#build-from-url">How It Works</a></li>
+        <li><a href="#customize">Customize Your Chart</a></li>
+        <li><a href="#chart-types">Chart Types</a></li>
+        <li><a href="#qr">QR Codes</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="#about">Open Source</a></li>
+      </ul>
+    </div>
     <hr/>
     <h2 id="build-from-url">How It Works</h2>
     <p>
