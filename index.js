@@ -40,7 +40,7 @@ if (process.env.RATE_LIMIT_PER_MIN) {
   const limiter = rateLimit({
     windowMs: 60 * 1000,
     max: limitMax,
-    message: 'Please slow down your requests! This is a shared public endpoint. Contact ian@alioth.io for rate limit exceptions or to purchase a commercial license.',
+    message: 'Please slow down your requests! This is a shared public endpoint. Email contact@quickchart.io for rate limit exceptions or to purchase a commercial license.',
     onLimitReached: () => {
       logger.info('User hit rate limit!');
     },
