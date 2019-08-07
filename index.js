@@ -7,6 +7,7 @@ const rateLimit = require('express-rate-limit');
 const text2png = require('text2png');
 const winston = require('winston');
 
+const { getPdfBufferFromPng, getPdfBufferWithText } = require('./lib/pdf');
 const { renderChart } = require('./lib/charts');
 const { renderQr } = require('./lib/qr');
 
@@ -71,9 +72,49 @@ function failPng(res, msg) {
   }));
 }
 
+async function failPdf(res, msg) {
+  const buf = await getPdfBufferWithText(msg);
+  res.writeHead(500, {
+    'Content-Type': 'application/pdf',
+  });
+  res.end(buf);
+}
+
 function doRenderChart(req, res, opts) {
+  opts.failFn = failPng;
+  opts.onRenderHandler = (buf) => {
+    res.writeHead(200, {
+      'Content-Type': 'image/png',
+      'Content-Length': buf.length,
+
+      // 1 week cache
+      'Cache-Control': 'public, max-age=604800',
+    });
+    res.end(buf);
+  };
+  doRender(req, res, opts);
+}
+
+async function doRenderPdf(req, res, opts) {
+  opts.failFn = failPdf;
+  opts.onRenderHandler = async (buf) => {
+    const pdfBuf = await getPdfBufferFromPng(buf);
+
+    res.writeHead(200, {
+      'Content-Type': 'application/pdf',
+      'Content-Length': pdfBuf.length,
+
+      // 1 week cache
+      'Cache-Control': 'public, max-age=604800',
+    });
+    res.end(pdfBuf);
+  };
+  doRender(req, res, opts);
+}
+
+function doRender(req, res, opts) {
   if (!opts.chart) {
-    failPng(res, 'You are missing variable `c` or `chart`');
+    opts.failFn(res, 'You are missing variable `c` or `chart`');
     return;
   }
 
@@ -97,43 +138,49 @@ function doRenderChart(req, res, opts) {
     untrustedInput = opts.chart;
   } catch (err) {
     logger.error('URI malformed', err);
-    failPng(res, err);
+    opts.failFn(res, err);
     return;
   }
 
   const backgroundColor = opts.backgroundColor || 'transparent';
 
-  renderChart(width, height, backgroundColor, untrustedInput).then((buf) => {
-    res.writeHead(200, {
-      'Content-Type': 'image/png',
-      'Content-Length': buf.length,
-
-      // 1 week cache
-      'Cache-Control': 'public, max-age=604800',
-    });
-    res.end(buf);
-  }).catch((err) => {
+  renderChart(width, height, backgroundColor, untrustedInput).then(opts.onRenderHandler).catch((err) => {
     logger.error('Chart error', err);
-    failPng(res, err);
+    opts.failFn(res, err);
   });
 }
 
 app.get('/chart', (req, res) => {
-  doRenderChart(req, res, {
+  const opts = {
     chart: req.query.c || req.query.chart,
     height: req.query.h || req.query.height,
     width: req.query.w || req.query.width,
     backgroundColor: req.query.backgroundColor || req.query.bkg,
-  });
+  };
+
+  const outputFormat = (req.query.f || req.query.format || '').toLowerCase();
+
+  if (outputFormat === 'pdf') {
+    doRenderPdf(req, res, opts);
+  } else {
+    doRenderChart(req, res, opts);
+  }
 });
 
 app.post('/chart', (req, res) => {
-  doRenderChart(req, res, {
+  const opts = {
     chart: req.body.c || req.body.chart,
     height: req.body.h || req.body.height,
     width: req.body.w || req.body.width,
     backgroundColor: req.body.backgroundColor || req.body.bkg,
-  });
+  };
+  const outputFormat = (req.body.f || req.body.format || '').toLowerCase();
+
+  if (outputFormat === 'pdf') {
+    doRenderPdf(req, res, opts);
+  } else {
+    doRenderChart(req, res, opts);
+  }
 });
 
 app.get('/qr', (req, res) => {

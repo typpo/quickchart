@@ -190,7 +190,7 @@
       </div>
     </div>
     <p>
-      This service is a replacement for the <a href="https://developers.google.com/chart/image/">Google Image Charts API</a>, which turned off on March 14, 2019.
+      This service is a replacement for the <a href="https://developers.google.com/chart/image/">Google Image Charts API</a>, which turned off on March 14, 2019.  It can also generate chart PDFs and QR codes.
     </p>
     <div class="toc mobile-only">
       <p>
@@ -367,6 +367,7 @@
         <li><code><strong>&amp;width</strong>=500</code>: Set the width of the image. Abbreviated as "w"</li>
         <li><code><strong>&amp;height</strong>=300</code>: Set the height of the image. Abbreviated as "h"</li>
         <li><code><strong>&amp;backgroundColor</strong>=transparent</code>: Set the background of the chart canvas. Abbreviated as "bkg"</li>
+        <li><code><strong>&amp;format</strong>=png</code>: Set the format of your output. Currently the two supported output formats are PNG and PDF. Abbreviated as "f"</li>
       </ul>
       Combine these parameters in your query string. For example: <code>/chart?width=500&amp;height=300&amp;c={...}</code>
     </p>
@@ -380,6 +381,7 @@
           "backgroundColor": "transparent",
           "width": 500,
           "height": 300,
+          "format": "png",
           "chart": {...},
         }
       </pre></code>
