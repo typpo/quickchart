@@ -168,12 +168,19 @@ app.get('/chart', (req, res) => {
 });
 
 app.post('/chart', (req, res) => {
-  doRenderChart(req, res, {
+  const opts = {
     chart: req.body.c || req.body.chart,
     height: req.body.h || req.body.height,
     width: req.body.w || req.body.width,
     backgroundColor: req.body.backgroundColor || req.body.bkg,
-  });
+  };
+  const outputFormat = (req.body.f || req.body.format || '').toLowerCase();
+
+  if (outputFormat === 'pdf') {
+    doRenderPdf(req, res, opts);
+  } else {
+    doRenderChart(req, res, opts);
+  }
 });
 
 app.get('/qr', (req, res) => {
