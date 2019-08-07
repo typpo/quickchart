@@ -158,7 +158,9 @@ app.get('/chart', (req, res) => {
     backgroundColor: req.query.backgroundColor || req.query.bkg,
   };
 
-  if (req.query.format === 'pdf') {
+  const outputFormat = req.query.f || req.query.format;
+
+  if (outputFormat.toLowerCase() === 'pdf') {
     doRenderPdf(req, res, opts);
   } else {
     doRenderChart(req, res, opts);
