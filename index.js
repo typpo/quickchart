@@ -98,7 +98,7 @@ function doRenderChart(req, res, opts) {
 async function doRenderPdf(req, res, opts) {
   opts.failFn = failPdf;
   opts.onRenderHandler = async (buf) => {
-    const pdfBuf = await getPdfBufferFromPng(buf);
+    const pdfBuf = await getPdfBufferFromPng(buf, opts);
 
     res.writeHead(200, {
       'Content-Type': 'application/pdf',
@@ -156,6 +156,10 @@ app.get('/chart', (req, res) => {
     height: req.query.h || req.query.height,
     width: req.query.w || req.query.width,
     backgroundColor: req.query.backgroundColor || req.query.bkg,
+
+    pdfLayout: req.query.pdfLayout || 'portrait',
+    pdfWidth: req.query.pdfWidth,
+    pdfHeight: req.query.pdfHeight,
   };
 
   const outputFormat = (req.query.f || req.query.format || '').toLowerCase();
@@ -173,6 +177,10 @@ app.post('/chart', (req, res) => {
     height: req.body.h || req.body.height,
     width: req.body.w || req.body.width,
     backgroundColor: req.body.backgroundColor || req.body.bkg,
+
+    pdfLayout: req.query.pdfLayout || 'portrait',
+    pdfWidth: req.query.pdfWidth,
+    pdfHeight: req.query.pdfHeight,
   };
   const outputFormat = (req.body.f || req.body.format || '').toLowerCase();
 
