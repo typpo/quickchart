@@ -12,6 +12,7 @@ const { renderChart } = require('./lib/charts');
 const { renderQr } = require('./lib/qr');
 
 const logger = new (winston.Logger)({
+  level: process.env.LOG_LEVEL || 'info',
   transports: [
     new (winston.transports.Console)({ timestamp: true, colorize: true }),
   ],
