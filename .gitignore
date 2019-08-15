@@ -1,4 +1,5 @@
 venv
+api_key_list.js
 
 ### Vim ###
 [._]*.s[a-w][a-z]
