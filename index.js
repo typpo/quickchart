@@ -11,24 +11,24 @@ const { getPdfBufferFromPng, getPdfBufferWithText } = require('./lib/pdf');
 const { renderChart } = require('./lib/charts');
 const { renderQr } = require('./lib/qr');
 
-const logger = new (winston.Logger)({
+const logger = new winston.Logger({
   level: process.env.LOG_LEVEL || 'info',
-  transports: [
-    new (winston.transports.Console)({ timestamp: true, colorize: true }),
-  ],
+  transports: [new winston.transports.Console({ timestamp: true, colorize: true })],
 });
 
 const app = express();
 
 const isDev = app.get('env') === 'development';
 
-app.set('query parser', str => qs.parse(str, {
-  decode(s) {
-    // Default express implementation replaces '+' with space. We don't want
-    // that. See https://github.com/expressjs/express/issues/3453
-    return decodeURIComponent(s);
-  },
-}));
+app.set('query parser', str =>
+  qs.parse(str, {
+    decode(s) {
+      // Default express implementation replaces '+' with space. We don't want
+      // that. See https://github.com/expressjs/express/issues/3453
+      return decodeURIComponent(s);
+    },
+  }),
+);
 app.set('views', `${__dirname}/templates`);
 app.use(express.static('public'));
 app.use(express.json());
@@ -42,7 +42,8 @@ if (process.env.RATE_LIMIT_PER_MIN) {
   const limiter = rateLimit({
     windowMs: 60 * 1000,
     max: limitMax,
-    message: 'Please slow down your requests! This is a shared public endpoint. Email contact@quickchart.io for rate limit exceptions or to purchase a commercial license.',
+    message:
+      'Please slow down your requests! This is a shared public endpoint. Email contact@quickchart.io for rate limit exceptions or to purchase a commercial license.',
     onLimitReached: () => {
       logger.info('User hit rate limit!');
     },
@@ -67,10 +68,12 @@ function failPng(res, msg) {
   res.writeHead(500, {
     'Content-Type': 'image/png',
   });
-  res.end(text2png(`Chart Error: ${msg}`, {
-    padding: 10,
-    backgroundColor: '#fff',
-  }));
+  res.end(
+    text2png(`Chart Error: ${msg}`, {
+      padding: 10,
+      backgroundColor: '#fff',
+    }),
+  );
 }
 
 async function failPdf(res, msg) {
@@ -83,7 +86,7 @@ async function failPdf(res, msg) {
 
 function doRenderChart(req, res, opts) {
   opts.failFn = failPng;
-  opts.onRenderHandler = (buf) => {
+  opts.onRenderHandler = buf => {
     res.writeHead(200, {
       'Content-Type': 'image/png',
       'Content-Length': buf.length,
@@ -98,7 +101,7 @@ function doRenderChart(req, res, opts) {
 
 async function doRenderPdf(req, res, opts) {
   opts.failFn = failPdf;
-  opts.onRenderHandler = async (buf) => {
+  opts.onRenderHandler = async buf => {
     const pdfBuf = await getPdfBufferFromPng(buf);
 
     res.writeHead(200, {
@@ -145,10 +148,12 @@ function doRender(req, res, opts) {
 
   const backgroundColor = opts.backgroundColor || 'transparent';
 
-  renderChart(width, height, backgroundColor, untrustedInput).then(opts.onRenderHandler).catch((err) => {
-    logger.error('Chart error', err);
-    opts.failFn(res, err);
-  });
+  renderChart(width, height, backgroundColor, untrustedInput)
+    .then(opts.onRenderHandler)
+    .catch(err => {
+      logger.error('Chart error', err);
+      opts.failFn(res, err);
+    });
 }
 
 app.get('/chart', (req, res) => {
@@ -221,18 +226,20 @@ app.get('/qr', (req, res) => {
     },
   };
 
-  renderQr(format, mode, qrData, qrOpts).then((buf) => {
-    res.writeHead(200, {
-      'Content-Type': `image/${format}`,
-      'Content-Length': buf.length,
+  renderQr(format, mode, qrData, qrOpts)
+    .then(buf => {
+      res.writeHead(200, {
+        'Content-Type': `image/${format}`,
+        'Content-Length': buf.length,
 
-      // 1 week cache
-      'Cache-Control': 'public, max-age=604800',
+        // 1 week cache
+        'Cache-Control': 'public, max-age=604800',
+      });
+      res.end(buf);
+    })
+    .catch(err => {
+      failPng(res, err);
     });
-    res.end(buf);
-  }).catch((err) => {
-    failPng(res, err);
-  });
 });
 
 const port = process.env.PORT || 3400;

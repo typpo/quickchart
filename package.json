@@ -12,7 +12,7 @@
     "start": "node index.js",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
-    "format": "prettier --single-quote --trailing-comma all --write \"**/*.js\""
+    "format": "prettier --single-quote --trailing-comma all --print-width 100 --write \"**/*.js\""
   },
   "dependencies": {
     "chart.js": "^2.7.3",
