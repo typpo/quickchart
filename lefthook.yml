@@ -1,0 +1,6 @@
+pre-commit:
+  parallel: true
+  commands:
+    js:
+      glob: "*.js"
+      run: prettier --single-quote --trailing-comma all --write {staged_files}
