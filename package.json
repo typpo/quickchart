@@ -11,7 +11,8 @@
   "scripts": {
     "start": "node index.js",
     "lint": "eslint .",
-    "lint:fix": "eslint --fix ."
+    "lint:fix": "eslint --fix .",
+    "format": "prettier --single-quote --trailing-comma all --write \"**/*.js\""
   },
   "dependencies": {
     "chart.js": "^2.7.3",
@@ -35,6 +36,7 @@
   "devDependencies": {
     "eslint": "^5.15.1",
     "eslint-config-airbnb-base": "^13.1.0",
-    "eslint-plugin-import": "^2.16.0"
+    "eslint-plugin-import": "^2.16.0",
+    "prettier": "^1.18.2"
   }
 }
