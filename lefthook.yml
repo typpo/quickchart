@@ -3,4 +3,4 @@ pre-commit:
   commands:
     js:
       glob: "*.js"
-      run: prettier --single-quote --trailing-comma all --write {staged_files}
+      run: prettier --single-quote --trailing-comma all --print-width 100 --write {staged_files}
