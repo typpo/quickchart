@@ -13,14 +13,16 @@ const winston = require('winston');
 
 const logger = new winston.Logger({
   level: process.env.LOG_LEVEL || 'info',
-  transports: [new winston.transports.Console({ timestamp: true, colorize: true })],
+  transports: [
+    new winston.transports.Console({ timestamp: true, colorize: true }),
+  ],
 });
 
 let rawKeys;
 try {
   rawKeys = require('./api_key_list.js');
   logger.info(`Loaded ${rawKeys.length} keys from API keyfile`);
-} catch(err) {
+} catch (err) {
   // No keyfile. That's ok.
   rawKeys = [];
 }

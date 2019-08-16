@@ -14,7 +14,9 @@ const { renderQr } = require('./lib/qr');
 
 const logger = new winston.Logger({
   level: process.env.LOG_LEVEL || 'info',
-  transports: [new winston.transports.Console({ timestamp: true, colorize: true })],
+  transports: [
+    new winston.transports.Console({ timestamp: true, colorize: true }),
+  ],
 });
 
 const app = express();
@@ -47,7 +49,7 @@ if (process.env.RATE_LIMIT_PER_MIN) {
     onLimitReached: () => {
       logger.info('User hit rate limit!');
     },
-    skip: (req) => {
+    skip: req => {
       if (req.query.key) {
         // If user has a special key, bypass rate limiting.
         return apiKeys.has(req.query.key);
@@ -263,7 +265,9 @@ if (!isDev) {
     });
 
     setTimeout(() => {
-      logger.error('Could not close connections in time, forcefully shutting down');
+      logger.error(
+        'Could not close connections in time, forcefully shutting down',
+      );
       process.exit();
     }, 10 * 1000);
   };
