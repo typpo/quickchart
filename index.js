@@ -5,19 +5,12 @@ const expressNunjucks = require('express-nunjucks');
 const qs = require('qs');
 const rateLimit = require('express-rate-limit');
 const text2png = require('text2png');
-const winston = require('winston');
 
 const apiKeys = require('./api_keys');
 const { getPdfBufferFromPng, getPdfBufferWithText } = require('./lib/pdf');
+const { logger } = require('./logging');
 const { renderChart } = require('./lib/charts');
 const { renderQr } = require('./lib/qr');
-
-const logger = new winston.Logger({
-  level: process.env.LOG_LEVEL || 'info',
-  transports: [
-    new winston.transports.Console({ timestamp: true, colorize: true }),
-  ],
-});
 
 const app = express();
 
