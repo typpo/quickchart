@@ -139,13 +139,15 @@ function doRender(req, res, opts) {
     }
   }
 
-  let untrustedInput;
-  try {
-    untrustedInput = opts.chart;
-  } catch (err) {
-    logger.error('URI malformed', err);
-    opts.failFn(res, err);
-    return;
+  let untrustedInput = opts.chart;
+  if (opts.encoding === 'base64') {
+    try {
+      untrustedInput = new Buffer(opts.chart, 'base64').toString('utf8');
+    } catch (err) {
+      logger.error('base64 malformed', err);
+      opts.failFn(res, err);
+      return;
+    }
   }
 
   const backgroundColor = opts.backgroundColor || 'transparent';
@@ -164,6 +166,7 @@ app.get('/chart', (req, res) => {
     height: req.query.h || req.query.height,
     width: req.query.w || req.query.width,
     backgroundColor: req.query.backgroundColor || req.query.bkg,
+    encoding: req.query.encoding || 'url',
   };
 
   const outputFormat = (req.query.f || req.query.format || '').toLowerCase();
@@ -181,6 +184,7 @@ app.post('/chart', (req, res) => {
     height: req.body.h || req.body.height,
     width: req.body.w || req.body.width,
     backgroundColor: req.body.backgroundColor || req.body.bkg,
+    encoding: req.query.encoding || 'url',
   };
   const outputFormat = (req.body.f || req.body.format || '').toLowerCase();
 
