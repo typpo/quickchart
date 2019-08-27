@@ -121,6 +121,14 @@
       max-width: 100%;
     }
 
+    pre {
+      white-space: pre-wrap;
+      overflow-wrap: break-word;
+
+      padding: 1em 0 0 1em;
+      background-color: #eee;
+    }
+
     footer {
       color: #aaa;
       background-color: #eee;
@@ -362,38 +370,66 @@
     <p>
       A couple things to remember when customizing your chart:
       <ul>
-        <li><strong>We recommend that you <a href="https://www.urlencoder.io">URL-encode</a> the entire chart config,</strong> or base64 encode your chart config and specify <code>encoding=base64</code>.  If not encoded, you will run into problems with the # symbol and other special characters.</li>
+        <li><strong>We recommend that you <a href="https://www.urlencoder.io">URL-encode</a> the entire chart config</strong> or base64 encode your chart config and specify <code>encoding=base64</code>.  If not encoded, you will run into problems with the # symbol and other special characters.</li>
         <li>Interactivity and animations are not supported (this service produces static images)</li>
       </ul>
     </p>
     <p>
       We also provide these additional options as query parameters:
       <ul>
-        <li><code><strong>&amp;width</strong>=500</code>: Set the width of the image. Abbreviated as "w"</li>
-        <li><code><strong>&amp;height</strong>=300</code>: Set the height of the image. Abbreviated as "h"</li>
-        <li><code><strong>&amp;backgroundColor</strong>=transparent</code>: Set the background of the chart canvas. Abbreviated as "bkg"</li>
-        <li><code><strong>&amp;format</strong>=png</code>: Set the format of your output. Currently the two supported output formats are PNG and PDF. Abbreviated as "f"</li>
-        <li><code><strong>&amp;encoding</strong>=url</code>: Select the encoding of your "chart" parameter. Accepted values are <code>url</code> (default) and <code>base64</code>.</li>
+        <li><code><strong>width</strong>=500</code>: Set the width of the image. Abbreviated as "w"</li>
+        <li><code><strong>height</strong>=300</code>: Set the height of the image. Abbreviated as "h"</li>
+        <li><code><strong>backgroundColor</strong>=transparent</code>: Set the background of the chart canvas. Abbreviated as "bkg"</li>
+        <li><code><strong>format</strong>=png</code>: Set the format of your output. Currently the two supported output formats are PNG and PDF. Abbreviated as "f"</li>
+        <li><code><strong>encoding</strong>=url</code>: Select the encoding of your "chart" parameter. Accepted values are <code>url</code> (default) and <code>base64</code>.</li>
       </ul>
       Combine these parameters in your query string. For example: <code>/chart?width=500&amp;height=300&amp;c={...}</code>
     </p>
+    <h2 id="api">Advanced API</h2>
     <h3>POST endpoint</h3>
     <p>
       If your chart is large or complicated, you may prefer to send a <strong>POST request</strong> rather than a GET request.  This avoids limitations on URL length and means you don't have to worry about URL encoding.  The <code>/chart</code> POST endpoint takes the same parameters as above via the following JSON object:
     </p>
+    <code><pre>
+{
+  "backgroundColor": "transparent",
+  "width": 500,
+  "height": 300,
+  "format": "png",
+  "chart": {...},
+}
+    </pre></code>
     <p>
-      <code><pre>
-        {
-          "backgroundColor": "transparent",
-          "width": 500,
-          "height": 300,
-          "format": "png",
-          "chart": {...},
-        }
-      </pre></code>
+      Note that if you want to include Javascript code in <code>chart</code> (e.g. to format labels), you'll have to send the parameter as a string rather than a JSON object.
+    </p>
+    <h3 id="short-urls">Short URLs</h3>
+    <p>
+      You may like to create a shorter URL for your charts, especially if you are sending them via email or SMS.  Send a POST request to <code>https://quickchart.io/chart/create</code> per the above POST spec.  For example:
+    </p>
+    <code><pre>
+curl -X POST \
+     -H 'Content-Type: application/json' \
+     -d '{"chart": {"type": "bar", "data": {"labels": ["Hello", "World"], "datasets": [{"label": "Foo", "data": [1, 2]}]}}}' \
+     https://quickchart.io/chart/create
+    </pre></code>
+    <p>
+      You will get a response that looks like this:
+    </p>
+    <code><pre>
+{
+  "success": true,
+  "url": "https://quickchart.io/chart/render/9a560ba4-ab71-4d1e-89ea-ce4741e9d232"
+}
+    </pre></code>
+    <p>
+      Head to the <a rel="nofollow" href="https://quickchart.io/chart/render/9a560ba4-ab71-4d1e-89ea-ce4741e9d232">url in the response</a> to render your chart.
     </p>
     <p>
-      Note that if you want to include Javascript options in <code>chart</code>, you'll have to send the parameter as a string rather than a JSON object.
+      Note the following caveats:
+      <ul>
+        <li>Request inputs are not validated before the URL is created. The chart is only rendered when the URL is visited.</li>
+        <li>Saved charts expire after 3 months.</li>
+      </ul>
     </p>
     <hr/>
     <h2 id="chart-types">Chart Types</h2>
