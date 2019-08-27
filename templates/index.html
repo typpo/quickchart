@@ -383,7 +383,7 @@
         <li><code><strong>format</strong>=png</code>: Set the format of your output. Currently the two supported output formats are PNG and PDF. Abbreviated as "f"</li>
         <li><code><strong>encoding</strong>=url</code>: Select the encoding of your "chart" parameter. Accepted values are <code>url</code> (default) and <code>base64</code>.</li>
       </ul>
-      Combine these parameters in your query string. For example: <code>/chart?width=500&amp;height=300&amp;c={...}</code>
+      Combine these parameters in your query string. For example: <code>/chart?width=500&amp;height=300&amp;format=pdf&amp;c={...}</code>
     </p>
     <h2 id="api">Advanced API</h2>
     <h3>POST endpoint</h3>
@@ -422,11 +422,12 @@ curl -X POST \
 }
     </pre></code>
     <p>
-      Head to the <a rel="nofollow" href="https://quickchart.io/chart/render/9a560ba4-ab71-4d1e-89ea-ce4741e9d232">url in the response</a> to render your chart.
+      Go to the <a rel="nofollow" href="https://quickchart.io/chart/render/9a560ba4-ab71-4d1e-89ea-ce4741e9d232">url in the response</a> to render your chart.
     </p>
     <p>
       Note the following caveats:
       <ul>
+        <li style="color:red">This feature is currently in beta as of its release on August 26, 2019.</li>
         <li>Request inputs are not validated before the URL is created. The chart is only rendered when the URL is visited.</li>
         <li>Saved charts expire after 3 months.</li>
       </ul>
