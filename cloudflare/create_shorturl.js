@@ -1,4 +1,4 @@
-addEventListener('fetch', event => {
+addEventListener('fetch', (event) => {
   event.respondWith(handleRequest(event.request));
 });
 
@@ -34,14 +34,14 @@ function success(data) {
   );
 }
 
-var byteToHex = [];
-for (var i = 0; i < 256; ++i) {
+const byteToHex = [];
+for (let i = 0; i < 256; ++i) {
   byteToHex[i] = (i + 0x100).toString(16).substr(1);
 }
 
 function bytesToUuid(buf) {
-  var i = 0;
-  var bth = byteToHex;
+  let i = 0;
+  const bth = byteToHex;
   // join used to fix memory issue caused by concatenation: https://bugs.chromium.org/p/v8/issues/detail?id=3175#c4
   return [
     bth[buf[i++]],
@@ -69,7 +69,7 @@ function bytesToUuid(buf) {
 
 function uuidv4() {
   // From node-uuid https://github.com/kelektiv/node-uuid/blob/master/v4.js
-  var rnds = crypto.getRandomValues(new Uint8Array(16));
+  const rnds = crypto.getRandomValues(new Uint8Array(16));
 
   // Per 4.4, set bits for version and `clock_seq_hi_and_reserved`
   rnds[6] = (rnds[6] & 0x0f) | 0x40;
@@ -105,6 +105,6 @@ async function handleRequest(request) {
 
   const url = `https://quickchart.io/chart/render/${id}`;
   return success({
-    url: url,
+    url,
   });
 }

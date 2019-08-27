@@ -16,15 +16,13 @@ const app = express();
 
 const isDev = app.get('env') === 'development';
 
-app.set('query parser', str =>
-  qs.parse(str, {
-    decode(s) {
-      // Default express implementation replaces '+' with space. We don't want
-      // that. See https://github.com/expressjs/express/issues/3453
-      return decodeURIComponent(s);
-    },
-  }),
-);
+app.set('query parser', str => qs.parse(str, {
+  decode(s) {
+    // Default express implementation replaces '+' with space. We don't want
+    // that. See https://github.com/expressjs/express/issues/3453
+    return decodeURIComponent(s);
+  },
+}));
 app.set('views', `${__dirname}/templates`);
 app.use(express.static('public'));
 app.use(express.json());
@@ -42,7 +40,7 @@ if (process.env.RATE_LIMIT_PER_MIN) {
     onLimitReached: () => {
       logger.info('User hit rate limit!');
     },
-    skip: req => {
+    skip: (req) => {
       if (req.query.key) {
         // If user has a special key, bypass rate limiting.
         return apiKeys.has(req.query.key);
@@ -88,7 +86,7 @@ async function failPdf(res, msg) {
 
 function doRenderChart(req, res, opts) {
   opts.failFn = failPng;
-  opts.onRenderHandler = buf => {
+  opts.onRenderHandler = (buf) => {
     res.writeHead(200, {
       'Content-Type': 'image/png',
       'Content-Length': buf.length,
@@ -103,7 +101,7 @@ function doRenderChart(req, res, opts) {
 
 async function doRenderPdf(req, res, opts) {
   opts.failFn = failPdf;
-  opts.onRenderHandler = async buf => {
+  opts.onRenderHandler = async (buf) => {
     const pdfBuf = await getPdfBufferFromPng(buf);
 
     res.writeHead(200, {
@@ -154,7 +152,7 @@ function doRender(req, res, opts) {
 
   renderChart(width, height, backgroundColor, untrustedInput)
     .then(opts.onRenderHandler)
-    .catch(err => {
+    .catch((err) => {
       logger.error('Chart error', err);
       opts.failFn(res, err);
     });
@@ -233,7 +231,7 @@ app.get('/qr', (req, res) => {
   };
 
   renderQr(format, mode, qrData, qrOpts)
-    .then(buf => {
+    .then((buf) => {
       res.writeHead(200, {
         'Content-Type': `image/${format}`,
         'Content-Length': buf.length,
@@ -243,7 +241,7 @@ app.get('/qr', (req, res) => {
       });
       res.end(buf);
     })
-    .catch(err => {
+    .catch((err) => {
       failPng(res, err);
     });
 });
