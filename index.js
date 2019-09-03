@@ -251,8 +251,13 @@ app.get('/qr', (req, res) => {
 
 const port = process.env.PORT || 3400;
 const server = app.listen(port);
-logger.info('NODE_ENV:', process.env.NODE_ENV);
-logger.info('Running on port', port);
+
+const timeout = process.env.REQUEST_TIMEOUT_MS || 1000;
+server.setTimeout(timeout);
+logger.info(`Setting request timeout: ${timeout} ms`);
+
+logger.info(`NODE_ENV: ${process.env.NODE_ENV}`);
+logger.info(`Listening on port ${port}`);
 
 if (!isDev) {
   const gracefulShutdown = function gracefulShutdown() {
