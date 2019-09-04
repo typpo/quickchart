@@ -35,6 +35,7 @@
   },
   "devDependencies": {
     "@arkweid/lefthook": "^0.6.3",
+    "artillery": "^1.6.0-28",
     "eslint": "^5.15.1",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.16.0",
