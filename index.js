@@ -249,6 +249,23 @@ app.get('/qr', (req, res) => {
     });
 });
 
+app.get('/healthcheck', (req, res) => {
+  const labels = [...Array(5)].map(() => Math.random());
+  const data = [...Array(5)].map(() => Math.random());
+  const template = `
+{
+  type: 'bar',
+  data: {
+    labels: [${labels.join(',')}],
+    datasets: [{
+      data: [${data.join(',')}]
+    }]
+  }
+}
+`;
+  res.redirect(`/chart?c=${template}`);
+});
+
 const port = process.env.PORT || 3400;
 const server = app.listen(port);
 
