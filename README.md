@@ -54,11 +54,13 @@ The `/qr` endpoint has the following query parameters:
 
 ## Dependencies and Installation
 
-Chart generation requires several system dependencies: Cairo, Pango, libjpeg, and libgif.  Run `./scripts/setup.sh` for a fresh install on Linux machines (note that this also installs yarn and node).
+Chart generation requires several system dependencies: Cairo, Pango, libjpeg, and libgif.  Run `./scripts/setup.sh` for a fresh install on Linux machines (note that this also installs yarn, node, and monit).
 
 To install system dependencies on Mac OSX, you probably just need to `brew install cairo pango libffi`.  You may have to `export PKG_CONFIG_PATH="/usr/local/opt/libffi/lib/pkgconfig"` before installing node packages.
 
 Once you have system dependencies installed, run `yarn install` or `npm install` to install the node dependencies.
+
+You may optionally set up monitoring by running `./test/monit/install.sh` (you may have to modify `./test/monit/quickchart_monit.cfg` to suit your environment).
 
 ## Running the server
 
