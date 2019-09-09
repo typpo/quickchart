@@ -7,6 +7,7 @@ const rateLimit = require('express-rate-limit');
 const text2png = require('text2png');
 
 const apiKeys = require('./api_keys');
+const packageJson = require('./package.json');
 const { getPdfBufferFromPng, getPdfBufferWithText } = require('./lib/pdf');
 const { logger } = require('./logging');
 const { renderChart } = require('./lib/charts');
@@ -250,6 +251,12 @@ app.get('/qr', (req, res) => {
 });
 
 app.get('/healthcheck', (req, res) => {
+  // A lightweight healthcheck endpoint.
+  res.send({ success: true, version: packageJson.version });
+});
+
+app.get('/healthcheck/chart', (req, res) => {
+  // A heavier healthcheck endpoint that redirects to a unique chart.
   const labels = [...Array(5)].map(() => Math.random());
   const data = [...Array(5)].map(() => Math.random());
   const template = `
