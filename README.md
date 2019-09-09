@@ -37,6 +37,8 @@ As you can see, the Javascript or JSON object contained in the URL defines the c
 
 The chart configuration object is based on the popular Chart.js API.  Check out the [Chart.js documentation](https://www.chartjs.org/docs/latest/charts/) for more information on how to customize your chart, or see [QuickChart.io](https://quickchart.io/) for more examples.
 
+QuickChart includes several Chart.js plugins that allow you to add chart annotations, data labels, and more.  See [full QuickChart documentation](https://quickchart.io/#chart-types) for examples.
+
 ## QR Codes
 
 The service also produces QR codes.  For example, https://quickchart.io/qr?text=Hello+world produces:
@@ -59,8 +61,6 @@ Chart generation requires several system dependencies: Cairo, Pango, libjpeg, an
 To install system dependencies on Mac OSX, you probably just need to `brew install cairo pango libffi`.  You may have to `export PKG_CONFIG_PATH="/usr/local/opt/libffi/lib/pkgconfig"` before installing node packages.
 
 Once you have system dependencies installed, run `yarn install` or `npm install` to install the node dependencies.
-
-You may optionally set up monitoring by running `./test/monit/install.sh` (you may have to modify `./test/monit/quickchart_monit.cfg` to suit your environment).
 
 ## Running the server
 
@@ -96,6 +96,16 @@ By following the **Docker** instructions above, you can deploy the service to an
 Clicking the following will execute the Docker build on a remote machine and deploy the service to [Google Cloud Run](https://cloud.run) an automatically scaled and pay-per-request environment:
 
 [![Run on Google Cloud](https://storage.googleapis.com/cloudrun/button.svg)](https://console.cloud.google.com/cloudshell/editor?shellonly=true&cloudshell_image=gcr.io/cloudrun/button&cloudshell_git_repo=https://github.com/typpo/quickchart)
+
+## Health and Monitoring
+
+QuickChart has two API endpoints to determine the health of the service.  
+
+`/healthcheck` is a basic endpoint that returns a 200 status code and a JSON object that looks like this: `{"success":true,"version":"1.1.0"}`.  
+
+A second endpoint, `/healthcheck/chart` returns a 302 status code and redirects to a chart with random attributes.  Although it is a more expensive endpoint, it can be useful for cache busting or testing chart rendering.
+
+The hosted QuickChart service uses [monit](https://mmonit.com/monit/) to make sure the service is online and restart it if not.  An example monit config is in `test/monit`.
 
 ## License
 
