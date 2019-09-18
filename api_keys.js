@@ -7,8 +7,6 @@
 // request (&key=xxx) in order to by pass rate limiting.
 //
 
-const fs = require('fs');
-
 const { logger } = require('./logging');
 
 let rawKeys;
