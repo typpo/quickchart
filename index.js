@@ -8,6 +8,7 @@ const text2png = require('text2png');
 
 const apiKeys = require('./api_keys');
 const packageJson = require('./package.json');
+const telemetry = require('./telemetry');
 const { getPdfBufferFromPng, getPdfBufferWithText } = require('./lib/pdf');
 const { logger } = require('./logging');
 const { renderChart } = require('./lib/charts');
@@ -66,6 +67,21 @@ app.get('/', (req, res) => {
 
 app.get('/robots.txt', (req, res) => {
   res.sendFile(path.join(__dirname, './templates/robots.txt'));
+});
+
+app.post('/telemetry', (req, res) => {
+  const chartCount = parseInt(req.body.chartCount, 10);
+  const qrCount = parseInt(req.body.qrCount, 10);
+  const pid = req.body.pid;
+
+  if (chartCount && !isNaN(chartCount)) {
+    telemetry.receive(pid, 'chartCount', chartCount);
+  }
+  if (qrCount && !isNaN(qrCount)) {
+    telemetry.receive(pid, 'qrCount', qrCount);
+  }
+
+  res.send({ success: true });
 });
 
 function failPng(res, msg) {
@@ -178,6 +194,8 @@ app.get('/chart', (req, res) => {
   } else {
     doRenderChart(req, res, opts);
   }
+
+  telemetry.count('chartCount');
 });
 
 app.post('/chart', (req, res) => {
@@ -195,6 +213,8 @@ app.post('/chart', (req, res) => {
   } else {
     doRenderChart(req, res, opts);
   }
+
+  telemetry.count('chartCount');
 });
 
 app.get('/qr', (req, res) => {
@@ -248,6 +268,8 @@ app.get('/qr', (req, res) => {
     .catch(err => {
       failPng(res, err);
     });
+
+  telemetry.count('qrCount');
 });
 
 app.get('/healthcheck', (req, res) => {
