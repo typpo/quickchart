@@ -49,7 +49,12 @@ function send() {
     chartCount: telemetry[PROCESS_ID].chartCount,
     qrCount: telemetry[PROCESS_ID].qrCount,
   };
-  request.post('https://quickchart.io/telemetry').form(data);
+  try {
+    request
+      .post('https://quickchart.io/telemetry', { timeout: 1000 })
+      .form(data)
+      .on('error', () => {});
+  } catch (err) {}
 
   telemetry = {};
 }
