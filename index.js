@@ -4,6 +4,7 @@ const express = require('express');
 const expressNunjucks = require('express-nunjucks');
 const qs = require('qs');
 const rateLimit = require('express-rate-limit');
+const relaxedJSON = require('relaxed-json');
 const text2png = require('text2png');
 
 const apiKeys = require('./api_keys');
@@ -169,8 +170,9 @@ function doRender(req, res, opts) {
   }
 
   const backgroundColor = opts.backgroundColor || 'transparent';
+  const globalDefaults = opts.globalDefaults || {};
 
-  renderChart(width, height, backgroundColor, untrustedInput)
+  renderChart(width, height, backgroundColor, globalDefaults, untrustedInput)
     .then(opts.onRenderHandler)
     .catch(err => {
       logger.error('Chart error', err);
@@ -184,6 +186,7 @@ app.get('/chart', (req, res) => {
     height: req.query.h || req.query.height,
     width: req.query.w || req.query.width,
     backgroundColor: req.query.backgroundColor || req.query.bkg,
+    globalDefaults: req.query.globalDefaults ? relaxedJSON.parse(req.query.globalDefaults) : {},
     encoding: req.query.encoding || 'url',
   };
 
@@ -204,6 +207,7 @@ app.post('/chart', (req, res) => {
     height: req.body.h || req.body.height,
     width: req.body.w || req.body.width,
     backgroundColor: req.body.backgroundColor || req.body.bkg,
+    globalDefaults: req.body.globalDefaults ? relaxedJSON.parse(req.body.globalDefaults) : {},
     encoding: req.query.encoding || 'url',
   };
   const outputFormat = (req.body.f || req.body.format || '').toLowerCase();
