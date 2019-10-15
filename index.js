@@ -84,6 +84,10 @@ app.post('/telemetry', (req, res) => {
   res.send({ success: true });
 });
 
+app.get('/payment-success', (req, res) => {
+  res.render('payment_success');
+});
+
 function failPng(res, msg) {
   res.writeHead(500, {
     'Content-Type': 'image/png',

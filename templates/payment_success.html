@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Open Source Image Charts API | QuickChart</title>
+  {% include "meta.html" %}
+  <style>
+    html, body {
+      margin: 0;
+    }
+
+    body {
+      font-family: 'Proxima Nova Soft','Helvetica Neue',Arial,Helvetica,sans-serif;
+      line-height: 1.5;
+    }
+
+    a, a:visited {
+      color: darkblue;
+    }
+
+    .container {
+      margin: 0 auto;
+      max-width: 50em;
+      padding: 0 1em;
+    }
+
+    .centered {
+      text-align: center;
+    }
+
+    .header {
+      background-color: linen;
+      padding: 1em;
+      margin-bottom: 1em;
+    }
+    .mobile-only {
+      display: none;
+    }
+    .desktop-only {
+      display: block;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 0 0.5em;
+      }
+      .mobile-only {
+        display: block;
+      }
+      .desktop-only {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="header centered">
+    <h1>🎉 Thanks for purchasing!</h1>
+  </div>
+  <div class="container">
+    <p>
+      Your commercial license is enabled.  We'll be in touch soon to introduce you to your support contact and provide an API key that you can use to bypass rate limits.
+    </p>
+    <p>
+      <strong>Resources:</strong>
+      <ul>
+        <li><a href="/#customize">Chart customization</a></li>
+        <li><a href="https://www.chartjs.org/docs/latest/configuration/">Chart.js documentation</a></li>
+        <li><a href="/#chart-types">Chart examples</a></li>
+        <li><a href="/#api">API details</a></li>
+      </ul>
+      Other actions:
+      <ul>
+        <li><a href="mailto:support@quickchart.io">Contact support</a></li>
+        <li><a href="/">Return to homepage</a></li>
+      </ul>
+    </p>
+  </div>
+</body>
+</html>
