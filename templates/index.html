@@ -136,6 +136,10 @@
       background-color: #eee;
     }
 
+    .pricing-table-container {
+      overflow-x: auto;
+    }
+
     .pricing-table {
       width: 100%;
       background-color: #fafafa;
@@ -149,7 +153,7 @@
     .pricing-table th, .pricing-table td {
       text-align: center;
       border: 1px solid #000;
-      padding: 1em 0;
+      padding: 1em 0.5em;
     }
 
     .btn-cta {
@@ -744,62 +748,64 @@ curl -X POST \
     <p>
       QuickChart will always be free and open source, but some users need a different (non-GPL) license or a Service-Level Agreement (SLA) that guarantees uptime.  <a href="mailto:support@quickchart.io">Contact support</a> with any questions.
     </p>
-    <table class="pricing-table">
-      <tr>
-        <th></th>
-        <th>Free &amp; Open Source</th>
-        <th>Commercial License<br>$25/mo</th>
-        <th>Commercial License + SLA<br>$40/mo</th>
-      </tr>
-      <tr>
-        <td class="row-header">License</td>
-        <td>GNU GPL v3 license</td>
-        <td>Full commercial usage</td>
-        <td>Full commercial usage</td>
-      </tr>
-      <tr>
-        <td class="row-header">Limits</td>
-        <td>20,000 charts/mo<br>Rate limitations<br>(no limits if self-hosted)</td>
-        <td>50,000 charts/mo<br>No rate limitations</td>
-        <td>50,000 charts/mo<br>No rate limitations</td>
-      </tr>
-      <tr>
-        <td class="row-header">Support</td>
-        <td>Best-effort email support</td>
-        <td>Full email support</td>
-        <td>Full email support</td>
-      </tr>
-      <tr>
-        <td class="row-header">SLA</td>
-        <td>No SLA</td>
-        <td>No SLA</td>
-        <td><a href="/docs/SLA.pdf">QuickChart SLA</a></td>
-      </tr>
-      <tr>
-        <td></td>
-        <td></td>
-        <td>
-          <button
-            style="background-color:#6772E5;color:#FFF;padding:8px 12px;border:0;border-radius:4px;font-size:1em;cursor:pointer"
-            id="checkout-button-plan_FzdMNdiBDI5Owk"
-            role="link"
-          >
-            Sign Up
-          </button>
-          <div id="error-message-plan_FzdMNdiBDI5Owk"></div>
-        </td>
-        <td>
-          <button
-            style="background-color:#6772E5;color:#FFF;padding:8px 12px;border:0;border-radius:4px;font-size:1em;cursor:pointer"
-            id="checkout-button-plan_FzxDcjIG1vDdWD"
-            role="link"
-          >
-            Sign Up
-          </button>
-          <div id="error-message-plan_FzxDcjIG1vDdWD"></div>
-        </td>
-      </tr>
-    </table>
+    <div class="pricing-table-container">
+      <table class="pricing-table">
+        <tr>
+          <th></th>
+          <th>Free &amp; Open Source</th>
+          <th>Commercial License<br>$25/mo</th>
+          <th>Commercial License + SLA<br>$40/mo</th>
+        </tr>
+        <tr>
+          <td class="row-header">License</td>
+          <td>GNU GPL v3 license</td>
+          <td>Full commercial usage</td>
+          <td>Full commercial usage</td>
+        </tr>
+        <tr>
+          <td class="row-header">Limits</td>
+          <td>20,000 charts/mo<br>Rate limitations<br>(no limits if self-hosted)</td>
+          <td>50,000 charts/mo<br>No rate limitations</td>
+          <td>50,000 charts/mo<br>No rate limitations</td>
+        </tr>
+        <tr>
+          <td class="row-header">Support</td>
+          <td>Best-effort email support</td>
+          <td>Full email support</td>
+          <td>Full email support</td>
+        </tr>
+        <tr>
+          <td class="row-header">SLA</td>
+          <td>No SLA</td>
+          <td>No SLA</td>
+          <td><a href="/docs/SLA.pdf">QuickChart SLA</a></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td>
+            <button
+              style="background-color:#6772E5;color:#FFF;padding:8px 12px;border:0;border-radius:4px;font-size:1em;cursor:pointer"
+              id="checkout-button-plan_FzdMNdiBDI5Owk"
+              role="link"
+            >
+              Sign Up
+            </button>
+            <div id="error-message-plan_FzdMNdiBDI5Owk"></div>
+          </td>
+          <td>
+            <button
+              style="background-color:#6772E5;color:#FFF;padding:8px 12px;border:0;border-radius:4px;font-size:1em;cursor:pointer"
+              id="checkout-button-plan_FzxDcjIG1vDdWD"
+              role="link"
+            >
+              Sign Up
+            </button>
+            <div id="error-message-plan_FzxDcjIG1vDdWD"></div>
+          </td>
+        </tr>
+      </table>
+    </div>
     <h2 id="faq">Frequently Asked Questions</h2>
     <p>
       <strong>Is QuickChart reliable?</strong>
