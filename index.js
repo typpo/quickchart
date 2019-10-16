@@ -290,16 +290,16 @@ app.get('/qr', (req, res) => {
 });
 
 app.get('/tex', async (req, res) => {
-  const format = req.query.format || req.query.f || 'svg';
+  const format = req.query.format || 'svg';
   let failFn = format === 'svg' ? failSvg : failPng;
-  if (!req.query.s) {
-    failFn(res, 'You are missing variable `s`');
+  if (!req.query.formula) {
+    failFn(res, 'You are missing variable `formula`');
     return;
   }
 
   let data;
   try {
-    data = decodeURIComponent(req.query.s);
+    data = decodeURIComponent(req.query.formula);
   } catch (err) {
     logger.error('URI malformed', err);
     failFn(res, 'URI malformed');
@@ -309,7 +309,7 @@ app.get('/tex', async (req, res) => {
   try {
     const buf = await renderTex(data, format);
     res.writeHead(200, {
-      'Content-Type': 'image/svg+xml',
+      'Content-Type': format === 'svg' ? 'image/svg+xml' : 'image/png',
       'Content-Length': buf.length,
 
       // 1 week cache
