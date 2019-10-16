@@ -75,6 +75,11 @@
       text-align: center;
     }
 
+    .math .col {
+      text-align: left;
+      padding-left: 5em;
+    }
+
     .arrowcol {
       flex: 0.2;
       color: rgba(72, 56, 74, 0.2);
@@ -101,6 +106,9 @@
     .sandbox-tag {
       font-size: 10px;
       margin-bottom: 1em;
+
+      overflow-wrap: break-word;
+      word-break: break-all;
     }
 
     .panel {
@@ -192,6 +200,9 @@
       }
       .hero {
         display: block;
+      }
+      .math .col {
+        padding-left: 0.8em;
       }
       .arrowcol {
         text-align: center;
@@ -713,7 +724,7 @@ curl -X POST \
     </div>
     <h2 id="qr">QR codes</h2>
     <p>
-      We also support QR code generation.  You can render a QR code like so:
+      This service supports QR code generation.  You can render a QR code like so:
     </p>
     <div class="centered">
       <p>
@@ -740,6 +751,44 @@ curl -X POST \
         <img src="/qr?text=Here's%20my%20text&dark=f00&light=0ff&ecLevel=Q&margin=2">
       </p>
     </div>
+    <h2 id="math">Mathematical Formulas (LaTeX)</h2>
+    <p>
+      This web service can renders TeX to SVG or PNG formats using the <a href="https://www.mathjax.org">MathJax</a> renderer:
+    </p>
+    <div class="centered">
+      <p>
+        <code><strong>https://quickchart.io/tex?formula=</strong>x=<wbr>\frac{-b\pm<wbr>\sqrt{b^2-4ac}}{2a}</code>
+      </p>
+      <p>
+        <img src="/tex?formula=x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}">
+      </p>
+    </div>
+    <p>
+      It is important that you <a href="https://www.urlencoder.io">URL-encode</a> your formulas, otherwise "+", "&amp;", and other symbols won't be interpreted correctly.  You can use more advanced LaTeX concepts such as formatting:
+    </p>
+    <p>
+    </p>
+    <div class="hero math">
+      <div class="col">
+        <code>\begin{align*}<br>
+&nbsp;  f(x) &= x^2\\<br>
+&nbsp;  g(x) &= \frac{1}{x}\\<br>
+&nbsp;  F(x) &= \int^a_b \frac{1}{3}x^3<br>
+\end{align*}</code>
+      </div>
+      <div class="arrowcol"></div>
+      <div class="col">
+        <div class="sandbox-tag">
+          <a href="/tex?formula=%5Cbegin%7Balign%2A%7D%0A%20%20f%28x%29%20%26%3D%20x%5E2%5C%5C%0A%20%20g%28x%29%20%26%3D%20%5Cfrac%7B1%7D%7Bx%7D%5C%5C%0A%20%20F%28x%29%20%26%3D%20%5Cint%5Ea_b%20%5Cfrac%7B1%7D%7B3%7Dx%5E3%0A%5Cend%7Balign%2A%7D">/tex?formula=%5Cbegin%7Balign%2A%7D%0A%20%20f%28x%29%20%26%3D%20x%5E2%5C%5C%0A%20%20g%28x%29%20%26%3D%20%5Cfrac%7B1%7D%7Bx%7D%5C%5C%0A%20%20F%28x%29%20%26%3D%20%5Cint%5Ea_b%20%5Cfrac%7B1%7D%7B3%7Dx%5E3%0A%5Cend%7Balign%2A%7D</a>
+        </div>
+        <div class="centered">
+          <img src="/tex?formula=%5Cbegin%7Balign%2A%7D%0A%20%20f%28x%29%20%26%3D%20x%5E2%5C%5C%0A%20%20g%28x%29%20%26%3D%20%5Cfrac%7B1%7D%7Bx%7D%5C%5C%0A%20%20F%28x%29%20%26%3D%20%5Cint%5Ea_b%20%5Cfrac%7B1%7D%7B3%7Dx%5E3%0A%5Cend%7Balign%2A%7D">
+        </div>
+      </div>
+    </div>
+    <p>
+      The default return format is <code>svg</code>.  You may add a <code>format=png</code> parameter for a PNG image response.
+    </p>
     <h2 id="pricing">Pricing</h2>
     <p>
       QuickChart will always be free and open source, but some users need a different (non-GPL) license or a Service-Level Agreement (SLA) that guarantees uptime.  <a href="mailto:support@quickchart.io">Contact support</a> with any questions.
