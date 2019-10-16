@@ -1,5 +1,6 @@
 const path = require('path');
 
+const escapeHtml = require('escape-html');
 const express = require('express');
 const expressNunjucks = require('express-nunjucks');
 const qs = require('qs');
@@ -13,6 +14,7 @@ const { getPdfBufferFromPng, getPdfBufferWithText } = require('./lib/pdf');
 const { logger } = require('./logging');
 const { renderChart } = require('./lib/charts');
 const { renderQr } = require('./lib/qr');
+const { renderTex } = require('./lib/tex');
 
 const app = express();
 
@@ -98,6 +100,17 @@ function failPng(res, msg) {
       backgroundColor: '#fff',
     }),
   );
+}
+
+function failSvg(res, msg) {
+  res.writeHead(500, {
+    'Content-Type': 'image/svg+xml',
+  });
+  res.end(`
+<svg xmlns="http://www.w3.org/2000/svg" width="500" height="100" version="1.1">
+  <text x="20" y="20">${escapeHtml(msg)}</text>
+</svg>
+  `);
 }
 
 async function failPdf(res, msg) {
@@ -274,6 +287,41 @@ app.get('/qr', (req, res) => {
     });
 
   telemetry.count('qrCount');
+});
+
+app.get('/tex', async (req, res) => {
+  const format = req.query.format || req.query.f || 'svg';
+  let failFn = format === 'svg' ? failSvg : failPng;
+  if (!req.query.s) {
+    failFn(res, 'You are missing variable `s`');
+    return;
+  }
+
+  let data;
+  try {
+    data = decodeURIComponent(req.query.s);
+  } catch (err) {
+    logger.error('URI malformed', err);
+    failFn(res, 'URI malformed');
+    return;
+  }
+
+  try {
+    const buf = await renderTex(data, format);
+    res.writeHead(200, {
+      'Content-Type': 'image/svg+xml',
+      'Content-Length': buf.length,
+
+      // 1 week cache
+      'Cache-Control': 'public, max-age=604800',
+    });
+    res.end(buf);
+  } catch (err) {
+    failFn(res, `Render failed: ${err.message}`);
+    return;
+  }
+
+  telemetry.count('texCount');
 });
 
 app.get('/healthcheck', (req, res) => {

@@ -48,6 +48,7 @@ function send() {
     pid: PROCESS_ID,
     chartCount: telemetry[PROCESS_ID].chartCount,
     qrCount: telemetry[PROCESS_ID].qrCount,
+    texCount: telemetry[PROCESS_ID].texCount,
   };
   try {
     request
