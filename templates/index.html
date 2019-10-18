@@ -130,20 +130,30 @@
 </style>
 {% endblock %}
 {% block content %}
+<div class="nav">
+  <div class="brand">QuickChart</div>
+  <div class="nav-links">
+    <ul>
+      <li>Home</li>
+      <li>Pricing</li>
+      <li>Open Source</li>
+      <li>FAQ</li>
+    </ul>
+  </div>
+</div>
 <div class="header centered">
-  <h1>Generate a Chart Image from URL</h1>
-  <p>
-    <strong>Create static charts for embedding in email, SMS, reports, and more.</strong>
-  </p>
+  <h1>Create embeddable chart images with a single URL</h1>
+<!--
   <p class="nav desktop-only">
     <a href="#build-from-url">How It Works</a> &middot; <a href="#customize">Customize Your Chart</a> &middot; <a href="#chart-types">Chart Types</a> &middot; <a href="#qr">QR Codes</a> &middot; <a href="#pricing">Pricing</a> &middot; <a href="#faq">FAQ</a> &middot; <a href="https://github.com/typpo/quickchart">Open Source</a>
   </p>
+-->
 </div>
-<div class="container">
+<div class="page-container">
   <div class="hero">
     <div class="col">
       <h2>
-        Create a chart using a single URL
+        Static embeddable image charts for email, SMS, reports, and more
       </h2>
       <p>
         <code>
@@ -156,9 +166,15 @@
       <img class="img-example" src="/chart?bkg=white&c={type:'bar',data:{labels:['January','February','March','April', 'May'],datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500]}]}}"/>
     </div>
   </div>
-  <p>
-    This service is a replacement for the <a href="https://developers.google.com/chart/image/">Google Image Charts API</a>, which turned off on March 14, 2019.  It can also generate chart PDFs and QR codes.
-  </p>
+  <div class="summary">
+    <p>
+    QuickChart also renders <strong>PDF charts</strong> and <strong>QR codes</strong>.
+    </p>
+    <p>
+      The QuickChart.io web service lets you generate 20,000 charts per month free of charge.  QuickChart is <a href="https://github.com/typpo/quickchart">open source</a> under GPLv3.  <a href="#pricing">Commercial and enterprise licensing</a> is also available.
+    </p>
+  </div>
+<!--
   <div class="toc mobile-only">
     <p>
       Contents
@@ -173,27 +189,20 @@
       <li><a href="https://github.com/typpo/quickchart">Open Source</a></li>
     </ul>
   </div>
-  <hr/>
-  <h2 id="build-from-url">How It Works</h2>
-  <p>
-    Chart images are defined by their URLs.  Each URL contains a JSON/Javascript object that includes all the data and display options. These options follow the popular open-source graphing library Chart.js.  Use the <a href="https://www.chartjs.org/docs/latest/charts/">documentation</a> to define your chart.
-  </p>
-  <p>
-    Once you've written your config, render it as an image with <code class="hl">https://quickchart.io/chart?c=[[insert config here]]</code>.  Try the realtime editor below:
-  </p>
+-->
   <div class="hero panel">
     <div class="col">
-      <textarea id="sandbox-input" class="sandbox-input" data-image-id="sandbox-img" data-tag-id="sandbox-tag">// Edit me!
-{
+      <h2 class="centered">Try it yourself</h2>
+      <textarea id="sandbox-input" class="sandbox-input" data-image-id="sandbox-img" data-tag-id="sandbox-tag">{
   type: 'bar',
   data: {
-    labels: ['January', 'February', 'March', 'April', 'May'],
+    labels: [2012, 2013, 2014, 2015, 2016],
     datasets: [{
-      label: 'Dogs',
-      data: [ 50, 60, 70, 180, 190 ]
+      label: 'Raisins',
+      data: [12, 6, 5, 18, 12]
     }, {
-      label: 'Cats',
-      data: [ 100, 200, 300, 400, 500 ]
+      label: 'Bananas',
+      data: [4, 8, 16, 5, 5]
     }]
   }
 }</textarea>
@@ -204,23 +213,30 @@
       <img class="img-example" id="sandbox-img" src="/chart?bkg=white&c={
 type: 'bar',
 data: {
-  labels: ['January', 'February', 'March', 'April', 'May'],
+  labels: [2012, 2013, 2014, 2015, 2016],
   datasets: [{
-    label: 'Dogs',
-    data: [ 50, 60, 70, 180, 190 ]
+    label: 'Raisins',
+    data: [12, 6, 5, 18, 12]
   }, {
-    label: 'Cats',
-    data: [ 100, 200, 300, 400, 500 ]
+    label: 'Bananas',
+    data: [4, 8, 16, 5, 5]
   }]
 }
 }"/>
     </div>
   </div>
   <p>
-{% raw %}
-    The API also lets you generate charts in <a href="https://quickchart.io/chart?f=pdf&bkg=white&c={%20%20type:%20%27bar%27,%20%20data:%20{%20%20%20%20labels:%20[%27January%27,%20%27February%27,%20%27March%27,%20%27April%27,%20%27May%27],%20%20%20%20datasets:%20[{%20%20%20%20%20%20label:%20%27Dogs%27,%20%20%20%20%20%20data:%20[%2050,%2060,%2070,%20180,%20190%20]%20%20%20%20},%20{%20%20%20%20%20%20label:%20%27Cats%27,%20%20%20%20%20%20data:%20[%20100,%20200,%20300,%20400,%20500%20]%20%20%20%20}]%20%20}}">PDF format</a> (see below for all customization options).
-{% endraw %}
+    Chart images are defined by their URLs.  Each URL contains a JSON/Javascript object that includes all the data and display options. These options are rendered by the popular open-source graphing library Chart.js.  Use the <a href="https://www.chartjs.org/docs/latest/charts/">Chart.js documentation</a> to define your chart.
   </p>
+  <p>
+    Once you've written your config, render it as an image with <code class="hl">https://quickchart.io/chart?c=[[insert config here]]</code>.
+  </p>
+  <div class="summary cta-container">
+    <p class="centered">
+      <a class="cta" href="/docs">See how it works</a>
+      <a class="cta secondary" href="https://github.com/typpo/quickchart">View source code</a>
+    </p>
+  </div>
   <h2 id="customize">Customize Your Chart</h2>
   <p>
     Let's get creative.  The example below uses custom background colors, title, legend, stacked bars, axis labels, and data labels:
@@ -749,6 +765,12 @@ curl -X POST \
   </p>
   <p>
     If you'd like to fork the code, keep in mind this project is licensed under GPLv3 and you should make your code public and retain the copyright notice.  If you'd like to license QuickChart privately or commercially, or if you'd like help setting up a private instance, please <a href="mailto:support@quickchart.io">get in touch</a>.
+  </p>
+  <p>
+    <strong>Is this a suitable replacement for Google Image Charts?</strong>
+  </p>
+  <p>
+    This service is a replacement for the <a href="https://developers.google.com/chart/image/">Google Image Charts API</a>, which turned off on March 14, 2019.
   </p>
   <p>
     <strong>How can I contribute?</strong>
