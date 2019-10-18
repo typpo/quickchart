@@ -5,9 +5,14 @@ html, body {
 }
 
 .nav {
+  position: sticky;
+  top: 0;
+  background-color: #fff;
+  box-shadow: 0px 1px 5px 0px rgba(204,204,204,1);
+  z-index: 999;
+
   display: flex;
-  max-width: 1024px;
-  margin: 0 auto;
+  width: 100%;
 }
 
 .brand {
@@ -18,6 +23,11 @@ html, body {
 
 .nav-links {
   flex: 3;
+}
+
+.nav-links a, .nav-links a:visited {
+  color: #404040;
+  text-decoration: none;
 }
 
 .nav ul {
@@ -51,11 +61,10 @@ html, body {
 .page-container {
   max-width: 1024px;
   margin: 0 auto;
-  padding; 0 1em;
 }
 
 .summary {
-  font-size: 1.4em;
+  font-size: 1.2em;
   line-height: 1.6;
 }
 
@@ -114,6 +123,14 @@ footer {
   padding: 1em;
 }
 
+.footer-content a, .footer-content a:visited {
+  color: #aaa;
+}
+
+.footer-right {
+  float: right;
+}
+
 .cta-container {
   background-color: aliceblue;
   padding: 0.6em 0;
@@ -157,13 +174,31 @@ footer {
   margin-left: 0.5em;
 }
 
-@media (max-width: 960px) {
+@media (max-width: 1040px) {
   .page-container {
     padding: 0 2em;
   }
+  .tablet-hide {
+    display: none;
+  }
 }
 
-@media (max-width: 700px) {
+@media (max-width: 850px) {
+  .brand {
+    display: none;
+  }
+  .nav {
+    font-size: 0.8em;
+  }
+  .nav ul {
+    text-align: left;
+  }
+  .nav li {
+    padding: 0.25em;
+  }
+  .page-container {
+    padding: 0 1em;
+  }
   .show-and-tell {
     flex-direction: column;
   }
@@ -177,6 +212,13 @@ footer {
   .header {
     margin-bottom: 1em;
     padding: 2em 1em;
+  }
+  .cta {
+    font-size: 0.9em;
+    margin: 0.25em 0;
+  }
+  .mobile-hide {
+    display: none;
   }
 }
 

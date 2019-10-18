@@ -4,23 +4,6 @@
 
 {% block styles %}
 <style>
-  .nav {
-    line-height: 1.6;
-  }
-
-  .toc {
-    border: 1px solid #a2a9b1;
-    background-color: #f8f9fa;
-    padding: 1em 0 0 0;
-    max-width: 400px;
-    line-height: 2;
-  }
-
-  .toc p {
-    text-align: center;
-    font-weight: bold;
-  }
-
   .hero {
     position: relative;
     display: flex;
@@ -134,10 +117,12 @@
   <div class="brand">QuickChart</div>
   <div class="nav-links">
     <ul>
-      <li>Home</li>
-      <li>Pricing</li>
-      <li>Open Source</li>
-      <li>FAQ</li>
+      <a href="#"><li>Home</li></a>
+      <a href="#customize" class="mobile-hide"><li>Configuration</li></a>
+      <a href="#qr"><li>QR Codes</li></a>
+      <a href="#pricing" class="mobile-hide"><li>Pricing</li></a>
+      <a href="https://github.com/typpo/quickchart"><li>Open Source</li></a>
+      <a href="#faq"><li>FAQ</li></a>
     </ul>
   </div>
 </div>
@@ -174,22 +159,6 @@
       The QuickChart.io web service lets you generate 20,000 charts per month free of charge.  QuickChart is <a href="https://github.com/typpo/quickchart">open source</a> under GPLv3.  <a href="#pricing">Commercial and enterprise licensing</a> is also available.
     </p>
   </div>
-<!--
-  <div class="toc mobile-only">
-    <p>
-      Contents
-    </p>
-    <ul>
-      <li><a href="#build-from-url">How It Works</a></li>
-      <li><a href="#customize">Customize Your Chart</a></li>
-      <li><a href="#chart-types">Chart Types</a></li>
-      <li><a href="#qr">QR Codes</a></li>
-      <li><a href="#pricing">Pricing</a></li>
-      <li><a href="#faq">FAQ</a></li>
-      <li><a href="https://github.com/typpo/quickchart">Open Source</a></li>
-    </ul>
-  </div>
--->
   <div class="hero panel">
     <div class="col">
       <h2 class="centered">Try it yourself</h2>
@@ -233,7 +202,7 @@ data: {
   </p>
   <div class="summary cta-container">
     <p class="centered">
-      <a class="cta" href="/docs">See how it works</a>
+      <a class="cta" href="#pricing">Get a Commercial License</a>
       <a class="cta secondary" href="https://github.com/typpo/quickchart">View source code</a>
     </p>
   </div>
@@ -418,7 +387,7 @@ curl -X POST \
     <div class="col">
       <h3>Bar Graph</h3>
       <code>
-  &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'bar'</span>,data:{labels:['January','February','March','April', 'May'], datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500]}]}}"&gt;
+  &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'bar'</span>,data:{labels:['January','February', 'March','April', 'May'], datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500]}]}}"&gt;
       </code>
     </div>
     <div class="arrowcol"></div>
@@ -430,7 +399,7 @@ curl -X POST \
     <div class="col">
       <h3>Line Graph</h3>
       <code>
-  &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'line'</span>,data:{labels:['January','February','March','April', 'May'], datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500]}]}}"&gt;
+  &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'line'</span>,data:{labels:['January','February', 'March','April', 'May'], datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500]}]}}"&gt;
       </code>
     </div>
     <div class="arrowcol"></div>
@@ -445,19 +414,19 @@ curl -X POST \
     <div class="col">
       <h3>Radar Chart</h3>
       <code>
-  &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'radar'</span>,data:{labels:['January','February','March','April', 'May'], datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500]}]}}"&gt;
+  &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'radar'</span>,data:{labels:['January','February', 'March','April', 'May'], datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500]}]}}"&gt;
       </code>
     </div>
     <div class="arrowcol"></div>
     <div class="col">
-      <img class="img-example" src="/chart?bkg=white&c={type:'radar',data:{labels:['January','February','March','April', 'May'],datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500]}]}}"/>
+      <img class="img-example" src="/chart?bkg=white&c={type:'radar',data:{labels:['January', 'February','March','April', 'May'],datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500]}]}}"/>
     </div>
   </div>
   <div class="hero panel">
     <div class="col">
       <h3>Pie Chart</h3>
       <code>
-  &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'pie'</span>,data:{labels:['January','February','March','April', 'May'], datasets:[{data:[50,60,70,180,190]}]}}"&gt;
+  &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'pie'</span>,data:{labels:['January','February', 'March','April', 'May'], datasets:[{data:[50,60,70,180,190]}]}}"&gt;
       </code>
     </div>
     <div class="arrowcol"></div>
@@ -469,7 +438,7 @@ curl -X POST \
     <div class="col">
       <h3>Doughnut Chart</h3>
       <code>
-  &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'doughnut'</span>,data:{labels:['January','February','March','April', 'May'], datasets:[{data:[50,60,70,180,190]}]}}"&gt;
+  &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'doughnut'</span>,data:{labels:['January','February', 'March','April', 'May'], datasets:[{data:[50,60,70,180,190]}]}}"&gt;
       </code>
     </div>
     <div class="arrowcol"></div>
@@ -541,7 +510,7 @@ curl -X POST \
     <div class="col">
       <h3>Mixed Charts</h3>
       <code>
-  &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'bar'</span>,data:{labels:['January','February','March','April', 'May'], datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500],},{<span class="hl">type:'line'</span>,fill:false, label:'Potatoes',data:[100,400,200,400,700]}]}}"&gt;
+  &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'bar'</span>,data:{labels:['January','February', 'March','April', 'May'], datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500],},{<span class="hl">type:'line'</span>,fill:false, label:'Potatoes',data:[100,400,200,400,700]}]}}"&gt;
       </code>
     </div>
     <div class="arrowcol"></div>
@@ -793,6 +762,9 @@ curl -X POST \
 <footer>
   <div class="footer-content">
     &copy; Alioth LLC 2019
+    <div class="footer-right">
+      <a href="#">Back to top</a>
+    </div>
   </div>
 </footer>
 {% endblock %}
