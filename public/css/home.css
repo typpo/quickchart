@@ -175,6 +175,18 @@ footer {
   margin-left: 0.5em;
 }
 
+/*
+ * Offset anchor tags to compensate for fixed header
+ * https://stackoverflow.com/questions/10732690/offsetting-an-html-anchor-to-adjust-for-fixed-header
+ */
+[id]::before {
+  content: '';
+  display: block;
+  height: 65px;
+  margin-top: -65px;
+  visibility: hidden;
+}
+
 @media (max-width: 1040px) {
   .page-container {
     padding: 0 2em;
@@ -220,6 +232,11 @@ footer {
   }
   .mobile-hide {
     display: none;
+  }
+
+  [id]::before {
+    height: 45px;
+    margin-top: -45px;
   }
 }
 
