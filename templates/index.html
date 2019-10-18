@@ -114,10 +114,10 @@
   </div>
   <div class="summary">
     <p>
-    QuickChart also renders <strong>charts to PDF</strong> and <strong>QR codes</strong>.
+    We also render <strong>charts to PDF</strong> and <strong>QR codes</strong>.
     </p>
     <p>
-      The QuickChart.io web service lets you generate 20,000 charts per month free of charge.  QuickChart is <a href="https://github.com/typpo/quickchart">open source</a> under GPLv3 and can be self-hosted.  <a href="/pricing">Commercial and enterprise licensing</a> is also available.
+      QuickChart.io lets you generate 20,000 charts per month free of charge.  The software is <a href="https://github.com/typpo/quickchart">open source</a> under GPLv3 and can be self-hosted.  <a href="/pricing">Commercial and enterprise licensing</a> is also available.
     </p>
   </div>
   <div class="hero panel">
@@ -156,10 +156,13 @@ data: {
     </div>
   </div>
   <p>
-    Chart images are defined by their URLs.  Each URL contains a JSON/Javascript object that includes all the data and display options. These options are rendered by the popular open-source graphing library Chart.js.  Use the <a href="https://www.chartjs.org/docs/latest/charts/">Chart.js documentation</a> to define your chart.
+    Chart images are defined by their URLs.  Each URL contains a JSON/Javascript object that includes all data and display options. These options are rendered by the popular open-source graphing library Chart.js.
   </p>
   <p>
-    Once you've written your config, render it as an image with <code class="hl">https://quickchart.io/chart?c=[[insert config here]]</code>.
+    Use a <a href="https://www.chartjs.org/docs/latest/charts/">Chart.js config</a> to define your chart.
+    Once you've written your config, render it as an image:
+    <br>
+    <code class="hl">https://quickchart.io/chart?c=[[insert config here]]</code>.
   </p>
   <div class="summary cta-container">
     <p class="centered">
@@ -276,18 +279,18 @@ data: {
   <p>
     A couple things to remember when customizing your chart:
     <ul>
-      <li><strong>We recommend that you <a href="https://www.urlencoder.io">URL-encode</a> the entire chart config</strong> or base64 encode your chart config and specify <code>encoding=base64</code>.  If not encoded, you will run into problems with the # symbol and other special characters.</li>
+      <li><strong class="hl">We recommend that you <a href="https://www.urlencoder.io">URL-encode</a> the entire chart config</strong> or base64 encode your chart config (with <code>&amp;encoding=base64</code>).  If not encoded, you will run into problems with the # symbol and other special characters.</li>
       <li>Interactivity and animations are not supported (this service produces static images)</li>
     </ul>
   </p>
   <p>
-    We also provide these additional options as query parameters:
+    The chart endpoint accepts these query parameters:
     <ul>
       <li><code><strong>width</strong>=500</code>: Set the width of the image. Abbreviated as "w"</li>
       <li><code><strong>height</strong>=300</code>: Set the height of the image. Abbreviated as "h"</li>
       <li><code><strong>backgroundColor</strong>=transparent</code>: Set the background of the chart canvas. Abbreviated as "bkg"</li>
       <li><code><strong>format</strong>=png</code>: Set the format of your output. Currently the two supported output formats are PNG and PDF. Abbreviated as "f"</li>
-      <li><code><strong>encoding</strong>=url</code>: Select the encoding of your "chart" parameter. Accepted values are <code>url</code> (default) and <code>base64</code>.</li>
+      <li><code><strong>encoding</strong>=url</code>: Select the encoding of your "chart" parameter. Accepted values are <code>url</code> and <code>base64</code>.</li>
     </ul>
     Combine these parameters in your query string. For example: <code>/chart?width=500&amp;height=300&amp;format=pdf&amp;c={...}</code>
   </p>
@@ -298,11 +301,11 @@ data: {
   </p>
   <code><pre>
 {
-"backgroundColor": "transparent",
-"width": 500,
-"height": 300,
-"format": "png",
-"chart": {...},
+  "backgroundColor": "transparent",
+  "width": 500,
+  "height": 300,
+  "format": "png",
+  "chart": {...},
 }
   </pre></code>
   <p>
@@ -323,8 +326,8 @@ curl -X POST \
   </p>
   <code><pre>
 {
-"success": true,
-"url": "https://quickchart.io/chart/render/9a560ba4-ab71-4d1e-89ea-ce4741e9d232"
+  "success": true,
+  "url": "https://quickchart.io/chart/render/9a560ba4-ab71-4d1e-89ea-ce4741e9d232"
 }
   </pre></code>
   <p>
