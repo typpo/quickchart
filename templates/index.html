@@ -185,17 +185,17 @@
     <div class="col">
       <textarea id="sandbox-input" class="sandbox-input" data-image-id="sandbox-img" data-tag-id="sandbox-tag">// Edit me!
 {
-type: 'bar',
-data: {
-  labels: ['January', 'February', 'March', 'April', 'May'],
-  datasets: [{
-    label: 'Dogs',
-    data: [ 50, 60, 70, 180, 190 ]
-  }, {
-    label: 'Cats',
-    data: [ 100, 200, 300, 400, 500 ]
-  }]
-}
+  type: 'bar',
+  data: {
+    labels: ['January', 'February', 'March', 'April', 'May'],
+    datasets: [{
+      label: 'Dogs',
+      data: [ 50, 60, 70, 180, 190 ]
+    }, {
+      label: 'Cats',
+      data: [ 100, 200, 300, 400, 500 ]
+    }]
+  }
 }</textarea>
     </div>
     <div class="arrowcol"></div>
@@ -228,49 +228,49 @@ data: {
   <div class="hero">
     <div class="col">
       <textarea class="sandbox-input" data-image-id="sandbox-customize">{
-type: 'bar',
-data: {
-  labels: ['January', 'February', 'March', 'April', 'May'],
-  datasets: [{
-    label: 'Dogs',
-    backgroundColor: 'chartreuse',
-    data: [ 50, 60, 70, 180, 190 ]
-  }, {
-    label: 'Cats',
-    backgroundColor: 'gold',
-    data: [ 100, 200, 300, 400, 500 ]
-  }]
-},
-options: {
-  title: {
-    display: true,
-    text: 'Total Revenue (billions)',
-    fontColor: 'hotpink',
-    fontSize: 32,
+  type: 'bar',
+  data: {
+    labels: ['January', 'February', 'March', 'April', 'May'],
+    datasets: [{
+      label: 'Dogs',
+      backgroundColor: 'chartreuse',
+      data: [ 50, 60, 70, 180, 190 ]
+    }, {
+      label: 'Cats',
+      backgroundColor: 'gold',
+      data: [ 100, 200, 300, 400, 500 ]
+    }]
   },
-  legend: {
-    position: 'bottom',
-  },
-  scales: {
-    xAxes: [{stacked: true}],
-    yAxes: [{
-      stacked: true,
-      ticks: {
-        callback: function(value) {
-          return '$' + value;
-        }
-      }
-    }],
-  },
-  plugins: {
-    datalabels: {
+  options: {
+    title: {
       display: true,
-      font: {
-        style: 'bold',
+      text: 'Total Revenue (billions)',
+      fontColor: 'hotpink',
+      fontSize: 32,
+    },
+    legend: {
+      position: 'bottom',
+    },
+    scales: {
+      xAxes: [{stacked: true}],
+      yAxes: [{
+        stacked: true,
+        ticks: {
+          callback: function(value) {
+            return '$' + value;
+          }
+        }
+      }],
+    },
+    plugins: {
+      datalabels: {
+        display: true,
+        font: {
+          style: 'bold',
+        },
       },
     },
   },
-},
 }</textarea>
     </div>
     <div class="arrowcol"></div>
@@ -543,49 +543,49 @@ curl -X POST \
         An example of Chart.js data labels and annotations:
       </p>
       <textarea class="sandbox-input" data-image-id="sandbox-plugin" data-tag-id="plugin-tag">{
-type: 'line',
-data: {
-  labels: [1,2,3,4,5],
-  datasets: [{
-    label: 'Rainfall',
-    data: [ 200, 90, 120, 400, 500 ],
-    fill: false,
-    borderColor: 'green',
-    backgroundColor: 'green',
-  }]
-},
-options: {
-  annotation: {
-    annotations: [{
-      type: 'line',
-      mode: 'vertical',
-      scaleID: 'x-axis-0',
-      value: 2,
-      borderColor: 'red',
-      borderWidth: 4,
-      label: {
-        enabled: true,
-        content: 'Something changed'
-      }
-    }, {
-      type: 'box',
-      xScaleID: 'x-axis-0',
-      yScaleID: 'y-axis-0',
-      xMin: 3,
-      xMax: 5,
-      backgroundColor: 'rgba(200, 200, 200, 0.2)',
-      borderColor: '#ccc',
+  type: 'line',
+  data: {
+    labels: [1,2,3,4,5],
+    datasets: [{
+      label: 'Rainfall',
+      data: [ 200, 90, 120, 400, 500 ],
+      fill: false,
+      borderColor: 'green',
+      backgroundColor: 'green',
     }]
   },
-  plugins: {
-    datalabels: {
-      display: true,
-      align: 'bottom',
-      backgroundColor: '#ccc',
-      borderRadius: 3
+  options: {
+    annotation: {
+      annotations: [{
+        type: 'line',
+        mode: 'vertical',
+        scaleID: 'x-axis-0',
+        value: 2,
+        borderColor: 'red',
+        borderWidth: 4,
+        label: {
+          enabled: true,
+          content: 'Something changed'
+        }
+      }, {
+        type: 'box',
+        xScaleID: 'x-axis-0',
+        yScaleID: 'y-axis-0',
+        xMin: 3,
+        xMax: 5,
+        backgroundColor: 'rgba(200, 200, 200, 0.2)',
+        borderColor: '#ccc',
+      }]
     },
+    plugins: {
+      datalabels: {
+        display: true,
+        align: 'bottom',
+        backgroundColor: '#ccc',
+        borderRadius: 3
+      },
+    }
   }
-}
 }</textarea>
     </div>
     <div class="arrowcol"></div>
@@ -600,29 +600,29 @@ options: {
         An example of the <code>outlabeledPie</code> type:
       </p>
       <textarea class="sandbox-input" data-image-id="sandbox-plugin-2" data-tag-id="plugin-tag-2">{
-"type": "outlabeledPie",
-"data": {
-  "labels": ["ONE", "TWO", "THREE", "FOUR", "FIVE"],
-  "datasets": [{
-      "backgroundColor": ["#FF3784", "#36A2EB", "#4BC0C0", "#F77825", "#9966FF"],
-      "data": [1, 2, 3, 4, 5]
-  }]
-},
-"options": {
-  "plugins": {
-    "legend": false,
-    "outlabels": {
-      "text": "%l %p",
-      "color": "white",
-      "stretch": 35,
-      "font": {
-        "resizable": true,
-        "minSize": 12,
-        "maxSize": 18
+  "type": "outlabeledPie",
+  "data": {
+    "labels": ["ONE", "TWO", "THREE", "FOUR", "FIVE"],
+    "datasets": [{
+        "backgroundColor": ["#FF3784", "#36A2EB", "#4BC0C0", "#F77825", "#9966FF"],
+        "data": [1, 2, 3, 4, 5]
+		}]
+  },
+  "options": {
+    "plugins": {
+      "legend": false,
+      "outlabels": {
+        "text": "%l %p",
+        "color": "white",
+        "stretch": 35,
+        "font": {
+          "resizable": true,
+          "minSize": 12,
+          "maxSize": 18
+        }
       }
     }
   }
-}
 }</textarea>
     </div>
     <div class="arrowcol"></div>
