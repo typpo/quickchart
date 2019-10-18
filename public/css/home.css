@@ -40,7 +40,7 @@ html, body {
 
 .nav li {
   display: inline-block;
-  padding: 1em 1em 1em 1em;
+  padding: 1em;
   cursor: pointer;
 }
 .nav li:hover {
@@ -189,7 +189,7 @@ footer {
     display: none;
   }
   .nav {
-    font-size: 0.8em;
+    font-size: 0.9em;
   }
   .nav ul {
     text-align: left;

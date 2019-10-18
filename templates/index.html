@@ -84,9 +84,10 @@
 
 {% block nav_menu %}
 <a href="#customize" class="mobile-hide"><li>Configuration</li></a>
+<a href="#chart-types"><li>Chart Types</li></a>
 <a href="#qr"><li>QR Codes</li></a>
 <a href="/pricing" class="mobile-hide"><li>Pricing</li></a>
-<a href="https://github.com/typpo/quickchart"><li>Open Source</li></a>
+<a href="https://github.com/typpo/quickchart"><li>Github</li></a>
 <a href="#faq"><li>FAQ</li></a>
 {% endblock %}
 
@@ -162,8 +163,8 @@ data: {
   </p>
   <div class="summary cta-container">
     <p class="centered">
-      <a class="cta" href="/pricing">Get a Commercial License</a>
-      <a class="cta secondary" href="https://github.com/typpo/quickchart">View source code</a>
+      <a class="cta" href="/pricing">Get a commercial license</a>
+      <a class="cta secondary" href="https://github.com/typpo/quickchart">View the source code</a>
     </p>
   </div>
   <h2 id="customize">Customize Your Chart</h2>
@@ -578,7 +579,7 @@ curl -X POST \
   </div>
   <h2 id="qr">QR codes</h2>
   <p>
-    We also support QR code generation.  You can render a QR code like so:
+    This web service supports QR code generation.  You can render a QR code like so:
   </p>
   <div class="centered">
     <p>
@@ -682,36 +683,4 @@ curl -X POST \
 </script>
 {% include "tracking.html" %}
 <script src="https://js.stripe.com/v3"></script>
-<script>
-(function() {
-  var stripe = Stripe('pk_live_j0HvuqhekJLl5ZtRCWb6WSWC0029shZjnZ');
-  var plans = ['plan_G0HhunFNwnLLiU', 'plan_FzxDcjIG1vDdWD'];
-  plans.forEach(function(plan) {
-    var checkoutButton = document.getElementById('checkout-button-' + plan);
-    checkoutButton.addEventListener('click', function() {
-      // When the customer clicks on the button, redirect
-      // them to Checkout.
-      stripe.redirectToCheckout({
-        items: [{plan: plan, quantity: 1}],
-
-        // Do not rely on the redirect to the successUrl for fulfilling
-        // purchases, customers may not always reach the success_url after
-        // a successful payment.
-        // Instead use one of the strategies described in
-        // https://stripe.com/docs/payments/checkout/fulfillment
-        successUrl: 'https://quickchart.io/payment-success',
-        cancelUrl: 'https://quickchart.io/',
-      })
-      .then(function (result) {
-        if (result.error) {
-          // If `redirectToCheckout` fails due to a browser or network
-          // error, display the localized error message to your customer.
-          var displayError = document.getElementById('error-message-' + plan);
-          displayError.textContent = result.error.message;
-        }
-      });
-    });
-  });
-})();
-</script>
 {% endblock %}
