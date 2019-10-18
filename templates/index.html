@@ -4,23 +4,6 @@
 
 {% block styles %}
 <style>
-  .nav {
-    line-height: 1.6;
-  }
-
-  .toc {
-    border: 1px solid #a2a9b1;
-    background-color: #f8f9fa;
-    padding: 1em 0 0 0;
-    max-width: 400px;
-    line-height: 2;
-  }
-
-  .toc p {
-    text-align: center;
-    font-weight: bold;
-  }
-
   .hero {
     position: relative;
     display: flex;
@@ -84,37 +67,6 @@
     max-width: 10em;
   }
 
-  .pricing-table-container {
-    overflow-x: auto;
-  }
-
-  .pricing-table {
-    width: 100%;
-    background-color: #fafafa;
-    border-collapse: collapse;
-  }
-
-  .pricing-table .row-header {
-    font-weight: bold;
-  }
-
-  .pricing-table th, .pricing-table td {
-    text-align: center;
-    border: 1px solid #000;
-    padding: 1em 0.5em;
-  }
-
-  footer {
-    color: #aaa;
-    background-color: #eee;
-  }
-
-  .footer-content {
-    margin: 0 auto;
-    max-width: 1024px;
-    padding: 1em;
-  }
-
   @media (max-width: 600px) {
     .hero {
       display: block;
@@ -129,25 +81,18 @@
   }
 </style>
 {% endblock %}
+
+{% block nav_menu %}
+<a href="#customize" class="mobile-hide"><li>Configuration</li></a>
+<a href="#qr"><li>QR Codes</li></a>
+<a href="/pricing" class="mobile-hide"><li>Pricing</li></a>
+<a href="https://github.com/typpo/quickchart"><li>Open Source</li></a>
+<a href="#faq"><li>FAQ</li></a>
+{% endblock %}
+
 {% block content %}
-<div class="nav">
-  <div class="brand">QuickChart</div>
-  <div class="nav-links">
-    <ul>
-      <li>Home</li>
-      <li>Pricing</li>
-      <li>Open Source</li>
-      <li>FAQ</li>
-    </ul>
-  </div>
-</div>
 <div class="header centered">
   <h1>Create embeddable chart images with a single URL</h1>
-<!--
-  <p class="nav desktop-only">
-    <a href="#build-from-url">How It Works</a> &middot; <a href="#customize">Customize Your Chart</a> &middot; <a href="#chart-types">Chart Types</a> &middot; <a href="#qr">QR Codes</a> &middot; <a href="#pricing">Pricing</a> &middot; <a href="#faq">FAQ</a> &middot; <a href="https://github.com/typpo/quickchart">Open Source</a>
-  </p>
--->
 </div>
 <div class="page-container">
   <div class="hero">
@@ -171,25 +116,9 @@
     QuickChart also renders <strong>PDF charts</strong> and <strong>QR codes</strong>.
     </p>
     <p>
-      The QuickChart.io web service lets you generate 20,000 charts per month free of charge.  QuickChart is <a href="https://github.com/typpo/quickchart">open source</a> under GPLv3.  <a href="#pricing">Commercial and enterprise licensing</a> is also available.
+      The QuickChart.io web service lets you generate 20,000 charts per month free of charge.  QuickChart is <a href="https://github.com/typpo/quickchart">open source</a> under GPLv3.  <a href="/pricing">Commercial and enterprise licensing</a> is also available.
     </p>
   </div>
-<!--
-  <div class="toc mobile-only">
-    <p>
-      Contents
-    </p>
-    <ul>
-      <li><a href="#build-from-url">How It Works</a></li>
-      <li><a href="#customize">Customize Your Chart</a></li>
-      <li><a href="#chart-types">Chart Types</a></li>
-      <li><a href="#qr">QR Codes</a></li>
-      <li><a href="#pricing">Pricing</a></li>
-      <li><a href="#faq">FAQ</a></li>
-      <li><a href="https://github.com/typpo/quickchart">Open Source</a></li>
-    </ul>
-  </div>
--->
   <div class="hero panel">
     <div class="col">
       <h2 class="centered">Try it yourself</h2>
@@ -233,7 +162,7 @@ data: {
   </p>
   <div class="summary cta-container">
     <p class="centered">
-      <a class="cta" href="/docs">See how it works</a>
+      <a class="cta" href="/pricing">Get a Commercial License</a>
       <a class="cta secondary" href="https://github.com/typpo/quickchart">View source code</a>
     </p>
   </div>
@@ -418,7 +347,7 @@ curl -X POST \
     <div class="col">
       <h3>Bar Graph</h3>
       <code>
-  &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'bar'</span>,data:{labels:['January','February','March','April', 'May'], datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500]}]}}"&gt;
+  &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'bar'</span>,data:{labels:['January','February', 'March','April', 'May'], datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500]}]}}"&gt;
       </code>
     </div>
     <div class="arrowcol"></div>
@@ -430,7 +359,7 @@ curl -X POST \
     <div class="col">
       <h3>Line Graph</h3>
       <code>
-  &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'line'</span>,data:{labels:['January','February','March','April', 'May'], datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500]}]}}"&gt;
+  &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'line'</span>,data:{labels:['January','February', 'March','April', 'May'], datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500]}]}}"&gt;
       </code>
     </div>
     <div class="arrowcol"></div>
@@ -445,19 +374,19 @@ curl -X POST \
     <div class="col">
       <h3>Radar Chart</h3>
       <code>
-  &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'radar'</span>,data:{labels:['January','February','March','April', 'May'], datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500]}]}}"&gt;
+  &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'radar'</span>,data:{labels:['January','February', 'March','April', 'May'], datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500]}]}}"&gt;
       </code>
     </div>
     <div class="arrowcol"></div>
     <div class="col">
-      <img class="img-example" src="/chart?bkg=white&c={type:'radar',data:{labels:['January','February','March','April', 'May'],datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500]}]}}"/>
+      <img class="img-example" src="/chart?bkg=white&c={type:'radar',data:{labels:['January', 'February','March','April', 'May'],datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500]}]}}"/>
     </div>
   </div>
   <div class="hero panel">
     <div class="col">
       <h3>Pie Chart</h3>
       <code>
-  &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'pie'</span>,data:{labels:['January','February','March','April', 'May'], datasets:[{data:[50,60,70,180,190]}]}}"&gt;
+  &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'pie'</span>,data:{labels:['January','February', 'March','April', 'May'], datasets:[{data:[50,60,70,180,190]}]}}"&gt;
       </code>
     </div>
     <div class="arrowcol"></div>
@@ -469,7 +398,7 @@ curl -X POST \
     <div class="col">
       <h3>Doughnut Chart</h3>
       <code>
-  &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'doughnut'</span>,data:{labels:['January','February','March','April', 'May'], datasets:[{data:[50,60,70,180,190]}]}}"&gt;
+  &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'doughnut'</span>,data:{labels:['January','February', 'March','April', 'May'], datasets:[{data:[50,60,70,180,190]}]}}"&gt;
       </code>
     </div>
     <div class="arrowcol"></div>
@@ -541,7 +470,7 @@ curl -X POST \
     <div class="col">
       <h3>Mixed Charts</h3>
       <code>
-  &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'bar'</span>,data:{labels:['January','February','March','April', 'May'], datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500],},{<span class="hl">type:'line'</span>,fill:false, label:'Potatoes',data:[100,400,200,400,700]}]}}"&gt;
+  &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'bar'</span>,data:{labels:['January','February', 'March','April', 'May'], datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500],},{<span class="hl">type:'line'</span>,fill:false, label:'Potatoes',data:[100,400,200,400,700]}]}}"&gt;
       </code>
     </div>
     <div class="arrowcol"></div>
@@ -676,68 +605,6 @@ curl -X POST \
       <img src="/qr?text=Here's%20my%20text&dark=f00&light=0ff&ecLevel=Q&margin=2">
     </p>
   </div>
-  <h2 id="pricing">Pricing</h2>
-  <p>
-    QuickChart will always be free and open source, but some users need a different (non-GPL) license or a Service-Level Agreement (SLA) that guarantees uptime.  <a href="mailto:support@quickchart.io">Contact support</a> with any questions.
-  </p>
-  <div class="pricing-table-container">
-    <table class="pricing-table">
-      <tr>
-        <th></th>
-        <th>Free &amp; Open Source</th>
-        <th>Commercial License<br>$25/mo</th>
-        <th>Commercial License + SLA<br>$40/mo</th>
-      </tr>
-      <tr>
-        <td class="row-header">License</td>
-        <td>GNU GPL v3 license</td>
-        <td>Full commercial usage</td>
-        <td>Full commercial usage</td>
-      </tr>
-      <tr>
-        <td class="row-header">Limits</td>
-        <td>20,000 charts/mo<br>Rate limitations<br>(no limits if self-hosted)</td>
-        <td>50,000 charts/mo<br>No rate limitations</td>
-        <td>50,000 charts/mo<br>No rate limitations</td>
-      </tr>
-      <tr>
-        <td class="row-header">Support</td>
-        <td>Best-effort email support</td>
-        <td>Full email support</td>
-        <td>Full email support</td>
-      </tr>
-      <tr>
-        <td class="row-header">SLA</td>
-        <td>No SLA</td>
-        <td>No SLA</td>
-        <td><a href="/docs/SLA.pdf">QuickChart SLA</a></td>
-      </tr>
-      <tr>
-        <td></td>
-        <td></td>
-        <td>
-          <button
-            style="background-color:#6772E5;color:#FFF;padding:8px 12px;border:0;border-radius:4px;font-size:1em;cursor:pointer"
-            id="checkout-button-plan_G0HhunFNwnLLiU"
-            role="link"
-          >
-            Sign Up
-          </button>
-          <div id="error-message-plan_G0HhunFNwnLLiU"></div>
-        </td>
-        <td>
-          <button
-            style="background-color:#6772E5;color:#FFF;padding:8px 12px;border:0;border-radius:4px;font-size:1em;cursor:pointer"
-            id="checkout-button-plan_FzxDcjIG1vDdWD"
-            role="link"
-          >
-            Sign Up
-          </button>
-          <div id="error-message-plan_FzxDcjIG1vDdWD"></div>
-        </td>
-      </tr>
-    </table>
-  </div>
   <h2 id="faq">Frequently Asked Questions</h2>
   <p>
     <strong>Is QuickChart reliable?</strong>
@@ -793,6 +660,9 @@ curl -X POST \
 <footer>
   <div class="footer-content">
     &copy; Alioth LLC 2019
+    <div class="footer-right">
+      <a href="#">Back to top</a>
+    </div>
   </div>
 </footer>
 {% endblock %}
