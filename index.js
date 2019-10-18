@@ -65,6 +65,10 @@ app.get('/', (req, res) => {
   res.render('index');
 });
 
+app.get('/pricing', (req, res) => {
+  res.render('pricing');
+});
+
 app.get('/robots.txt', (req, res) => {
   res.sendFile(path.join(__dirname, './templates/robots.txt'));
 });

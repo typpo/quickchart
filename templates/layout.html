@@ -13,10 +13,19 @@
   <meta name="theme-color" content="#ffffff">
   <title>{% block title %}{% endblock %}</title>
   {% include "meta.html" %}
+  <link rel="stylesheet" href="/css/home.css" />
   {% include "shared.css" %}
   {% block styles %}{% endblock %}
 </head>
 <body>
+  <div class="nav">
+    <div class="brand">QuickChart</div>
+    <div class="nav-links">
+      <ul>
+        {% block nav_menu %}{% endblock %}
+      </ul>
+    </div>
+  </div>
   {% block content %}{% endblock %}
   {% block scripts %}{% endblock %}
 </body>

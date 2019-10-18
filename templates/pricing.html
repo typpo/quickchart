@@ -1,0 +1,140 @@
+{% extends 'layout.html' %}
+
+{% block title %}Pricing | QuickChart{% endblock %}
+
+{% block styles %}
+<style>
+.pricing-table-container {
+  overflow-x: auto;
+}
+
+.pricing-table {
+  width: 100%;
+  background-color: #fafafa;
+  border-collapse: collapse;
+}
+
+.pricing-table .row-header {
+  font-weight: bold;
+}
+
+.pricing-table th, .pricing-table td {
+  text-align: center;
+  border: 1px solid #000;
+  padding: 1em 0.5em;
+}
+</style>
+{% endblock %}
+
+{% block nav_menu %}
+<a href="/"><li>Home</li></a>
+<a href="/#customize" class="mobile-hide"><li>Configuration</li></a>
+<a href="/#qr"><li>QR Codes</li></a>
+<a href="https://github.com/typpo/quickchart"><li>Open Source</li></a>
+<a href="/#faq"><li>FAQ</li></a>
+{% endblock %}
+
+{% block content %}
+<div class="page-container">
+  <h1>Pricing</h1>
+  <p>
+    QuickChart will always be free and open source, but some users require a non-GPL license or a Service-Level Agreement (SLA) that guarantees uptime.  Please <a href="mailto:support@quickchart.io">contact us</a> with any questions.
+  </p>
+  <div class="pricing-table-container">
+    <table class="pricing-table">
+      <tr>
+        <th></th>
+        <th>Free &amp; Open Source</th>
+        <th>Commercial License<br>$25/mo</th>
+        <th>Commercial License + SLA<br>$40/mo</th>
+      </tr>
+      <tr>
+        <td class="row-header">License</td>
+        <td>GNU GPL v3 license</td>
+        <td>Full commercial usage</td>
+        <td>Full commercial usage</td>
+      </tr>
+      <tr>
+        <td class="row-header">Limits</td>
+        <td>20,000 charts/mo<br>Rate limitations<br>(no limits if self-hosted)</td>
+        <td>50,000 charts/mo<br>No rate limitations</td>
+        <td>50,000 charts/mo<br>No rate limitations</td>
+      </tr>
+      <tr>
+        <td class="row-header">Support</td>
+        <td>Best-effort email support</td>
+        <td>Full email support</td>
+        <td>Full email support</td>
+      </tr>
+      <tr>
+        <td class="row-header">SLA</td>
+        <td>No SLA</td>
+        <td>No SLA</td>
+        <td><a href="/docs/SLA.pdf">QuickChart SLA</a></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td></td>
+        <td>
+          <button
+            style="background-color:#6772E5;color:#FFF;padding:8px 12px;border:0;border-radius:4px;font-size:1em;cursor:pointer"
+            id="checkout-button-plan_G0HhunFNwnLLiU"
+            role="link"
+          >
+            Sign Up
+          </button>
+          <div id="error-message-plan_G0HhunFNwnLLiU"></div>
+        </td>
+        <td>
+          <button
+            style="background-color:#6772E5;color:#FFF;padding:8px 12px;border:0;border-radius:4px;font-size:1em;cursor:pointer"
+            id="checkout-button-plan_FzxDcjIG1vDdWD"
+            role="link"
+          >
+            Sign Up
+          </button>
+          <div id="error-message-plan_FzxDcjIG1vDdWD"></div>
+        </td>
+      </tr>
+    </table>
+  </div>
+  {% include 'faq.html' %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+{% include "tracking.html" %}
+<script src="https://js.stripe.com/v3"></script>
+<script>
+(function() {
+  var stripe = Stripe('pk_live_j0HvuqhekJLl5ZtRCWb6WSWC0029shZjnZ');
+  var plans = ['plan_G0HhunFNwnLLiU', 'plan_FzxDcjIG1vDdWD'];
+  plans.forEach(function(plan) {
+    var checkoutButton = document.getElementById('checkout-button-' + plan);
+    checkoutButton.addEventListener('click', function() {
+      // When the customer clicks on the button, redirect
+      // them to Checkout.
+      stripe.redirectToCheckout({
+        items: [{plan: plan, quantity: 1}],
+
+        // Do not rely on the redirect to the successUrl for fulfilling
+        // purchases, customers may not always reach the success_url after
+        // a successful payment.
+        // Instead use one of the strategies described in
+        // https://stripe.com/docs/payments/checkout/fulfillment
+        successUrl: 'https://quickchart.io/payment-success',
+        cancelUrl: 'https://quickchart.io/',
+      })
+      .then(function (result) {
+        if (result.error) {
+          // If `redirectToCheckout` fails due to a browser or network
+          // error, display the localized error message to your customer.
+          var displayError = document.getElementById('error-message-' + plan);
+          displayError.textContent = result.error.message;
+        }
+      });
+    });
+  });
+})();
+</script>
+{% endblock %}

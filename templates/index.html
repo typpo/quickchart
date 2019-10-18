@@ -4,23 +4,6 @@
 
 {% block styles %}
 <style>
-  .nav {
-    line-height: 1.6;
-  }
-
-  .toc {
-    border: 1px solid #a2a9b1;
-    background-color: #f8f9fa;
-    padding: 1em 0 0 0;
-    max-width: 400px;
-    line-height: 2;
-  }
-
-  .toc p {
-    text-align: center;
-    font-weight: bold;
-  }
-
   .hero {
     position: relative;
     display: flex;
@@ -84,37 +67,6 @@
     max-width: 10em;
   }
 
-  .pricing-table-container {
-    overflow-x: auto;
-  }
-
-  .pricing-table {
-    width: 100%;
-    background-color: #fafafa;
-    border-collapse: collapse;
-  }
-
-  .pricing-table .row-header {
-    font-weight: bold;
-  }
-
-  .pricing-table th, .pricing-table td {
-    text-align: center;
-    border: 1px solid #000;
-    padding: 1em 0.5em;
-  }
-
-  footer {
-    color: #aaa;
-    background-color: #eee;
-  }
-
-  .footer-content {
-    margin: 0 auto;
-    max-width: 1024px;
-    padding: 1em;
-  }
-
   @media (max-width: 600px) {
     .hero {
       display: block;
@@ -129,21 +81,25 @@
   }
 </style>
 {% endblock %}
+
+{% block nav_menu %}
+<a href="#customize" class="mobile-hide"><li>Configuration</li></a>
+<a href="#chart-types"><li>Chart Types</li></a>
+<a href="#qr"><li>QR Codes</li></a>
+<a href="/pricing" class="mobile-hide"><li>Pricing</li></a>
+<a href="https://github.com/typpo/quickchart"><li>Github</li></a>
+<a href="#faq"><li>FAQ</li></a>
+{% endblock %}
+
 {% block content %}
 <div class="header centered">
-  <h1>Generate a Chart Image from URL</h1>
-  <p>
-    <strong>Create static charts for embedding in email, SMS, reports, and more.</strong>
-  </p>
-  <p class="nav desktop-only">
-    <a href="#build-from-url">How It Works</a> &middot; <a href="#customize">Customize Your Chart</a> &middot; <a href="#chart-types">Chart Types</a> &middot; <a href="#qr">QR Codes</a> &middot; <a href="#pricing">Pricing</a> &middot; <a href="#faq">FAQ</a> &middot; <a href="https://github.com/typpo/quickchart">Open Source</a>
-  </p>
+  <h1>Create embeddable chart images with a single URL</h1>
 </div>
-<div class="container">
+<div class="page-container">
   <div class="hero">
     <div class="col">
       <h2>
-        Create a chart using a single URL
+        Static embeddable image charts for email, SMS, reports, and more
       </h2>
       <p>
         <code>
@@ -156,44 +112,27 @@
       <img class="img-example" src="/chart?bkg=white&c={type:'bar',data:{labels:['January','February','March','April', 'May'],datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500]}]}}"/>
     </div>
   </div>
-  <p>
-    This service is a replacement for the <a href="https://developers.google.com/chart/image/">Google Image Charts API</a>, which turned off on March 14, 2019.  It can also generate chart PDFs and QR codes.
-  </p>
-  <div class="toc mobile-only">
+  <div class="summary">
     <p>
-      Contents
+    We also render <strong>charts to PDF</strong> and <strong>QR codes</strong>.
     </p>
-    <ul>
-      <li><a href="#build-from-url">How It Works</a></li>
-      <li><a href="#customize">Customize Your Chart</a></li>
-      <li><a href="#chart-types">Chart Types</a></li>
-      <li><a href="#qr">QR Codes</a></li>
-      <li><a href="#pricing">Pricing</a></li>
-      <li><a href="#faq">FAQ</a></li>
-      <li><a href="https://github.com/typpo/quickchart">Open Source</a></li>
-    </ul>
+    <p>
+      QuickChart.io lets you generate 20,000 charts per month free of charge.  The software is <a href="https://github.com/typpo/quickchart">open source</a> under GPLv3 and can be self-hosted.  <a href="/pricing">Commercial and enterprise licensing</a> is also available.
+    </p>
   </div>
-  <hr/>
-  <h2 id="build-from-url">How It Works</h2>
-  <p>
-    Chart images are defined by their URLs.  Each URL contains a JSON/Javascript object that includes all the data and display options. These options follow the popular open-source graphing library Chart.js.  Use the <a href="https://www.chartjs.org/docs/latest/charts/">documentation</a> to define your chart.
-  </p>
-  <p>
-    Once you've written your config, render it as an image with <code class="hl">https://quickchart.io/chart?c=[[insert config here]]</code>.  Try the realtime editor below:
-  </p>
   <div class="hero panel">
     <div class="col">
-      <textarea id="sandbox-input" class="sandbox-input" data-image-id="sandbox-img" data-tag-id="sandbox-tag">// Edit me!
-{
+      <h2 class="centered">Try it yourself</h2>
+      <textarea id="sandbox-input" class="sandbox-input" data-image-id="sandbox-img" data-tag-id="sandbox-tag">{
   type: 'bar',
   data: {
-    labels: ['January', 'February', 'March', 'April', 'May'],
+    labels: [2012, 2013, 2014, 2015, 2016],
     datasets: [{
-      label: 'Dogs',
-      data: [ 50, 60, 70, 180, 190 ]
+      label: 'Raisins',
+      data: [12, 6, 5, 18, 12]
     }, {
-      label: 'Cats',
-      data: [ 100, 200, 300, 400, 500 ]
+      label: 'Bananas',
+      data: [4, 8, 16, 5, 5]
     }]
   }
 }</textarea>
@@ -204,23 +143,33 @@
       <img class="img-example" id="sandbox-img" src="/chart?bkg=white&c={
 type: 'bar',
 data: {
-  labels: ['January', 'February', 'March', 'April', 'May'],
+  labels: [2012, 2013, 2014, 2015, 2016],
   datasets: [{
-    label: 'Dogs',
-    data: [ 50, 60, 70, 180, 190 ]
+    label: 'Raisins',
+    data: [12, 6, 5, 18, 12]
   }, {
-    label: 'Cats',
-    data: [ 100, 200, 300, 400, 500 ]
+    label: 'Bananas',
+    data: [4, 8, 16, 5, 5]
   }]
 }
 }"/>
     </div>
   </div>
   <p>
-{% raw %}
-    The API also lets you generate charts in <a href="https://quickchart.io/chart?f=pdf&bkg=white&c={%20%20type:%20%27bar%27,%20%20data:%20{%20%20%20%20labels:%20[%27January%27,%20%27February%27,%20%27March%27,%20%27April%27,%20%27May%27],%20%20%20%20datasets:%20[{%20%20%20%20%20%20label:%20%27Dogs%27,%20%20%20%20%20%20data:%20[%2050,%2060,%2070,%20180,%20190%20]%20%20%20%20},%20{%20%20%20%20%20%20label:%20%27Cats%27,%20%20%20%20%20%20data:%20[%20100,%20200,%20300,%20400,%20500%20]%20%20%20%20}]%20%20}}">PDF format</a> (see below for all customization options).
-{% endraw %}
+    Chart images are defined by their URLs.  Each URL contains a JSON/Javascript object that includes all data and display options. These options are rendered by the popular open-source graphing library Chart.js.
   </p>
+  <p>
+    Use a <a href="https://www.chartjs.org/docs/latest/charts/">Chart.js config</a> to define your chart.
+    Once you've written your config, render it as an image:
+    <br>
+    <code class="hl">https://quickchart.io/chart?c=[[insert config here]]</code>.
+  </p>
+  <div class="summary cta-container">
+    <p class="centered">
+      <a class="cta" href="/pricing">Get a commercial license</a>
+      <a class="cta secondary" href="https://github.com/typpo/quickchart">View the source code</a>
+    </p>
+  </div>
   <h2 id="customize">Customize Your Chart</h2>
   <p>
     Let's get creative.  The example below uses custom background colors, title, legend, stacked bars, axis labels, and data labels:
@@ -330,18 +279,18 @@ data: {
   <p>
     A couple things to remember when customizing your chart:
     <ul>
-      <li><strong>We recommend that you <a href="https://www.urlencoder.io">URL-encode</a> the entire chart config</strong> or base64 encode your chart config and specify <code>encoding=base64</code>.  If not encoded, you will run into problems with the # symbol and other special characters.</li>
+      <li><strong class="hl">We recommend that you <a href="https://www.urlencoder.io">URL-encode</a> the entire chart config</strong> or base64 encode your chart config (with <code>&amp;encoding=base64</code>).  If not encoded, you will run into problems with the # symbol and other special characters.</li>
       <li>Interactivity and animations are not supported (this service produces static images)</li>
     </ul>
   </p>
   <p>
-    We also provide these additional options as query parameters:
+    The chart endpoint accepts these query parameters:
     <ul>
       <li><code><strong>width</strong>=500</code>: Set the width of the image. Abbreviated as "w"</li>
       <li><code><strong>height</strong>=300</code>: Set the height of the image. Abbreviated as "h"</li>
       <li><code><strong>backgroundColor</strong>=transparent</code>: Set the background of the chart canvas. Abbreviated as "bkg"</li>
       <li><code><strong>format</strong>=png</code>: Set the format of your output. Currently the two supported output formats are PNG and PDF. Abbreviated as "f"</li>
-      <li><code><strong>encoding</strong>=url</code>: Select the encoding of your "chart" parameter. Accepted values are <code>url</code> (default) and <code>base64</code>.</li>
+      <li><code><strong>encoding</strong>=url</code>: Select the encoding of your "chart" parameter. Accepted values are <code>url</code> and <code>base64</code>.</li>
     </ul>
     Combine these parameters in your query string. For example: <code>/chart?width=500&amp;height=300&amp;format=pdf&amp;c={...}</code>
   </p>
@@ -352,11 +301,11 @@ data: {
   </p>
   <code><pre>
 {
-"backgroundColor": "transparent",
-"width": 500,
-"height": 300,
-"format": "png",
-"chart": {...},
+  "backgroundColor": "transparent",
+  "width": 500,
+  "height": 300,
+  "format": "png",
+  "chart": {...},
 }
   </pre></code>
   <p>
@@ -377,8 +326,8 @@ curl -X POST \
   </p>
   <code><pre>
 {
-"success": true,
-"url": "https://quickchart.io/chart/render/9a560ba4-ab71-4d1e-89ea-ce4741e9d232"
+  "success": true,
+  "url": "https://quickchart.io/chart/render/9a560ba4-ab71-4d1e-89ea-ce4741e9d232"
 }
   </pre></code>
   <p>
@@ -402,7 +351,7 @@ curl -X POST \
     <div class="col">
       <h3>Bar Graph</h3>
       <code>
-  &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'bar'</span>,data:{labels:['January','February','March','April', 'May'], datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500]}]}}"&gt;
+  &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'bar'</span>,data:{labels:['January','February', 'March','April', 'May'], datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500]}]}}"&gt;
       </code>
     </div>
     <div class="arrowcol"></div>
@@ -414,7 +363,7 @@ curl -X POST \
     <div class="col">
       <h3>Line Graph</h3>
       <code>
-  &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'line'</span>,data:{labels:['January','February','March','April', 'May'], datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500]}]}}"&gt;
+  &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'line'</span>,data:{labels:['January','February', 'March','April', 'May'], datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500]}]}}"&gt;
       </code>
     </div>
     <div class="arrowcol"></div>
@@ -429,19 +378,19 @@ curl -X POST \
     <div class="col">
       <h3>Radar Chart</h3>
       <code>
-  &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'radar'</span>,data:{labels:['January','February','March','April', 'May'], datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500]}]}}"&gt;
+  &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'radar'</span>,data:{labels:['January','February', 'March','April', 'May'], datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500]}]}}"&gt;
       </code>
     </div>
     <div class="arrowcol"></div>
     <div class="col">
-      <img class="img-example" src="/chart?bkg=white&c={type:'radar',data:{labels:['January','February','March','April', 'May'],datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500]}]}}"/>
+      <img class="img-example" src="/chart?bkg=white&c={type:'radar',data:{labels:['January', 'February','March','April', 'May'],datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500]}]}}"/>
     </div>
   </div>
   <div class="hero panel">
     <div class="col">
       <h3>Pie Chart</h3>
       <code>
-  &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'pie'</span>,data:{labels:['January','February','March','April', 'May'], datasets:[{data:[50,60,70,180,190]}]}}"&gt;
+  &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'pie'</span>,data:{labels:['January','February', 'March','April', 'May'], datasets:[{data:[50,60,70,180,190]}]}}"&gt;
       </code>
     </div>
     <div class="arrowcol"></div>
@@ -453,7 +402,7 @@ curl -X POST \
     <div class="col">
       <h3>Doughnut Chart</h3>
       <code>
-  &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'doughnut'</span>,data:{labels:['January','February','March','April', 'May'], datasets:[{data:[50,60,70,180,190]}]}}"&gt;
+  &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'doughnut'</span>,data:{labels:['January','February', 'March','April', 'May'], datasets:[{data:[50,60,70,180,190]}]}}"&gt;
       </code>
     </div>
     <div class="arrowcol"></div>
@@ -525,7 +474,7 @@ curl -X POST \
     <div class="col">
       <h3>Mixed Charts</h3>
       <code>
-  &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'bar'</span>,data:{labels:['January','February','March','April', 'May'], datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500],},{<span class="hl">type:'line'</span>,fill:false, label:'Potatoes',data:[100,400,200,400,700]}]}}"&gt;
+  &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'bar'</span>,data:{labels:['January','February', 'March','April', 'May'], datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500],},{<span class="hl">type:'line'</span>,fill:false, label:'Potatoes',data:[100,400,200,400,700]}]}}"&gt;
       </code>
     </div>
     <div class="arrowcol"></div>
@@ -633,7 +582,7 @@ curl -X POST \
   </div>
   <h2 id="qr">QR codes</h2>
   <p>
-    We also support QR code generation.  You can render a QR code like so:
+    This web service supports QR code generation.  You can render a QR code like so:
   </p>
   <div class="centered">
     <p>
@@ -660,102 +609,7 @@ curl -X POST \
       <img src="/qr?text=Here's%20my%20text&dark=f00&light=0ff&ecLevel=Q&margin=2">
     </p>
   </div>
-  <h2 id="pricing">Pricing</h2>
-  <p>
-    QuickChart will always be free and open source, but some users need a different (non-GPL) license or a Service-Level Agreement (SLA) that guarantees uptime.  <a href="mailto:support@quickchart.io">Contact support</a> with any questions.
-  </p>
-  <div class="pricing-table-container">
-    <table class="pricing-table">
-      <tr>
-        <th></th>
-        <th>Free &amp; Open Source</th>
-        <th>Commercial License<br>$25/mo</th>
-        <th>Commercial License + SLA<br>$40/mo</th>
-      </tr>
-      <tr>
-        <td class="row-header">License</td>
-        <td>GNU GPL v3 license</td>
-        <td>Full commercial usage</td>
-        <td>Full commercial usage</td>
-      </tr>
-      <tr>
-        <td class="row-header">Limits</td>
-        <td>20,000 charts/mo<br>Rate limitations<br>(no limits if self-hosted)</td>
-        <td>50,000 charts/mo<br>No rate limitations</td>
-        <td>50,000 charts/mo<br>No rate limitations</td>
-      </tr>
-      <tr>
-        <td class="row-header">Support</td>
-        <td>Best-effort email support</td>
-        <td>Full email support</td>
-        <td>Full email support</td>
-      </tr>
-      <tr>
-        <td class="row-header">SLA</td>
-        <td>No SLA</td>
-        <td>No SLA</td>
-        <td><a href="/docs/SLA.pdf">QuickChart SLA</a></td>
-      </tr>
-      <tr>
-        <td></td>
-        <td></td>
-        <td>
-          <button
-            style="background-color:#6772E5;color:#FFF;padding:8px 12px;border:0;border-radius:4px;font-size:1em;cursor:pointer"
-            id="checkout-button-plan_G0HhunFNwnLLiU"
-            role="link"
-          >
-            Sign Up
-          </button>
-          <div id="error-message-plan_G0HhunFNwnLLiU"></div>
-        </td>
-        <td>
-          <button
-            style="background-color:#6772E5;color:#FFF;padding:8px 12px;border:0;border-radius:4px;font-size:1em;cursor:pointer"
-            id="checkout-button-plan_FzxDcjIG1vDdWD"
-            role="link"
-          >
-            Sign Up
-          </button>
-          <div id="error-message-plan_FzxDcjIG1vDdWD"></div>
-        </td>
-      </tr>
-    </table>
-  </div>
-  <h2 id="faq">Frequently Asked Questions</h2>
-  <p>
-    <strong>Is QuickChart reliable?</strong>
-  </p>
-  <p>
-    This site (QuickChart.io) is widely used and generates over 16 million charts per month without issue.  That's an average of 6 charts per second over the entire month!  There is a built-in rate limit of 240 charts/min (4 charts/sec) per IP.
-  </p>
-  <p>
-    If you want to remove rate limits or need a Service-Level Agreement with uptime guarantees, <a href="mailto:support@quickchart.io?subject=Commercial License and SLA&body=I'm interested in a commercial license and SLA for QuickChart. Please get back to me with next steps.">get in touch</a>.
-  </p>
-  <p>
-    See also the <a href="https://status.quickchart.io/">QuickChart status page</a>, which monitors uptime.
-  </p>
-  <p>
-    <strong>How can I make my chart look like X?</strong>
-  </p>
-  <p>
-    QuickChart uses the Chart.js library, so you should look at the <a href="https://www.chartjs.org/docs/latest/charts/">Chart.js documentation</a> or use Chart.js-related search terms to answer questions on how to customize your chart.  If you're really stuck, you can <a href="https://stackoverflow.com/questions/ask">post on StackOverflow</a> and/or <a href="mailto:support@quickchart.io?subject=I need help!">email us</a>.
-  </p>
-  <p>
-    <strong>Do I need a license to use QuickChart?</strong>
-  </p>
-  <p>
-    Charts generated by QuickChart are public domain.  You don't need a license or any permission to use or distribute images produced by this site.
-  </p>
-  <p>
-    If you'd like to fork the code, keep in mind this project is licensed under GPLv3 and you should make your code public and retain the copyright notice.  If you'd like to license QuickChart privately or commercially, or if you'd like help setting up a private instance, please <a href="mailto:support@quickchart.io">get in touch</a>.
-  </p>
-  <p>
-    <strong>How can I contribute?</strong>
-  </p>
-  <p>
-    QuickChart is under active development.  If you'd like to suggest a feature or modify QuickChart code, please open an issue or pull request on the QuickChart <a href="https://www.github.com/typpo/quickchart">Github</a>.
-  </p>
+  {% include 'faq.html' %}
   <h2 id="about">About QuickChart.io</h2>
   <p>
     The QuickChart is provided for free and <a href="https://github.com/typpo/quickchart">open source</a>.  You may use images produced by this website for any purpose.
@@ -771,6 +625,9 @@ curl -X POST \
 <footer>
   <div class="footer-content">
     &copy; Alioth LLC 2019
+    <div class="footer-right">
+      <a href="#">Back to top</a>
+    </div>
   </div>
 </footer>
 {% endblock %}
@@ -829,36 +686,4 @@ curl -X POST \
 </script>
 {% include "tracking.html" %}
 <script src="https://js.stripe.com/v3"></script>
-<script>
-(function() {
-  var stripe = Stripe('pk_live_j0HvuqhekJLl5ZtRCWb6WSWC0029shZjnZ');
-  var plans = ['plan_G0HhunFNwnLLiU', 'plan_FzxDcjIG1vDdWD'];
-  plans.forEach(function(plan) {
-    var checkoutButton = document.getElementById('checkout-button-' + plan);
-    checkoutButton.addEventListener('click', function() {
-      // When the customer clicks on the button, redirect
-      // them to Checkout.
-      stripe.redirectToCheckout({
-        items: [{plan: plan, quantity: 1}],
-
-        // Do not rely on the redirect to the successUrl for fulfilling
-        // purchases, customers may not always reach the success_url after
-        // a successful payment.
-        // Instead use one of the strategies described in
-        // https://stripe.com/docs/payments/checkout/fulfillment
-        successUrl: 'https://quickchart.io/payment-success',
-        cancelUrl: 'https://quickchart.io/',
-      })
-      .then(function (result) {
-        if (result.error) {
-          // If `redirectToCheckout` fails due to a browser or network
-          // error, display the localized error message to your customer.
-          var displayError = document.getElementById('error-message-' + plan);
-          displayError.textContent = result.error.message;
-        }
-      });
-    });
-  });
-})();
-</script>
 {% endblock %}
