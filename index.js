@@ -45,9 +45,9 @@ if (process.env.RATE_LIMIT_PER_MIN) {
       logger.info('User hit rate limit!');
     },
     skip: req => {
-      if (req.query.key) {
+      if (req.query.key || req.body.key) {
         // If user has a special key, bypass rate limiting.
-        return apiKeys.has(req.query.key);
+        return apiKeys.has(req.query.key) || apiKeys.has(req.body.key);
       }
       return false;
     },
