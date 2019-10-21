@@ -212,7 +212,7 @@ app.post('/chart', (req, res) => {
     height: req.body.h || req.body.height,
     width: req.body.w || req.body.width,
     backgroundColor: req.body.backgroundColor || req.body.bkg,
-    encoding: req.query.encoding || 'url',
+    encoding: req.body.encoding || 'url',
   };
   const outputFormat = (req.body.f || req.body.format || '').toLowerCase();
 
