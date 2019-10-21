@@ -6,7 +6,7 @@ const qs = require('qs');
 const rateLimit = require('express-rate-limit');
 const text2png = require('text2png');
 
-const apiKeys = require('./api_keys');
+const { requestHasValidKey } = require('./api_keys');
 const packageJson = require('./package.json');
 const telemetry = require('./telemetry');
 const { getPdfBufferFromPng, getPdfBufferWithText } = require('./lib/pdf');
@@ -45,11 +45,8 @@ if (process.env.RATE_LIMIT_PER_MIN) {
       logger.info('User hit rate limit!');
     },
     skip: req => {
-      if (req.query.key || req.body.key) {
-        // If user has a special key, bypass rate limiting.
-        return apiKeys.has(req.query.key) || apiKeys.has(req.body.key);
-      }
-      return false;
+      // If user has a special key, bypass rate limiting.
+      return requestHasValidKey(req);
     },
   });
   app.use('/chart', limiter);

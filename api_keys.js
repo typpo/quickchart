@@ -20,4 +20,30 @@ try {
 
 const keys = new Set(rawKeys);
 
-module.exports = keys;
+function isValidKey(key) {
+  return keys.has(key);
+}
+
+function getKeyFromRequest(req) {
+  if (req.query.key) {
+    return req.query.key;
+  }
+  if (req.body.key) {
+    return req.body.key;
+  }
+  return null;
+}
+
+function requestHasValidKey(req) {
+  const key = getKeyFromRequest(req);
+  if (key) {
+    return isValidKey(key);
+  }
+  return false;
+}
+
+module.exports = {
+  isValidKey,
+  getKeyFromRequest,
+  requestHasValidKey,
+};
