@@ -20,6 +20,10 @@ try {
 
 const keys = new Set(rawKeys);
 
+// Map from key to number of recent requests - this is not persisted through
+// restarts.
+const recentRequestCount = {};
+
 function isValidKey(key) {
   return keys.has(key);
 }
@@ -42,8 +46,25 @@ function requestHasValidKey(req) {
   return false;
 }
 
+function countRequest(req) {
+  const key = getKeyFromRequest(req);
+  if (!key) {
+    return;
+  }
+  if (!recentRequestCount[key]) {
+    recentRequestCount[key] = 0;
+  }
+  recentRequestCount[key] += 1;
+}
+
+function getNumRecentRequests(key) {
+  return recentRequestCount[key] || 0;
+}
+
 module.exports = {
   isValidKey,
   getKeyFromRequest,
   requestHasValidKey,
+  countRequest,
+  getNumRecentRequests,
 };

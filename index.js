@@ -6,7 +6,7 @@ const qs = require('qs');
 const rateLimit = require('express-rate-limit');
 const text2png = require('text2png');
 
-const { requestHasValidKey } = require('./api_keys');
+const apiKeys = require('./api_keys');
 const packageJson = require('./package.json');
 const telemetry = require('./telemetry');
 const { getPdfBufferFromPng, getPdfBufferWithText } = require('./lib/pdf');
@@ -46,7 +46,11 @@ if (process.env.RATE_LIMIT_PER_MIN) {
     },
     skip: req => {
       // If user has a special key, bypass rate limiting.
-      return requestHasValidKey(req);
+      const ret = apiKeys.requestHasValidKey(req);
+      if (ret) {
+        apiKeys.countRequest(req);
+      }
+      return ret;
     },
   });
   app.use('/chart', limiter);
@@ -87,6 +91,14 @@ app.post('/telemetry', (req, res) => {
 
 app.get('/payment-success', (req, res) => {
   res.render('payment_success');
+});
+
+app.get('/api/account/:key', (req, res) => {
+  const key = req.params.key;
+  res.send({
+    isValid: apiKeys.isValidKey(key),
+    numRecentRequests: apiKeys.getNumRecentRequests(key),
+  });
 });
 
 function failPng(res, msg) {
