@@ -174,6 +174,10 @@ function doRender(req, res, opts) {
     }
   }
 
+  // Choose retina resolution by default. This will cause images to be 2x size
+  // in absolute terms.
+  const devicePixelRatio = opts.devicePixelRatio || 2.0;
+
   let untrustedInput = opts.chart;
   if (opts.encoding === 'base64') {
     try {
@@ -187,7 +191,7 @@ function doRender(req, res, opts) {
 
   const backgroundColor = opts.backgroundColor || 'transparent';
 
-  renderChart(width, height, backgroundColor, untrustedInput)
+  renderChart(width, height, backgroundColor, devicePixelRatio, untrustedInput)
     .then(opts.onRenderHandler)
     .catch(err => {
       logger.error('Chart error', err);
@@ -201,6 +205,7 @@ app.get('/chart', (req, res) => {
     height: req.query.h || req.query.height,
     width: req.query.w || req.query.width,
     backgroundColor: req.query.backgroundColor || req.query.bkg,
+    devicePixelRatio: req.query.devicePixelRatio,
     encoding: req.query.encoding || 'url',
   };
 
@@ -221,6 +226,7 @@ app.post('/chart', (req, res) => {
     height: req.body.h || req.body.height,
     width: req.body.w || req.body.width,
     backgroundColor: req.body.backgroundColor || req.body.bkg,
+    devicePixelRatio: req.body.devicePixelRatio,
     encoding: req.body.encoding || 'url',
   };
   const outputFormat = (req.body.f || req.body.format || '').toLowerCase();

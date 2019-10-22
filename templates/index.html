@@ -288,11 +288,12 @@ data: {
   <p>
     The chart endpoint accepts these query parameters:
     <ul>
-      <li><code><strong>width</strong>=500</code>: Set the width of the image. Abbreviated as "w"</li>
-      <li><code><strong>height</strong>=300</code>: Set the height of the image. Abbreviated as "h"</li>
-      <li><code><strong>backgroundColor</strong>=transparent</code>: Set the background of the chart canvas. Abbreviated as "bkg"</li>
-      <li><code><strong>format</strong>=png</code>: Set the format of your output. Currently the two supported output formats are PNG and PDF. Abbreviated as "f"</li>
-      <li><code><strong>encoding</strong>=url</code>: Select the encoding of your "chart" parameter. Accepted values are <code>url</code> and <code>base64</code>.</li>
+      <li><code><strong>width</strong>=500</code>: Width of the image. Abbreviated as "w"</li>
+      <li><code><strong>height</strong>=300</code>: Height of the image. Abbreviated as "h"</li>
+      <li><code><strong>backgroundColor</strong>=transparent</code>: Background of the chart canvas. Abbreviated as "bkg"</li>
+      <li><code><strong>format</strong>=png</code>: Format of your output. Currently the two supported output formats are PNG and PDF. Abbreviated as "f"</li>
+      <li><code><strong>devicePixelRatio</strong>=2.0</code>: Device pixel ratio of the output (defaults to retina=2.0). Note that width and height are multiplied by this value.</li>
+      <li><code><strong>encoding</strong>=url</code>: Encoding of your "chart" parameter. Accepted values are <code>url</code> and <code>base64</code>.</li>
     </ul>
     Combine these parameters in your query string. For example: <code>/chart?width=500&amp;height=300&amp;format=pdf&amp;c={...}</code>
   </p>
