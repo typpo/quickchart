@@ -7,21 +7,16 @@ const request = require('supertest');
 
 const app = require('../../index');
 const { BASIC_CHART, JS_CHART } = require('./chart_helpers');
+const { deltaE } = require('./color_helpers');
 
 const colorThief = new ColorThief();
 
-function assertSimilarRgb(rgb1, rgb2, tolerance = 20) {
-  for (let i = 0; i < 3; i++) {
-    const x = rgb1[i];
-    const y = rgb2[i];
-
-    const diff = Math.abs(x - y);
-    const result = diff <= tolerance;
-    if (!result) {
-      throw new Error(
-        `Got diff=${diff} (${x} vs ${y} in ${rgb1} vs ${rgb2}) but expected <= ${tolerance}`,
-      );
-    }
+function assertSimilarRgb(expected, actual, tolerance = 3) {
+  const diff = deltaE(expected, actual);
+  if (diff > tolerance) {
+    throw new Error(
+      `Expected rgb ${expected} but got ${actual}, scored at diff=${diff} which is greater than ${tolerance}`,
+    );
   }
 }
 
