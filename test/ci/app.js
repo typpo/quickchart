@@ -10,8 +10,12 @@ const { BASIC_CHART, JS_CHART } = require('./chart_helpers');
 
 const colorThief = new ColorThief();
 
-function almostEqualNumbers(x, y, tolerance) {
-  return Math.abs(x - y) <= tolerance;
+function assertAlmostEqualNumbers(x, y, tolerance = 10) {
+  const diff = Math.abs(x - y);
+  const result = diff <= tolerance;
+  if (!result) {
+    throw new Error(`Got diff=${diff} (${x} vs ${y}) but expected <= ${tolerance}`);
+  }
 }
 
 describe('chart requests', () => {
@@ -52,9 +56,9 @@ describe('chart requests', () => {
       .expect(200)
       .end((err, res) => {
         const rgb = colorThief.getColor(res.body);
-        assert(almostEqualNumbers(249, rgb[0], 1));
-        assert(almostEqualNumbers(193, rgb[1], 1));
-        assert(almostEqualNumbers(202, rgb[2], 1));
+        assertAlmostEqualNumbers(249, rgb[0]);
+        assertAlmostEqualNumbers(193, rgb[1]);
+        assertAlmostEqualNumbers(202, rgb[2]);
 
         const dimensions = imageSize(res.body);
         assert.equal(200, dimensions.width);
@@ -109,9 +113,9 @@ describe('chart requests', () => {
       .expect(200)
       .end((err, res) => {
         const rgb = colorThief.getColor(res.body);
-        assert(almostEqualNumbers(90, rgb[0], 3));
-        assert(almostEqualNumbers(80, rgb[1], 3));
-        assert(almostEqualNumbers(70, rgb[2], 3));
+        assertAlmostEqualNumbers(90, rgb[0]);
+        assertAlmostEqualNumbers(80, rgb[1]);
+        assertAlmostEqualNumbers(70, rgb[2]);
 
         const dimensions = imageSize(res.body);
         assert.equal(456, dimensions.width);
