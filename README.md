@@ -1,5 +1,6 @@
 QuickChart
 ---
+[![Build Status](https://api.travis-ci.org/typpo/quickchart.svg?branch=master)](https://travis-ci.org/typpo/quickchart)
 
 [QuickChart](https://quickchart.io/) is a service that generates images of charts from a URL.  Because these charts are simple images, they are very easy to embed in non-dynamic environments such as email, SMS, chat rooms, and so on.
 
@@ -99,9 +100,9 @@ Clicking the following will execute the Docker build on a remote machine and dep
 
 ## Health and Monitoring
 
-QuickChart has two API endpoints to determine the health of the service.  
+QuickChart has two API endpoints to determine the health of the service.
 
-`/healthcheck` is a basic endpoint that returns a 200 status code and a JSON object that looks like this: `{"success":true,"version":"1.1.0"}`.  
+`/healthcheck` is a basic endpoint that returns a 200 status code and a JSON object that looks like this: `{"success":true,"version":"1.1.0"}`.
 
 A second endpoint, `/healthcheck/chart` returns a 302 status code and redirects to a chart with random attributes.  Although it is a more expensive endpoint, it can be useful for cache busting or testing chart rendering.
 
