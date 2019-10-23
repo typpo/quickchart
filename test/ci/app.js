@@ -10,7 +10,7 @@ const { BASIC_CHART, JS_CHART } = require('./chart_helpers');
 
 const colorThief = new ColorThief();
 
-function assertSimilarRgb(rgb1, rgb2, tolerance = 10) {
+function assertSimilarRgb(rgb1, rgb2, tolerance = 20) {
   for (let i = 0; i < 3; i++) {
     const x = rgb1[i];
     const y = rgb2[i];
