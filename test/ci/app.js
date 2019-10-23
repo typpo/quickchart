@@ -11,7 +11,7 @@ const { deltaE } = require('./color_helpers');
 
 const colorThief = new ColorThief();
 
-function assertSimilarRgb(expected, actual, tolerance = 3) {
+function assertSimilarRgb(expected, actual, tolerance = 6) {
   const diff = deltaE(expected, actual);
   if (diff > tolerance) {
     throw new Error(
