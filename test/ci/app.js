@@ -10,11 +10,18 @@ const { BASIC_CHART, JS_CHART } = require('./chart_helpers');
 
 const colorThief = new ColorThief();
 
-function assertAlmostEqualNumbers(x, y, tolerance = 10) {
-  const diff = Math.abs(x - y);
-  const result = diff <= tolerance;
-  if (!result) {
-    throw new Error(`Got diff=${diff} (${x} vs ${y}) but expected <= ${tolerance}`);
+function assertSimilarRgb(rgb1, rgb2, tolerance = 10) {
+  for (let i = 0; i < 3; i++) {
+    const x = rgb1[i];
+    const y = rgb2[i];
+
+    const diff = Math.abs(x - y);
+    const result = diff <= tolerance;
+    if (!result) {
+      throw new Error(
+        `Got diff=${diff} (${x} vs ${y} in ${rgb1} vs ${rgb2}) but expected <= ${tolerance}`,
+      );
+    }
   }
 }
 
@@ -71,9 +78,7 @@ describe('chart request', () => {
       .expect(200)
       .end((err, res) => {
         const rgb = colorThief.getColor(res.body);
-        assertAlmostEqualNumbers(249, rgb[0]);
-        assertAlmostEqualNumbers(193, rgb[1]);
-        assertAlmostEqualNumbers(202, rgb[2]);
+        assertSimilarRgb([249, 193, 202], rgb);
 
         const dimensions = imageSize(res.body);
         assert.equal(200, dimensions.width);
@@ -145,9 +150,7 @@ describe('chart request', () => {
       .expect(200)
       .end((err, res) => {
         const rgb = colorThief.getColor(res.body);
-        assertAlmostEqualNumbers(90, rgb[0]);
-        assertAlmostEqualNumbers(80, rgb[1]);
-        assertAlmostEqualNumbers(70, rgb[2]);
+        assertSimilarRgb([90, 80, 70], rgb);
 
         const dimensions = imageSize(res.body);
         assert.equal(456, dimensions.width);
@@ -171,9 +174,7 @@ describe('chart request', () => {
       .expect(200)
       .end((err, res) => {
         const rgb = colorThief.getColor(res.body);
-        assertAlmostEqualNumbers(190, rgb[0]);
-        assertAlmostEqualNumbers(180, rgb[1]);
-        assertAlmostEqualNumbers(170, rgb[2]);
+        assertSimilarRgb([190, 180, 170], rgb);
 
         const dimensions = imageSize(res.body);
         assert.equal(369, dimensions.width);
@@ -195,9 +196,7 @@ describe('chart request', () => {
         const rgb = colorThief.getColor(res.body);
         // Image is transparent by default - expect dominant color to be blue
         // bars.
-        assertAlmostEqualNumbers(52, rgb[0]);
-        assertAlmostEqualNumbers(164, rgb[1]);
-        assertAlmostEqualNumbers(236, rgb[2]);
+        assertSimilarRgb([52, 164, 236], rgb);
 
         const dimensions = imageSize(res.body);
         assert.equal(500 * 2, dimensions.width);
