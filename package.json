@@ -12,7 +12,9 @@
     "start": "node index.js",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
-    "format": "prettier --single-quote --trailing-comma all --print-width 100 --write \"**/*.js\""
+    "format": "prettier --single-quote --trailing-comma all --print-width 100 --write \"**/*.js\"",
+    "test": "PORT=3401 NODE_ENV=test mocha --exit --recursive test/ci/",
+    "test:watch": "PORT=2998 NODE_ENV=test chokidar '**/*.js' --initial --ignore node_modules -c 'mocha --exit --recursive test/'"
   },
   "dependencies": {
     "chart.js": "^2.7.3",
@@ -21,6 +23,7 @@
     "chartjs-plugin-annotation": "^0.5.7",
     "chartjs-plugin-datalabels": "^0.5.0",
     "chartjs-plugin-piechart-outlabels": "^0.1.4",
+    "chokidar-cli": "^2.0.0",
     "express": "^4.16.4",
     "express-nunjucks": "^2.2.3",
     "express-rate-limit": "^5.0.0",
@@ -37,9 +40,15 @@
   "devDependencies": {
     "@arkweid/lefthook": "^0.6.3",
     "artillery": "^1.6.0-28",
+    "color-thief": "^2.2.5",
     "eslint": "^5.15.1",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.16.0",
-    "prettier": "^1.18.2"
+    "image-size": "^0.8.3",
+    "javascript-stringify": "^2.0.0",
+    "mocha": "^6.2.2",
+    "pixelmatch": "^5.1.0",
+    "prettier": "^1.18.2",
+    "supertest": "^4.0.2"
   }
 }

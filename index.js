@@ -12,11 +12,11 @@ const telemetry = require('./telemetry');
 const { getPdfBufferFromPng, getPdfBufferWithText } = require('./lib/pdf');
 const { logger } = require('./logging');
 const { renderChart } = require('./lib/charts');
-const { renderQr } = require('./lib/qr');
+const { renderQr, DEFAULT_QR_SIZE } = require('./lib/qr');
 
 const app = express();
 
-const isDev = app.get('env') === 'development';
+const isDev = app.get('env') === 'development' || app.get('env') === 'test';
 
 app.set('query parser', str =>
   qs.parse(str, {
@@ -255,7 +255,7 @@ app.get('/qr', (req, res) => {
 
   const margin = parseInt(req.query.margin, 10) || 4;
   const ecLevel = req.query.ecLevel || undefined;
-  const size = Math.min(3000, parseInt(req.query.size, 10)) || 150;
+  const size = Math.min(3000, parseInt(req.query.size, 10)) || DEFAULT_QR_SIZE;
   const darkColor = req.query.dark || '000';
   const lightColor = req.query.light || 'fff';
 
