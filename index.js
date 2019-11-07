@@ -181,7 +181,7 @@ function doRender(req, res, opts) {
   let untrustedInput = opts.chart;
   if (opts.encoding === 'base64') {
     try {
-      untrustedInput = new Buffer(opts.chart, 'base64').toString('utf8');
+      untrustedInput = Buffer.from(opts.chart, 'base64').toString('utf8');
     } catch (err) {
       logger.error('base64 malformed', err);
       opts.failFn(res, err);
