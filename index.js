@@ -347,6 +347,10 @@ if (!isDev) {
 
   // listen for INT signal e.g. Ctrl-C
   process.on('SIGINT', gracefulShutdown);
+
+  process.on('SIGABRT', () => {
+    logger.info('Caught SIGABRT');
+  });
 }
 
 module.exports = app;
