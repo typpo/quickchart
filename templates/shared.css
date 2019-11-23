@@ -1,13 +1,4 @@
 <style>
-  html, body {
-    margin: 0;
-  }
-
-  body {
-    font-family: 'Proxima Nova Soft','Helvetica Neue',Arial,Helvetica,sans-serif;
-    line-height: 1.5;
-  }
-
   a, a:visited {
     color: darkblue;
   }
@@ -35,11 +26,6 @@
     text-align: center;
   }
 
-  .header {
-    background-color: aliceblue;
-    padding: 1em;
-    margin-bottom: 1em;
-  }
   .mobile-only {
     display: none;
   }
