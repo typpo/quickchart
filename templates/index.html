@@ -340,9 +340,8 @@ curl -X POST \
   <p>
     Note the following caveats:
     <ul>
-      <li style="color:red">This feature is in beta as of its release on August 26, 2019.</li>
       <li>Request inputs are not validated before the URL is created. The chart is only rendered when the URL is visited.</li>
-      <li>Saved charts only support JSON for now (no Javascript functions)</li>
+      <li>If your chart includes Javascript, you must supply your chart definition as a string.</li>
       <li>Saved charts expire after 3 months.</li>
     </ul>
   </p>
