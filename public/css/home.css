@@ -51,8 +51,12 @@ html, body {
 .header {
   background-color: aliceblue;
   padding: 3em 1em;
-  margin-bottom: 3em;
-  text-align: center;
+  margin-bottom: 2em;
+}
+
+.header-small {
+  padding: 1em 1em;
+  margin-bottom: 0;
 }
 
 .highlight {
