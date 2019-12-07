@@ -67,6 +67,23 @@
     max-width: 10em;
   }
 
+  .try-it-container {
+    position: relative;
+  }
+
+  .cta-edit-container {
+    position: absolute;
+    bottom: 0;
+    z-index: 4;
+    width: 100%;
+  }
+
+  .cta-edit-container .cta {
+    width: 100%;
+    background-color: #adb0bb;
+    height: 1.5em;
+  }
+
   @media (max-width: 600px) {
     .hero {
       display: block;
@@ -123,8 +140,11 @@
   <div class="hero panel">
     <div class="col">
       <h2 class="centered">Try it yourself</h2>
-      <textarea id="sandbox-input" class="sandbox-input" data-image-id="sandbox-img" data-tag-id="sandbox-tag">// Edit me
-{
+      <div class="try-it-container">
+        <div id="sandbox-input-edit" class="cta-edit-container">
+          <button class="cta secondary">Click to edit</button>
+        </div>
+        <textarea id="sandbox-input" class="sandbox-input" data-image-id="sandbox-img" data-tag-id="sandbox-tag">{
   type: 'bar',
   data: {
     labels: [2012, 2013, 2014, 2015, 2016],
@@ -137,6 +157,7 @@
     }]
   }
 }</textarea>
+      </div>
     </div>
     <div class="arrowcol"></div>
     <div class="col">
@@ -662,14 +683,25 @@ curl -X POST \
       input.onkeyup = debounce(function() {
         updateImage(this.value);
       }, 350);
-      CodeMirror.fromTextArea(input, {
+      input.onfocus = function() {
+        document.getElementById('sandbox-input-edit').style.display = 'none';
+      };
+      var cm = CodeMirror.fromTextArea(input, {
         lineNumbers: true,
         lineWrapping: true
-      }).on('change', debounce(function(editor) {
+      });
+      cm.on('change', debounce(function(editor) {
         updateImage(editor.getValue());
-      }), 350);
+      }), 350)
+      cm.on('focus', function() {
+        document.getElementById('sandbox-input-edit').style.display = 'none';
+      });
     })();
   }
+
+  document.getElementById('sandbox-input-edit').onclick = function() {
+    document.getElementById('sandbox-input-edit').style.display = 'none';
+  };
 
   function debounce(func, wait, immediate) {
     var timeout;
