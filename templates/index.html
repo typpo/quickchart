@@ -653,6 +653,7 @@ curl -X POST \
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.48.0/lib/codemirror.css">
 <script>
   var elts = document.getElementsByClassName('sandbox-input')
+  var codemirrors = [];
   for (var i=0; i < elts.length; i++) {
     (function() {
       var input = elts[i];
@@ -688,11 +689,15 @@ curl -X POST \
       cm.on('focus', function() {
         document.getElementById('sandbox-input-edit').style.display = 'none';
       });
+      codemirrors.push(cm);
     })();
   }
 
   document.getElementById('sandbox-input-edit').onclick = function() {
     document.getElementById('sandbox-input-edit').style.display = 'none';
+    if (codemirrors.length) {
+      codemirrors[0].focus();
+    }
   };
 
   function debounce(func, wait, immediate) {
