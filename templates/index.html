@@ -377,6 +377,7 @@ curl -X POST \
       <code>
   &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'bar'</span>,data:{labels:['January','February', 'March','April', 'May'], datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500]}]}}"&gt;
       </code>
+      <p><a href="https://www.chartjs.org/docs/latest/charts/bar.html">Bar Chart documentation</a></p>
     </div>
     <div class="arrowcol"></div>
     <div class="col">
@@ -387,12 +388,13 @@ curl -X POST \
     <div class="col">
       <h3>Line Graph</h3>
       <code>
-  &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'line'</span>,data:{labels:['January','February', 'March','April', 'May'], datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500]}]}}"&gt;
+        &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'line'</span>,data:{labels:['January','February', 'March','April', 'May'], datasets:[{label:'Dogs',data:[50,60,70,180,190],fill:false,borderColor:'blue'},{label:'Cats',data:[100,200,300,400,500],fill:false,borderColor:'green'}]}}"&gt;
       </code>
+      <p><a href="https://www.chartjs.org/docs/latest/charts/line.html">Line Chart documentation</a></p>
     </div>
     <div class="arrowcol"></div>
     <div class="col">
-      <img class="img-example" src="/chart?bkg=white&c={type:'line',data:{labels:['January','February','March','April', 'May'],datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500]}]}}"/>
+      <img class="img-example" src="/chart?bkg=white&c={type:'line',data:{labels:['January','February', 'March','April', 'May'], datasets:[{label:'Dogs',data:[50,60,70,180,190],fill:false,borderColor:'blue'},{label:'Cats',data:[100,200,300,400,500],fill:false,borderColor:'green'}]}}"/>
     </div>
   </div>
   <p>
@@ -404,6 +406,7 @@ curl -X POST \
       <code>
   &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'radar'</span>,data:{labels:['January','February', 'March','April', 'May'], datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500]}]}}"&gt;
       </code>
+      <p><a href="https://www.chartjs.org/docs/latest/charts/radar.html">Radar Chart documentation</a></p>
     </div>
     <div class="arrowcol"></div>
     <div class="col">
@@ -416,6 +419,7 @@ curl -X POST \
       <code>
   &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'pie'</span>,data:{labels:['January','February', 'March','April', 'May'], datasets:[{data:[50,60,70,180,190]}]}}"&gt;
       </code>
+      <p><a href="https://www.chartjs.org/docs/latest/charts/doughnut.html">Pie Chart documentation</a></p>
     </div>
     <div class="arrowcol"></div>
     <div class="col">
@@ -428,6 +432,7 @@ curl -X POST \
       <code>
   &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'doughnut'</span>,data:{labels:['January','February', 'March','April', 'May'], datasets:[{data:[50,60,70,180,190]}]}}"&gt;
       </code>
+      <p><a href="https://www.chartjs.org/docs/latest/charts/doughnut.html">Doughnut Chart documentation</a></p>
     </div>
     <div class="arrowcol"></div>
     <div class="col">
@@ -440,6 +445,7 @@ curl -X POST \
       <code>
   &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'scatter'</span>,data:{datasets:[{label:'Data 1',data:[{x:2,y:4},{x:3,y:3},{x:-10,y:0},{x:0,y:10},{x:10,y:5}]}]}}"&gt;
       </code>
+      <p><a href="https://www.chartjs.org/docs/latest/charts/scatter.html">Scatter Chart documentation</a></p>
     </div>
     <div class="arrowcol"></div>
     <div class="col">
@@ -449,12 +455,13 @@ curl -X POST \
   <div class="hero panel">
     <div class="col">
       <h3>Bubble Chart</h3>
-      <p>
-        The <code>r</code> variable defines bubble radius in pixels:
-      </p>
       <code>
   &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'bubble'</span>,data:{datasets:[{label:'Data 1',data:[{x:1,y:4,r:9},{x:2,y:4,r:6},{x:3,y:8,r:30},{x:0,y:10,r:1},{x:10,y:5,r:5}]}]}}"&gt;
       </code>
+      <p>
+        Bubble is similar to Scatter except that the <code>r</code> variable defines bubble radius in pixels.
+        <a href="https://www.chartjs.org/docs/latest/charts/bubble.html">Bubble Chart documentation</a>
+      </p>
     </div>
     <div class="arrowcol"></div>
     <div class="col">
@@ -464,12 +471,12 @@ curl -X POST \
   <div class="hero panel">
     <div class="col">
       <h3>Radial Gauge / "Meter" Charts</h3>
-      <p>
-        View the options at <a target="_blank" href="https://github.com/pandameister/chartjs-chart-radial-gauge#options">chartjs-radial-gauge</a> for customization details.
-      </p>
       <code>
   &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'radialGauge'</span>,data:{datasets:[{data:[70],backgroundColor:'green'}]}}"&gt;
       </code>
+      <p>
+        View the options at <a target="_blank" href="https://github.com/pandameister/chartjs-chart-radial-gauge#options">chartjs-radial-gauge</a> for customization details.
+      </p>
     </div>
     <div class="arrowcol"></div>
     <div class="col">
@@ -479,12 +486,12 @@ curl -X POST \
   <div class="hero panel">
     <div class="col">
       <h3>Sparklines</h3>
-      <p>
-        A sparkline is a special case of line graph with axes and other labeling removed. All <a href="https://www.chartjs.org/docs/latest/charts/line.html">line graph options</a> can be applied.
-      </p>
       <code>
   &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'sparkline'</span>,data:{datasets:[{data:[140,60,274,370,199]}]}}"&gt;
       </code>
+      <p>
+        A sparkline is a special case of line graph with axes and other labeling removed. All <a href="https://www.chartjs.org/docs/latest/charts/line.html">line graph options</a> can be applied.
+      </p>
     </div>
     <div class="arrowcol"></div>
     <div class="col">
