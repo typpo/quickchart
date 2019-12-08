@@ -191,7 +191,7 @@ describe('chart request', () => {
         const rgb = colorThief.getColor(res.body);
         // Image is transparent by default - expect dominant color to be blue
         // bars.
-        assertSimilarRgb([52, 164, 236], rgb);
+        assertSimilarRgb([76, 140, 252], rgb);
 
         const dimensions = imageSize(res.body);
         assert.equal(500 * 2, dimensions.width);
