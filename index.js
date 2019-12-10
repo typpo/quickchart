@@ -2,7 +2,6 @@ const path = require('path');
 
 const express = require('express');
 const expressNunjucks = require('express-nunjucks');
-const httpProxy = require('http-proxy');
 const qs = require('qs');
 const rateLimit = require('express-rate-limit');
 const text2png = require('text2png');
@@ -18,18 +17,6 @@ const { renderQr, DEFAULT_QR_SIZE } = require('./lib/qr');
 const app = express();
 
 const isDev = app.get('env') === 'development' || app.get('env') === 'test';
-
-const proxy = process.env.PROXY_HOST
-  ? new httpProxy.createProxyServer({
-      target: {
-        protocol: 'https:',
-        host: process.env.PROXY_HOST,
-        port: 443,
-      },
-      secure: false,
-      changeOrigin: true,
-    })
-  : null;
 
 app.set('query parser', str =>
   qs.parse(str, {
@@ -213,12 +200,6 @@ function doRender(req, res, opts) {
 }
 
 app.get('/chart', (req, res) => {
-  telemetry.count('chartCount');
-  if (proxy && !apiKeys.requestHasValidKey(req)) {
-    proxy.web(req, res);
-    return;
-  }
-
   const opts = {
     chart: req.query.c || req.query.chart,
     height: req.query.h || req.query.height,
@@ -235,15 +216,11 @@ app.get('/chart', (req, res) => {
   } else {
     doRenderChart(req, res, opts);
   }
+
+  telemetry.count('chartCount');
 });
 
 app.post('/chart', (req, res) => {
-  telemetry.count('chartCount');
-  if (proxy && !apiKeys.requestHasValidKey(req)) {
-    proxy.web(req, res);
-    return;
-  }
-
   const opts = {
     chart: req.body.c || req.body.chart,
     height: req.body.h || req.body.height,
@@ -259,15 +236,11 @@ app.post('/chart', (req, res) => {
   } else {
     doRenderChart(req, res, opts);
   }
+
+  telemetry.count('chartCount');
 });
 
 app.get('/qr', (req, res) => {
-  telemetry.count('qrCount');
-  if (proxy && !apiKeys.requestHasValidKey(req)) {
-    proxy.web(req, res);
-    return;
-  }
-
   if (!req.query.text) {
     failPng(res, 'You are missing variable `text`');
     return;
@@ -318,6 +291,8 @@ app.get('/qr', (req, res) => {
     .catch(err => {
       failPng(res, err);
     });
+
+  telemetry.count('qrCount');
 });
 
 app.get('/healthcheck', (req, res) => {
