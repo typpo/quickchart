@@ -260,7 +260,7 @@ app.get('/qr', (req, res) => {
 
   const { mode } = req.query;
 
-  const margin = parseInt(req.query.margin, 10) || 4;
+  const margin = typeof req.query.margin === 'undefined' ? 4 : parseInt(req.query.margin, 10);
   const ecLevel = req.query.ecLevel || undefined;
   const size = Math.min(3000, parseInt(req.query.size, 10)) || DEFAULT_QR_SIZE;
   const darkColor = req.query.dark || '000';
