@@ -280,7 +280,7 @@ app.get('/qr', (req, res) => {
   renderQr(format, mode, qrData, qrOpts)
     .then(buf => {
       res.writeHead(200, {
-        'Content-Type': `image/${format}`,
+        'Content-Type': format === 'png' ? 'image/png' : 'image/svg+xml',
         'Content-Length': buf.length,
 
         // 1 week cache
