@@ -41,6 +41,13 @@ if (process.env.RATE_LIMIT_PER_MIN) {
     max: limitMax,
     message:
       'Please slow down your requests! This is a shared public endpoint. Email contact@quickchart.io for rate limit exceptions or to purchase a commercial license.',
+    keyGenerator: req => {
+      return (
+        req.headers['cf-connecting-ip'] ||
+        req.headers['x-forwarded-for'] ||
+        req.connection.remoteAddress
+      );
+    },
     onLimitReached: () => {
       logger.info('User hit rate limit!');
     },
@@ -183,7 +190,7 @@ function doRender(req, res, opts) {
     try {
       untrustedInput = Buffer.from(opts.chart, 'base64').toString('utf8');
     } catch (err) {
-      logger.error('base64 malformed', err);
+      logger.warn('base64 malformed', err);
       opts.failFn(res, err);
       return;
     }
@@ -194,7 +201,7 @@ function doRender(req, res, opts) {
   renderChart(width, height, backgroundColor, devicePixelRatio, untrustedInput)
     .then(opts.onRenderHandler)
     .catch(err => {
-      logger.error('Chart error', err);
+      logger.warn('Chart error', err);
       opts.failFn(res, err);
     });
 }
@@ -263,7 +270,7 @@ app.get('/qr', (req, res) => {
   try {
     qrData = decodeURIComponent(req.query.text);
   } catch (err) {
-    logger.error('URI malformed', err);
+    logger.warn('URI malformed', err);
     failPng(res, 'URI malformed');
     return;
   }
@@ -321,7 +328,7 @@ app.get('/healthcheck/chart', (req, res) => {
 const port = process.env.PORT || 3400;
 const server = app.listen(port);
 
-const timeout = process.env.REQUEST_TIMEOUT_MS || 1000;
+const timeout = parseInt(process.env.REQUEST_TIMEOUT_MS, 10) || 1000;
 server.setTimeout(timeout);
 logger.info(`Setting request timeout: ${timeout} ms`);
 

@@ -2,8 +2,8 @@ config:
   target: 'http://localhost:3400'
   phases:
     - duration: 60
-      arrivalRate: 30
+      arrivalRate: 10
 scenarios:
   - flow:
     - get:
-        url: '/healthcheck'
+        url: '/healthcheck/chart'

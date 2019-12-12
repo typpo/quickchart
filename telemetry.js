@@ -33,9 +33,14 @@ function write() {
   if (!receivedCount) {
     return;
   }
+
   logger.info(`Writing ${receivedCount} telemetry records...`);
   telemetry.timestamp = new Date().getTime();
-  fs.appendFileSync(TELEMETRY_PATH, JSON.stringify(telemetry) + '\n');
+  if (process.env.WRITE_TELEMETRY_TO_CONSOLE) {
+    logger.info('Telemetry', JSON.stringify(telemetry));
+  } else {
+    fs.appendFileSync(TELEMETRY_PATH, JSON.stringify(telemetry) + '\n');
+  }
   telemetry = {};
   receivedCount = 0;
 }

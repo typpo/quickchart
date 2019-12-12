@@ -9,7 +9,7 @@
     "url": "https://github.com/typpo/quickchart.git"
   },
   "scripts": {
-    "start": "node index.js",
+    "start": "node --max-http-header-size=65536 index.js",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "format": "prettier --single-quote --trailing-comma all --print-width 100 --write \"**/*.js\"",
@@ -23,7 +23,6 @@
     "chartjs-plugin-annotation": "^0.5.7",
     "chartjs-plugin-datalabels": "^0.5.0",
     "chartjs-plugin-piechart-outlabels": "^0.1.4",
-    "chokidar-cli": "^2.0.0",
     "express": "^4.16.4",
     "express-nunjucks": "^2.2.3",
     "express-rate-limit": "^5.0.0",
@@ -40,6 +39,7 @@
   "devDependencies": {
     "@arkweid/lefthook": "^0.6.3",
     "artillery": "^1.6.0-28",
+    "chokidar-cli": "^2.0.0",
     "color-thief": "^2.2.5",
     "eslint": "^5.15.1",
     "eslint-config-airbnb-base": "^13.1.0",
