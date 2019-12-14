@@ -74,6 +74,10 @@ html, body {
   line-height: 1.7;
 }
 
+.summary .cta {
+  margin: 0.5em;
+}
+
 .show-and-tell {
   display: flex;
   align-items: center;
