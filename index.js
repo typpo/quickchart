@@ -41,13 +41,6 @@ if (process.env.RATE_LIMIT_PER_MIN) {
     max: limitMax,
     message:
       'Please slow down your requests! This is a shared public endpoint. Email contact@quickchart.io for rate limit exceptions or to purchase a commercial license.',
-    keyGenerator: req => {
-      return (
-        req.headers['cf-connecting-ip'] ||
-        req.headers['x-forwarded-for'] ||
-        req.connection.remoteAddress
-      );
-    },
     onLimitReached: () => {
       logger.info('User hit rate limit!');
     },
