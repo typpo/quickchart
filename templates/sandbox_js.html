@@ -1,0 +1,68 @@
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.48.0/lib/codemirror.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.48.0/mode/javascript/javascript.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.48.0/lib/codemirror.css">
+<script>
+  var elts = document.getElementsByClassName('sandbox-input')
+  var codemirrors = [];
+  for (var i=0; i < elts.length; i++) {
+    (function() {
+      var input = elts[i];
+      var img = document.getElementById(input.dataset.imageId);
+      var tag = input.dataset.tagId ? document.getElementById(input.dataset.tagId) : undefined;
+      var updateImage = function(val) {
+        var url = '/chart?bkg=white&c=' + encodeURIComponent(val);
+        img.src = url;
+        var lines = val.split('\n').filter(function(line) {
+          return line.slice(0, 2) !== '//';
+        });
+        if (tag) {
+          let linkText = 'https://quickchart.io/chart?bkg=white&c=' + lines.join('');
+          if (linkText.length > 500) {
+            linkText = linkText.slice(0, 100) + ' ... ' + linkText.slice(linkText.length - 100);
+          }
+          tag.innerHTML = '<a href="' + url + '">' + linkText + '</a>';
+        }
+      }
+      input.onkeyup = debounce(function() {
+        updateImage(this.value);
+      }, 350);
+      input.onfocus = function() {
+        document.getElementById('sandbox-input-edit').style.display = 'none';
+      };
+      var cm = CodeMirror.fromTextArea(input, {
+        lineNumbers: true,
+        lineWrapping: true
+      });
+      cm.on('change', debounce(function(editor) {
+        updateImage(editor.getValue());
+      }), 350)
+      cm.on('focus', function() {
+        document.getElementById('sandbox-input-edit').style.display = 'none';
+      });
+      codemirrors.push(cm);
+    })();
+  }
+
+  document.getElementById('sandbox-input-edit').onclick = function() {
+    document.getElementById('sandbox-input-edit').style.display = 'none';
+    if (codemirrors.length) {
+      codemirrors[0].focus();
+    }
+  };
+
+  function debounce(func, wait, immediate) {
+    var timeout;
+    return function executedFunction() {
+      var context = this;
+      var args = arguments;
+      var later = function() {
+        timeout = null;
+        if (!immediate) func.apply(context, args);
+      };
+      var callNow = immediate && !timeout;
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+      if (callNow) func.apply(context, args);
+    }
+  };
+</script>

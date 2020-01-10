@@ -70,6 +70,10 @@ app.get('/pricing', (req, res) => {
   res.render('pricing');
 });
 
+app.get('/documentation', (req, res) => {
+  res.render('docs');
+});
+
 app.get('/robots.txt', (req, res) => {
   res.sendFile(path.join(__dirname, './templates/robots.txt'));
 });

@@ -143,7 +143,6 @@ footer {
 
 .cta-container {
   background-color: aliceblue;
-  padding: 0.6em 0;
   border: 1px dashed #ddd;
 }
 
@@ -184,6 +183,118 @@ footer {
   margin-left: 0.5em;
 }
 
+.hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.col {
+  flex: 1;
+}
+
+.col h3, .col code {
+  text-align: center;
+}
+
+.arrowcol {
+  flex: 0.2;
+  color: rgba(72, 56, 74, 0.2);
+  font-size: 4em;
+}
+
+.arrowcol:before {
+  content: "➜";
+}
+
+.sandbox-input {
+  width: 98%;
+  height: 17em;
+
+  background-color: #fdffe6;
+  -webkit-box-shadow: 0 0 10px rgba(255,0,0,0.2);
+  -moz-box-shadow: 0 0 10px rgba(255,0,0,0.2);
+}
+
+.CodeMirror-scroll {
+  background-color: #fdffe6;
+}
+
+.sandbox-tag {
+  font-size: 10px;
+  margin-bottom: 1em;
+}
+
+.panel {
+  padding: 1em;
+  margin-bottom: 2em;
+
+  -webkit-box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  -moz-box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+
+.hl {
+  background-color: #E9FF32;
+}
+
+.img-example {
+  max-width: 100%;
+}
+
+.img-example__sparkline {
+  max-width: 10em;
+}
+
+.try-it-container {
+  position: relative;
+}
+
+.cta-edit-container {
+  position: absolute;
+  bottom: 0;
+  z-index: 4;
+  width: 100%;
+}
+
+.cta-edit-container .cta {
+  width: 100%;
+  background-color: salmon;
+}
+
+.brag-container {
+  margin-top: 1.5em;
+  text-align: center;
+}
+
+.brag {
+  font-size: 1em;
+  font-weight: bold;
+}
+
+.example-images {
+  margin-top: 2em;
+  text-align: center;
+}
+
+.example-images img {
+  width: 125px;
+  height: auto;
+}
+
+@media (max-width: 600px) {
+  .hero {
+    display: block;
+  }
+  .arrowcol {
+    text-align: center;
+    font-size: 3em;
+  }
+  .arrowcol:before {
+    content: "⇣";
+  }
+}
+
 /*
  * Offset anchor tags to compensate for fixed header
  * https://stackoverflow.com/questions/10732690/offsetting-an-html-anchor-to-adjust-for-fixed-header
@@ -200,6 +311,7 @@ footer {
   .page-container {
     padding: 0 2em;
   }
+
   .tablet-hide {
     display: none;
   }

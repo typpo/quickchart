@@ -3,109 +3,15 @@
 {% block title %}Open Source Image Charts API | QuickChart{% endblock %}
 
 {% block styles %}
-<style>
-  .hero {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .col {
-    flex: 1;
-  }
-
-  .col h3, .col code {
-    text-align: center;
-  }
-
-  .arrowcol {
-    flex: 0.2;
-    color: rgba(72, 56, 74, 0.2);
-    font-size: 4em;
-  }
-
-  .arrowcol:before {
-    content: "➜";
-  }
-
-  .sandbox-input {
-    width: 98%;
-    height: 17em;
-
-    background-color: #fdffe6;
-    -webkit-box-shadow: 0 0 10px rgba(255,0,0,0.2);
-    -moz-box-shadow: 0 0 10px rgba(255,0,0,0.2);
-  }
-
-  .CodeMirror-scroll {
-    background-color: #fdffe6;
-  }
-
-  .sandbox-tag {
-    font-size: 10px;
-    margin-bottom: 1em;
-  }
-
-  .panel {
-    padding: 1em;
-    margin-bottom: 2em;
-
-    -webkit-box-shadow: 0 0 10px rgba(0,0,0,0.2);
-    -moz-box-shadow: 0 0 10px rgba(0,0,0,0.2);
-  }
-
-  .hl {
-    background-color: #E9FF32;
-  }
-
-  .img-example {
-    max-width: 100%;
-  }
-
-  .img-example__sparkline {
-    max-width: 10em;
-  }
-
-  .try-it-container {
-    position: relative;
-  }
-
-  .cta-edit-container {
-    position: absolute;
-    bottom: 0;
-    z-index: 4;
-    width: 100%;
-  }
-
-  .cta-edit-container .cta {
-    width: 100%;
-    background-color: salmon;
-    height: 1.5em;
-  }
-
-  @media (max-width: 600px) {
-    .hero {
-      display: block;
-    }
-    .arrowcol {
-      text-align: center;
-      font-size: 3em;
-    }
-    .arrowcol:before {
-      content: "⇣";
-    }
-  }
-</style>
 {% endblock %}
 
 {% block nav_menu %}
-<a href="#customize" class="mobile-hide"><li>Configuration</li></a>
-<a href="#chart-types"><li>Chart Types</li></a>
-<a href="#qr"><li>QR Codes</li></a>
-<a href="/pricing" class="mobile-hide"><li>Pricing</li></a>
-<a href="https://github.com/typpo/quickchart"><li>Github</li></a>
-<a href="#faq"><li>FAQ</li></a>
+<a href="/" class="mobile-hide"><li>Home</li></a>
+<a href="/documentation"><li>Documentation</li></a>
+<a href="/pricing"><li>Pricing</li></a>
+<a href="https://github.com/typpo/quickchart"><li>Open Source</li></a>
+<a href="/documentation#faq"><li>FAQ</li></a>
+<a href="mailto:support@quickchart.io" class="mobile-hide"><li>Support</li></a>
 {% endblock %}
 
 {% block content %}
@@ -130,70 +36,21 @@
     </div>
   </div>
   <div class="summary">
-    <p>
-    We also render <strong>charts to PDF</strong> and <strong>QR codes</strong>.
-    </p>
-    <p>
-      QuickChart.io lets you generate charts free of charge.  The software is <a href="https://github.com/typpo/quickchart">open source</a> under GPLv3 and can be self-hosted.  <a href="/pricing">Paid and enterprise plans</a> are also available.
-    </p>
-  </div>
-  <div class="hero panel">
-    <div class="col">
-      <h2 class="centered">Try it yourself</h2>
-      <div class="try-it-container">
-        <div id="sandbox-input-edit" class="cta-edit-container">
-          <button class="cta secondary">Click to edit</button>
-        </div>
-        <textarea id="sandbox-input" class="sandbox-input" data-image-id="sandbox-img" data-tag-id="sandbox-tag">{
-  type: 'bar',
-  data: {
-    labels: [2012, 2013, 2014, 2015, 2016],
-    datasets: [{
-      label: 'Raisins',
-      data: [12, 6, 5, 18, 12]
-    }, {
-      label: 'Bananas',
-      data: [4, 8, 16, 5, 5]
-    }]
-  }
-}</textarea>
-      </div>
+    <div class="cta-container">
+      <p class="centered">
+        <a class="cta" href="/pricing">View hosted plans</a>
+        <a class="cta secondary" href="/documentation">View the documentation</a>
+      </p>
     </div>
-    <div class="arrowcol"></div>
-    <div class="col">
-      <div id="sandbox-tag" class="sandbox-tag"></div>
-      <img class="img-example" id="sandbox-img" src="/chart?bkg=white&c={
-type: 'bar',
-data: {
-  labels: [2012, 2013, 2014, 2015, 2016],
-  datasets: [{
-    label: 'Raisins',
-    data: [12, 6, 5, 18, 12]
-  }, {
-    label: 'Bananas',
-    data: [4, 8, 16, 5, 5]
-  }]
-}
-}"/>
-    </div>
-  </div>
-  <div class="summary">
     <p>
-      Chart images are defined by <a href="https://www.chartjs.org/">Chart.js</a> objects.  Chart.js is a popular open-source graphing library.  Each URL contains a JSON/Javascript object that includes all data and display options.
+      QuickChart.io lets you generate chart images, chart PDFs, and QR codes free of charge.  The software is <a href="https://github.com/typpo/quickchart">open source</a> under GPLv3 and can be self-hosted.
     </p>
     <p>
-      Use a <a href="https://www.chartjs.org/docs/latest/charts/">Chart.js config</a> to define your chart.
-      Once you've written your config, render it as an image:
-      <br>
-      <code class="hl">https://quickchart.io/chart?c=[[insert config here]]</code>.
+      QuickChart is built on <a href="https://www.chartjs.org/docs/latest/charts/">Chart.js</a>, a popular open-source charting library.  Just put a Chart.js object in the URL to render your chart:
+      <code class="hl">https://quickchart.io/chart?c=[[insert chart config]]</code>.
     </p>
   </div>
-  <div class="summary cta-container">
-    <p class="centered">
-      <a class="cta" href="/pricing">View paid plans</a>
-      <a class="cta secondary" href="https://github.com/typpo/quickchart">View the source code</a>
-    </p>
-  </div>
+  {% include "sandbox_editor.html" %}
   <h2 id="customize">Customize Your Chart</h2>
   <p>
     Let's get creative.  The example below uses custom background colors, title, legend, stacked bars, axis labels, and data labels:
@@ -298,432 +155,48 @@ data: {
     </div>
   </div>
   <p>
-    You can use any static customization option available in Chart.js.  The best place to learn the extent of customization options is through the <a href="https://www.chartjs.org/docs/latest/configuration/">documentation</a>.
+    You can use any static customization option available in Chart.js.  The best place to learn the extent of customization options is through the <a href="https://www.chartjs.org/docs/latest/configuration/">Chart.js documentation</a>.
   </p>
-  <p>
-    A couple things to remember when customizing your chart:
-    <ul>
-      <li><strong class="hl">We recommend that you <a href="https://www.urlencoder.io">URL-encode</a> the entire chart config</strong> or base64 encode your chart config (with <code>&amp;encoding=base64</code>).  If not encoded, you will run into problems with the # symbol and other special characters.</li>
-      <li>Interactivity and animations are not supported (this service produces static images)</li>
-    </ul>
-  </p>
-  <p>
-    The chart endpoint accepts these query parameters:
-    <ul>
-      <li><code><strong>width</strong>=500</code>: Width of the image. Abbreviated as "w"</li>
-      <li><code><strong>height</strong>=300</code>: Height of the image. Abbreviated as "h"</li>
-      <li><code><strong>backgroundColor</strong>=transparent</code>: Background of the chart canvas. Abbreviated as "bkg"</li>
-      <li><code><strong>format</strong>=png</code>: Format of your output. Currently the two supported output formats are PNG and PDF. Abbreviated as "f"</li>
-      <li><code><strong>devicePixelRatio</strong>=2.0</code>: Device pixel ratio of the output (defaults to retina=2.0). Note that width and height are multiplied by this value.</li>
-      <li><code><strong>encoding</strong>=url</code>: Encoding of your "chart" parameter. Accepted values are <code>url</code> and <code>base64</code>.</li>
-    </ul>
-    Combine these parameters in your query string. For example: <code>/chart?width=500&amp;height=300&amp;format=pdf&amp;c={...}</code>
-  </p>
-  <h2 id="api">Advanced API</h2>
-  <h3>POST endpoint</h3>
-  <p>
-    If your chart is large or complicated, you may prefer to send a <strong>POST request</strong> rather than a GET request.  This avoids limitations on URL length and means you don't have to worry about URL encoding.  The <code>/chart</code> POST endpoint takes the same parameters as above via the following JSON object:
-  </p>
-  <code><pre>
-{
-  "backgroundColor": "transparent",
-  "width": 500,
-  "height": 300,
-  "format": "png",
-  "chart": {...},
-}
-  </pre></code>
-  <p>
-    Note that if you want to include Javascript code in <code>chart</code> (e.g. to format labels), you'll have to send the entire <code>chart</code> parameter as a string rather than a JSON object.
-  </p>
-  <h3 id="short-urls">Short URLs</h3>
-  <p>
-    You may like to create a shorter URL for your charts, especially if you are sending them via email or SMS.  Send a POST request to <code>https://quickchart.io/chart/create</code> per the above POST spec.  For example:
-  </p>
-  <code><pre>
-curl -X POST \
-   -H 'Content-Type: application/json' \
-   -d '{"chart": {"type": "bar", "data": {"labels": ["Hello", "World"], "datasets": [{"label": "Foo", "data": [1, 2]}]}}}' \
-   https://quickchart.io/chart/create
-  </pre></code>
-  <p>
-    You will get a response that looks like this:
-  </p>
-  <code><pre>
-{
-  "success": true,
-  "url": "https://quickchart.io/chart/render/9a560ba4-ab71-4d1e-89ea-ce4741e9d232"
-}
-  </pre></code>
-  <p>
-    Go to the <a rel="nofollow" href="https://quickchart.io/chart/render/9a560ba4-ab71-4d1e-89ea-ce4741e9d232">url in the response</a> to render your chart.
-  </p>
-  <p>
-    Note the following caveats:
-    <ul>
-      <li>Request inputs are not validated before the URL is created. The chart is only rendered when the URL is visited.</li>
-      <li>If your chart includes Javascript, you must supply your chart definition as a string.</li>
-      <li>Saved charts expire after 3 months.</li>
-    </ul>
-  </p>
-  <hr/>
-  <h2 id="chart-types">Chart Types</h2>
-  <p>
-    Customization can be very simple.  By changing <code class="hl">type: bar</code> to <code class="hl">type: line</code>, for example, we can instantly produce an equivalent line graph:
-  </p>
-  <div class="hero panel">
-    <div class="col">
-      <h3>Bar Graph</h3>
-      <code>
-  &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'bar'</span>,data:{labels:['January','February', 'March','April', 'May'], datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500]}]}}"&gt;
-      </code>
-      <p><a href="https://www.chartjs.org/docs/latest/charts/bar.html">Bar Chart documentation</a></p>
+  <div class="cta-container summary">
+    <div class="hero brag-container">
+      <div class="col">
+        <span class="brag">📈 All the flexibility of Chart.js</span>
+      </div>
+      <div class="col">
+        <span class="brag">✅ Completely open source</span>
+      </div>
+      <div class="col">
+        <span class="brag">⚡ 130M+ charts rendered</span>
+      </div>
     </div>
-    <div class="arrowcol"></div>
-    <div class="col">
-      <img class="img-example" src="/chart?bkg=white&c={type:'bar',data:{labels:['January','February','March','April', 'May'],datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500]}]}}"/>
-    </div>
-  </div>
-  <div class="hero panel">
-    <div class="col">
-      <h3>Line Graph</h3>
-      <code>
-        &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'line'</span>,data:{labels:['January','February', 'March','April', 'May'], datasets:[{label:'Dogs', data: [50,60,70,180,190], fill:false,borderColor:'blue'},{label:'Cats', data:[100,200,300,400,500], fill:false,borderColor:'green'}]}}"&gt;
-      </code>
-      <p><a href="https://www.chartjs.org/docs/latest/charts/line.html">Line Chart documentation</a></p>
-    </div>
-    <div class="arrowcol"></div>
-    <div class="col">
-      <img class="img-example" src="/chart?bkg=white&c={type:'line',data:{labels:['January','February', 'March','April', 'May'], datasets:[{label:'Dogs',data:[50,60,70,180,190],fill:false,borderColor:'blue'},{label:'Cats',data:[100,200,300,400,500],fill:false,borderColor:'green'}]}}"/>
-    </div>
-  </div>
-  <p>
-    There are many other chart types as well:
-  </p>
-  <div class="hero panel">
-    <div class="col">
-      <h3>Radar Chart</h3>
-      <code>
-  &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'radar'</span>,data:{labels:['January','February', 'March','April', 'May'], datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500]}]}}"&gt;
-      </code>
-      <p><a href="https://www.chartjs.org/docs/latest/charts/radar.html">Radar Chart documentation</a></p>
-    </div>
-    <div class="arrowcol"></div>
-    <div class="col">
-      <img class="img-example" src="/chart?bkg=white&c={type:'radar',data:{labels:['January', 'February','March','April', 'May'],datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500]}]}}"/>
-    </div>
-  </div>
-  <div class="hero panel">
-    <div class="col">
-      <h3>Pie Chart</h3>
-      <code>
-  &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'pie'</span>,data:{labels:['January','February', 'March','April', 'May'], datasets:[{data:[50,60,70,180,190]}]}}"&gt;
-      </code>
-      <p><a href="https://www.chartjs.org/docs/latest/charts/doughnut.html">Pie Chart documentation</a></p>
-    </div>
-    <div class="arrowcol"></div>
-    <div class="col">
-      <img class="img-example" src="/chart?bkg=white&c={type:'pie',data:{labels:['January','February','March','April', 'May'],datasets:[{data:[50,60,70,180,190]}]}}"/>
-    </div>
-  </div>
-  <div class="hero panel">
-    <div class="col">
-      <h3>Doughnut Chart</h3>
-      <code>
-  &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'doughnut'</span>,data:{labels:['January','February', 'March','April', 'May'], datasets:[{data:[50,60,70,180,190]}]}}"&gt;
-      </code>
-      <p><a href="https://www.chartjs.org/docs/latest/charts/doughnut.html">Doughnut Chart documentation</a></p>
-    </div>
-    <div class="arrowcol"></div>
-    <div class="col">
-      <img class="img-example" src="/chart?bkg=white&c={type:'doughnut',data:{labels:['January','February','March','April', 'May'],datasets:[{data:[50,60,70,180,190]}]}}"/>
-    </div>
-  </div>
-  <div class="hero panel">
-    <div class="col">
-      <h3>Scatter Plot</h3>
-      <code>
-  &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'scatter'</span>,data:{datasets:[{label:'Data 1',data:[{x:2,y:4},{x:3,y:3},{x:-10,y:0},{x:0,y:10},{x:10,y:5}]}]}}"&gt;
-      </code>
-      <p><a href="https://www.chartjs.org/docs/latest/charts/scatter.html">Scatter Chart documentation</a></p>
-    </div>
-    <div class="arrowcol"></div>
-    <div class="col">
-      <img class="img-example" src="/chart?bkg=white&c={type:'scatter',data:{datasets:[{label:'My Data',data:[{x:2,y:4},{x:3,y:3},{x:-10,y:-2},{x:2,y:10},{x:10,y:5}]}]}}"/>
-    </div>
-  </div>
-  <div class="hero panel">
-    <div class="col">
-      <h3>Bubble Chart</h3>
-      <code>
-  &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'bubble'</span>,data:{datasets:[{label:'Data 1',data:[{x:1,y:4,r:9},{x:2,y:4,r:6},{x:3,y:8,r:30},{x:0,y:10,r:1},{x:10,y:5,r:5}]}]}}"&gt;
-      </code>
-      <p>
-        Bubble is similar to Scatter except that the <code>r</code> variable defines bubble radius in pixels.
-        <a href="https://www.chartjs.org/docs/latest/charts/bubble.html">Bubble Chart documentation</a>
-      </p>
-    </div>
-    <div class="arrowcol"></div>
-    <div class="col">
-      <img class="img-example" src="/chart?bkg=white&c={type:'bubble',data:{datasets:[{label:'Data 1',data:[{x:1,y:4,r:9},{x:2,y:4,r:6},{x:3,y:8,r:30},{x:0,y:10,r:1},{x:10,y:5,r:5}]}]}}"/>
-    </div>
-  </div>
-  <div class="hero panel">
-    <div class="col">
-      <h3>Radial Gauge / "Meter" Charts</h3>
-      <code>
-  &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'radialGauge'</span>,data:{datasets:[{data:[70],backgroundColor:'green'}]}}"&gt;
-      </code>
-      <p>
-        View the options at <a target="_blank" href="https://github.com/pandameister/chartjs-chart-radial-gauge#options">chartjs-radial-gauge</a> for customization details.
-      </p>
-    </div>
-    <div class="arrowcol"></div>
-    <div class="col">
-      <img class="img-example" src="/chart?c={type:'radialGauge',data:{datasets:[{data:[70],backgroundColor:'green'}]}}"/>
-    </div>
-  </div>
-  <div class="hero panel">
-    <div class="col">
-      <h3>Sparklines</h3>
-      <code>
-  &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'sparkline'</span>,data:{datasets:[{data:[140,60,274,370,199]}]}}"&gt;
-      </code>
-      <p>
-        A sparkline is a special case of line graph with axes and other labeling removed. All <a href="https://www.chartjs.org/docs/latest/charts/line.html">line graph options</a> can be applied.
-      </p>
-    </div>
-    <div class="arrowcol"></div>
-    <div class="col">
-      <img class="img-example__sparkline" src="/chart?c={type:'sparkline',data:{datasets:[{data:[140,60,274,370,199]}]}}"/>
-    </div>
-  </div>
-  <p>
-    You can combine charts together by specifying different "types":
-  </p>
-  <div class="hero panel">
-    <div class="col">
-      <h3>Compound Charts</h3>
-      <code>
-  &lt;img src="https://quickchart.io/chart?c={<span class="hl">type:'bar'</span>,data:{labels:['January','February', 'March','April', 'May'], datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500],},{<span class="hl">type:'line'</span>,fill:false, label:'Potatoes',data:[100,400,200,400,700]}]}}"&gt;
-      </code>
-    </div>
-    <div class="arrowcol"></div>
-    <div class="col">
-      <img class="img-example" src="/chart?bkg=white&c={type:'bar',data:{labels:['January','February','March','April','May'],datasets:[{label:'Dogs',data:[50,60,70,180,190]},{label:'Cats',data:[100,200,300,400,500],},{type:'line',fill:false,label:'Potatoes',data:[100,400,200,400,700]}]}}"/>
-      <!-- 語ûæųłЯħدیą́苗のđ語성Ωщلىگڑںܬகிঊঊ -->
-    </div>
-  </div>
-  <h2>Chart Annotations and Plugins</h2>
-  <p>
-    Three additional Chart.js plugins are supported: Data Labels (<a href="https://github.com/chartjs/chartjs-plugin-datalabels">chartjs-plugin-datalabels</a>), Annotations (<a href="https://github.com/chartjs/chartjs-plugin-annotation">chartjs-plugin-annotation</a>), and Outlabels (<a href="https://github.com/Neckster/chartjs-plugin-piechart-outlabels">chartjs-plugin-piechart-outlabels</a>).  These allow you to add various markup to your chart.  Have a look at the documentation for each plugin to learn more about the possibilities.
-  </p>
-  <div class="hero panel">
-    <div class="col">
-      <p>
-        An example of Chart.js data labels and annotations:
-      </p>
-      <textarea class="sandbox-input" data-image-id="sandbox-plugin" data-tag-id="plugin-tag">{
-  type: 'line',
-  data: {
-    labels: [1,2,3,4,5],
-    datasets: [{
-      label: 'Rainfall',
-      data: [ 200, 90, 120, 400, 500 ],
-      fill: false,
-      borderColor: 'green',
-      backgroundColor: 'green',
-    }]
-  },
-  options: {
-    annotation: {
-      annotations: [{
-        type: 'line',
-        mode: 'vertical',
-        scaleID: 'x-axis-0',
-        value: 2,
-        borderColor: 'red',
-        borderWidth: 4,
-        label: {
-          enabled: true,
-          content: 'Something changed'
-        }
-      }, {
-        type: 'box',
-        xScaleID: 'x-axis-0',
-        yScaleID: 'y-axis-0',
-        xMin: 3,
-        xMax: 5,
-        backgroundColor: 'rgba(200, 200, 200, 0.2)',
-        borderColor: '#ccc',
-      }]
-    },
-    plugins: {
-      datalabels: {
-        display: true,
-        align: 'bottom',
-        backgroundColor: '#ccc',
-        borderRadius: 3
-      },
-    }
-  }
-}</textarea>
-    </div>
-    <div class="arrowcol"></div>
-    <div class="col">
-      <div id="plugin-tag" class="sandbox-tag"></div>
-      <img class="img-example" id="sandbox-plugin" src="/chart?bkg=white&c=%7B%0A%20%20type%3A%20%27line%27%2C%0A%20%20data%3A%20%7B%0A%20%20%20%20labels%3A%20%5B1%2C2%2C3%2C4%2C5%5D%2C%0A%20%20%20%20datasets%3A%20%5B%7B%0A%20%20%20%20%20%20label%3A%20%27Rainfall%27%2C%0A%20%20%20%20%20%20data%3A%20%5B%20200%2C%2090%2C%20120%2C%20400%2C%20500%20%5D%2C%0A%20%20%20%20%20%20fill%3A%20false%2C%0A%20%20%20%20%20%20borderColor%3A%20%27green%27%2C%0A%20%20%20%20%20%20backgroundColor%3A%20%27green%27%2C%0A%20%20%20%20%7D%5D%0A%20%20%7D%2C%0A%20%20options%3A%20%7B%0A%20%20%20%20annotation%3A%20%7B%0A%20%20%20%20%20%20annotations%3A%20%5B%7B%0A%20%20%20%20%20%20%20%20type%3A%20%27line%27%2C%0A%20%20%20%20%20%20%20%20mode%3A%20%27vertical%27%2C%0A%20%20%20%20%20%20%20%20scaleID%3A%20%27x-axis-0%27%2C%0A%20%20%20%20%20%20%20%20value%3A%202%2C%0A%20%20%20%20%20%20%20%20borderColor%3A%20%27red%27%2C%0A%20%20%20%20%20%20%20%20borderWidth%3A%204%2C%0A%20%20%20%20%20%20%20%20label%3A%20%7B%0A%20%20%20%20%20%20%20%20%20%20enabled%3A%20true%2C%0A%20%20%20%20%20%20%20%20%20%20content%3A%20%27Something%20changed%27%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%7D%2C%20%7B%0A%20%20%20%20%20%20%20%20type%3A%20%27box%27%2C%0A%09xScaleID%3A%20%27x-axis-0%27%2C%0A%09yScaleID%3A%20%27y-axis-0%27%2C%0A%20%20%20%20%20%20%20%20xMin%3A%203%2C%0A%20%20%20%20%20%20%20%20xMax%3A%205%2C%0A%20%20%20%20%20%20%20%20backgroundColor%3A%20%27rgba(200%2C%20200%2C%20200%2C%200.2)%27%2C%0A%20%20%20%20%20%20%20%20borderColor%3A%20%27%23ccc%27%2C%0A%20%20%20%20%20%20%7D%5D%0A%20%20%20%20%7D%2C%0A%20%20%20%20plugins%3A%20%7B%0A%20%20%20%20%20%20datalabels%3A%20%7B%0A%20%20%20%20%20%20%20%20display%3A%20true%2C%0A%20%20%20%20%20%20%20%20align%3A%20%27bottom%27%2C%0A%20%20%20%20%20%20%20%20backgroundColor%3A%20%27%23ccc%27%2C%0A%20%20%20%20%20%20%20%20borderRadius%3A%203%0A%20%20%20%20%20%20%7D%2C%0A%20%20%20%20%7D%0A%20%20%7D%0A%7D"/>
-    </div>
-  </div>
-  <div class="hero panel">
-    <div class="col">
-      <p>
-        An example of the <code>outlabeledPie</code> type:
-      </p>
-      <textarea class="sandbox-input" data-image-id="sandbox-plugin-2" data-tag-id="plugin-tag-2">{
-  "type": "outlabeledPie",
-  "data": {
-    "labels": ["ONE", "TWO", "THREE", "FOUR", "FIVE"],
-    "datasets": [{
-        "backgroundColor": ["#FF3784", "#36A2EB", "#4BC0C0", "#F77825", "#9966FF"],
-        "data": [1, 2, 3, 4, 5]
-		}]
-  },
-  "options": {
-    "plugins": {
-      "legend": false,
-      "outlabels": {
-        "text": "%l %p",
-        "color": "white",
-        "stretch": 35,
-        "font": {
-          "resizable": true,
-          "minSize": 12,
-          "maxSize": 18
-        }
-      }
-    }
-  }
-}</textarea>
-    </div>
-    <div class="arrowcol"></div>
-    <div class="col">
-      <div id="plugin-tag-2" class="sandbox-tag"></div>
-      <img class="img-example" id="sandbox-plugin-2" src="/chart?bkg=white&c=%7B%0A%20%20%22type%22%3A%20%22outlabeledPie%22%2C%0A%20%20%22data%22%3A%20%7B%0A%20%20%20%20%22labels%22%3A%20%5B%22ONE%22%2C%20%22TWO%22%2C%20%22THREE%22%2C%20%22FOUR%22%2C%20%22FIVE%22%5D%2C%0A%20%20%20%20%22datasets%22%3A%20%5B%7B%0A%20%20%20%20%20%20%20%20%22backgroundColor%22%3A%20%5B%22%23FF3784%22%2C%20%22%2336A2EB%22%2C%20%22%234BC0C0%22%2C%20%22%23F77825%22%2C%20%22%239966FF%22%5D%2C%0A%20%20%20%20%20%20%20%20%22data%22%3A%20%5B1%2C%202%2C%203%2C%204%2C%205%5D%0A%09%09%7D%5D%0A%20%20%7D%2C%0A%20%20%22options%22%3A%20%7B%0A%20%20%20%20%22plugins%22%3A%20%7B%0A%20%20%20%20%20%20%22legend%22%3A%20false%2C%0A%20%20%20%20%20%20%22outlabels%22%3A%20%7B%0A%20%20%20%20%20%20%20%20%22text%22%3A%20%22%25l%20%25p%22%2C%0A%20%20%20%20%20%20%20%20%22color%22%3A%20%22white%22%2C%0A%20%20%20%20%20%20%20%20%22stretch%22%3A%2035%2C%0A%20%20%20%20%20%20%20%20%22font%22%3A%20%7B%0A%20%20%20%20%20%20%20%20%20%20%22resizable%22%3A%20true%2C%0A%20%20%20%20%20%20%20%20%20%20%22minSize%22%3A%2012%2C%0A%20%20%20%20%20%20%20%20%20%20%22maxSize%22%3A%2018%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%0A%20%20%7D%0A%7D"/>
-    </div>
-  </div>
-  <h2 id="qr">QR codes</h2>
-  <p>
-    This web service supports QR code generation.  You can render a QR code like so:
-  </p>
-  <div class="centered">
-    <p>
-      <code><strong>https://quickchart.io/qr?text=</strong>Here's my text</code>
-    </p>
-    <p>
-      <img src="/qr?text=Here's my text">
+    <p class="centered">
+      <a class="cta" href="/pricing">View hosted plans</a>
+      <a class="cta secondary" href="/documentation">View the documentation</a>
     </p>
   </div>
-  <p>
-    Remember the URL-encode your <code>text</code> parameter for more complex strings.  The QR endpoint produces a PNG image by default.  You may optionally set the query parameter <code><strong>format</strong>=svg</code> for SVG format.
-  </p>
-  <p>
-    Specify the whitespace around QR image in modules with query parameter <code><strong>margin</strong></code> (defaults to 4), <code><strong>size</strong></code> in pixels of the square QR image (defaults to 150), and error correction level with <code><strong>ecLevel</strong>=M</code> (valid values: L, M, Q, H).
-  </p>
-  <p>
-    If you'd like to customize the color of your QR code, use <code><strong>dark=</strong>000000</code> and <code><strong>light=</strong>ffffff</code>. The parameters must be hex color codes.  Here's the same code as above but with slimmer margins, more error protection, and colors:
-  </p>
-  <div class="centered">
-    <p>
-      <code>https://quickchart.io/qr?text=Here's%20my%20text&amp;dark=f00<wbr>&amp;light=0ff&amp;ecLevel=Q&amp;format=svg</code>
-    </p>
-    <p>
-      <img src="/qr?text=Here's%20my%20text&dark=f00&light=0ff&ecLevel=Q&margin=2&format=svg">
-    </p>
+  <div class="example-images">
+    <a href="/documentation#line-graph"><img src="/chart?w=300&h=180&bkg=white&c={type:%27line%27,data:{labels:[%27January%27,%27February%27,%20%27March%27,%27April%27,%20%27May%27],%20datasets:[{label:%27Dogs%27,data:[50,60,70,180,190],fill:false,borderColor:%27blue%27},{label:%27Cats%27,data:[100,200,300,400,500],fill:false,borderColor:%27green%27}]}}"/></a>
+    <a href="/documentation#radar-chart"><img src="/chart?w=300&h=180&bkg=white&c={type:%27radar%27,data:{labels:[%27January%27,%20%27February%27,%27March%27,%27April%27,%20%27May%27],datasets:[{label:%27Dogs%27,data:[50,60,70,180,190]},{label:%27Cats%27,data:[100,200,300,400,500]}]}}"/></a>
+    <a href="/documentation#bubble-chart"><img src="/chart?w=300&h=180&bkg=white&c={type:%27bubble%27,data:{datasets:[{label:%27Data%201%27,data:[{x:1,y:4,r:9},{x:2,y:4,r:6},{x:3,y:8,r:30},{x:0,y:10,r:1},{x:10,y:5,r:5}]}]}}"/></a>
+    <a href="/documentation#radial-gauge"><img src="/chart?w=300&h=180&c={type:%27radialGauge%27,data:{datasets:[{data:[70],backgroundColor:%27green%27}]}}"/></a>
+    <a href="/documentation#mixed-chart"><img src="/chart?w=300&h=180&bkg=white&c={type:%27bar%27,data:{labels:[%27January%27,%27February%27,%27March%27,%27April%27,%27May%27],datasets:[{label:%27Dogs%27,data:[50,60,70,180,190]},{label:%27Cats%27,data:[100,200,300,400,500],},{type:%27line%27,fill:false,label:%27Potatoes%27,data:[100,400,200,400,700]}]}}"/></a>
+    <a href="/documentation#plugins"><img src="/chart?w=300&h=180&bkg=white&c=%7B%0A%20%20type%3A%20%27line%27%2C%0A%20%20data%3A%20%7B%0A%20%20%20%20labels%3A%20%5B1%2C2%2C3%2C4%2C5%5D%2C%0A%20%20%20%20datasets%3A%20%5B%7B%0A%20%20%20%20%20%20label%3A%20%27Rainfall%27%2C%0A%20%20%20%20%20%20data%3A%20%5B%20200%2C%2090%2C%20120%2C%20400%2C%20500%20%5D%2C%0A%20%20%20%20%20%20fill%3A%20false%2C%0A%20%20%20%20%20%20borderColor%3A%20%27green%27%2C%0A%20%20%20%20%20%20backgroundColor%3A%20%27green%27%2C%0A%20%20%20%20%7D%5D%0A%20%20%7D%2C%0A%20%20options%3A%20%7B%0A%20%20%20%20annotation%3A%20%7B%0A%20%20%20%20%20%20annotations%3A%20%5B%7B%0A%20%20%20%20%20%20%20%20type%3A%20%27line%27%2C%0A%20%20%20%20%20%20%20%20mode%3A%20%27vertical%27%2C%0A%20%20%20%20%20%20%20%20scaleID%3A%20%27x-axis-0%27%2C%0A%20%20%20%20%20%20%20%20value%3A%202%2C%0A%20%20%20%20%20%20%20%20borderColor%3A%20%27red%27%2C%0A%20%20%20%20%20%20%20%20borderWidth%3A%204%2C%0A%20%20%20%20%20%20%20%20label%3A%20%7B%0A%20%20%20%20%20%20%20%20%20%20enabled%3A%20true%2C%0A%20%20%20%20%20%20%20%20%20%20content%3A%20%27Something%20changed%27%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%7D%2C%20%7B%0A%20%20%20%20%20%20%20%20type%3A%20%27box%27%2C%0A%09xScaleID%3A%20%27x-axis-0%27%2C%0A%09yScaleID%3A%20%27y-axis-0%27%2C%0A%20%20%20%20%20%20%20%20xMin%3A%203%2C%0A%20%20%20%20%20%20%20%20xMax%3A%205%2C%0A%20%20%20%20%20%20%20%20backgroundColor%3A%20%27rgba(200%2C%20200%2C%20200%2C%200.2)%27%2C%0A%20%20%20%20%20%20%20%20borderColor%3A%20%27%23ccc%27%2C%0A%20%20%20%20%20%20%7D%5D%0A%20%20%20%20%7D%2C%0A%20%20%20%20plugins%3A%20%7B%0A%20%20%20%20%20%20datalabels%3A%20%7B%0A%20%20%20%20%20%20%20%20display%3A%20true%2C%0A%20%20%20%20%20%20%20%20align%3A%20%27bottom%27%2C%0A%20%20%20%20%20%20%20%20backgroundColor%3A%20%27%23ccc%27%2C%0A%20%20%20%20%20%20%20%20borderRadius%3A%203%0A%20%20%20%20%20%20%7D%2C%0A%20%20%20%20%7D%0A%20%20%7D%0A%7D"/></a>
+    <a href="/documentation#pie-chart"><img src="/chart?w=300&h=180&bkg=white&c=%7B%0A%20%20%22type%22%3A%20%22outlabeledPie%22%2C%0A%20%20%22data%22%3A%20%7B%0A%20%20%20%20%22labels%22%3A%20%5B%22ONE%22%2C%20%22TWO%22%2C%20%22THREE%22%2C%20%22FOUR%22%2C%20%22FIVE%22%5D%2C%0A%20%20%20%20%22datasets%22%3A%20%5B%7B%0A%20%20%20%20%20%20%20%20%22backgroundColor%22%3A%20%5B%22%23FF3784%22%2C%20%22%2336A2EB%22%2C%20%22%234BC0C0%22%2C%20%22%23F77825%22%2C%20%22%239966FF%22%5D%2C%0A%20%20%20%20%20%20%20%20%22data%22%3A%20%5B1%2C%202%2C%203%2C%204%2C%205%5D%0A%09%09%7D%5D%0A%20%20%7D%2C%0A%20%20%22options%22%3A%20%7B%0A%20%20%20%20%22plugins%22%3A%20%7B%0A%20%20%20%20%20%20%22legend%22%3A%20false%2C%0A%20%20%20%20%20%20%22outlabels%22%3A%20%7B%0A%20%20%20%20%20%20%20%20%22text%22%3A%20%22%25l%20%25p%22%2C%0A%20%20%20%20%20%20%20%20%22color%22%3A%20%22white%22%2C%0A%20%20%20%20%20%20%20%20%22stretch%22%3A%2035%2C%0A%20%20%20%20%20%20%20%20%22font%22%3A%20%7B%0A%20%20%20%20%20%20%20%20%20%20%22resizable%22%3A%20true%2C%0A%20%20%20%20%20%20%20%20%20%20%22minSize%22%3A%2012%2C%0A%20%20%20%20%20%20%20%20%20%20%22maxSize%22%3A%2018%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%0A%20%20%7D%0A%7D"/></a>
   </div>
-  {% include 'faq.html' %}
-  <h2 id="about">About QuickChart.io</h2>
+  <h2 id="about">About QuickChart</h2>
   <p>
-    The QuickChart is provided for free and <a href="https://github.com/typpo/quickchart">open source</a>.  You may use images produced by this website for any purpose.
-    This service was built in response to the Google Image Charts shutdown and is supported by <a href="https://arthena.com/">Arthena</a> and <a href="https://www.zenysis.com/">Zenysis</a>.
+    QuickChart.io is a public API that serves over 16 million charts per month.  There is a 120 requests per minute per IP rate limit (2 charts/sec) on the public service. If you'd like to exceed this limit, please <a href="/pricing">purchase</a> a license or <a href="mailto:support@quickchart.io">contact us</a>.
   </p>
   <p>
-    The QuickChart.io site is a public service that is shared between many users.  It serves over 16 million charts per month.  There is a 120 requests per minute per IP rate limit (2 charts/sec) on the public service. If you'd like to exceed this limit, please <a href="mailto:support@quickchart.io">contact us</a> to request an exception or discuss commercial pricing.
+    QuickChart is <a href="https://github.com/typpo/quickchart">open source</a>, dual licensed under the GNU GPLv3 and a commercial license.  You may use images produced by this website for any purpose.  This means that QuickChart is never going away; anyone can host this service with minimal resource requirements.  If you would like to modify QuickChart source code for commercial use, please <a href="/pricing">purchase</a> a license or <a href="mailto:support@quickchart.io">contact us</a>.
   </p>
   <p>
-    QuickChart is <a href="https://github.com/typpo/quickchart">open source</a>, dual licensed under the GNU GPLv3 and a commercial license.  This means that QuickChart is never going away; anyone can host this service with minimal resource requirements.  If you would like to modify QuickChart source code for commercial use, please <a href="mailto:support@quickchart.io">contact us</a> for a license.
+    This service was built in response to the Google Image Charts shutdown.  Don't use proprietary chart formats - use open source!
   </p>
 </div>
 {% endblock %}
 {% block scripts %}
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.48.0/lib/codemirror.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.48.0/mode/javascript/javascript.js"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.48.0/lib/codemirror.css">
-<script>
-  var elts = document.getElementsByClassName('sandbox-input')
-  var codemirrors = [];
-  for (var i=0; i < elts.length; i++) {
-    (function() {
-      var input = elts[i];
-      var img = document.getElementById(input.dataset.imageId);
-      var tag = input.dataset.tagId ? document.getElementById(input.dataset.tagId) : undefined;
-      var updateImage = function(val) {
-        var url = '/chart?bkg=white&c=' + encodeURIComponent(val);
-        img.src = url;
-        var lines = val.split('\n').filter(function(line) {
-          return line.slice(0, 2) !== '//';
-        });
-        if (tag) {
-          let linkText = 'https://quickchart.io/chart?bkg=white&c=' + lines.join('');
-          if (linkText.length > 500) {
-            linkText = linkText.slice(0, 100) + ' ... ' + linkText.slice(linkText.length - 100);
-          }
-          tag.innerHTML = '<a href="' + url + '">' + linkText + '</a>';
-        }
-      }
-      input.onkeyup = debounce(function() {
-        updateImage(this.value);
-      }, 350);
-      input.onfocus = function() {
-        document.getElementById('sandbox-input-edit').style.display = 'none';
-      };
-      var cm = CodeMirror.fromTextArea(input, {
-        lineNumbers: true,
-        lineWrapping: true
-      });
-      cm.on('change', debounce(function(editor) {
-        updateImage(editor.getValue());
-      }), 350)
-      cm.on('focus', function() {
-        document.getElementById('sandbox-input-edit').style.display = 'none';
-      });
-      codemirrors.push(cm);
-    })();
-  }
-
-  document.getElementById('sandbox-input-edit').onclick = function() {
-    document.getElementById('sandbox-input-edit').style.display = 'none';
-    if (codemirrors.length) {
-      codemirrors[0].focus();
-    }
-  };
-
-  function debounce(func, wait, immediate) {
-    var timeout;
-    return function executedFunction() {
-      var context = this;
-      var args = arguments;
-      var later = function() {
-        timeout = null;
-        if (!immediate) func.apply(context, args);
-      };
-      var callNow = immediate && !timeout;
-      clearTimeout(timeout);
-      timeout = setTimeout(later, wait);
-      if (callNow) func.apply(context, args);
-    }
-  };
-</script>
+{% include "sandbox_js.html" %}
 {% include "tracking.html" %}
-<script src="https://js.stripe.com/v3"></script>
+<script src="https://js.stripe.com/v3" async></script>
 {% endblock %}

@@ -1,0 +1,40 @@
+<div class="hero panel">
+  <div class="col">
+    <h3 class="centered">Try it yourself</h3>
+    <div class="try-it-container">
+      <div id="sandbox-input-edit" class="cta-edit-container">
+        <button class="cta secondary">Click to edit live</button>
+      </div>
+      <textarea id="sandbox-input" class="sandbox-input" data-image-id="sandbox-img" data-tag-id="sandbox-tag">{
+type: 'bar',
+data: {
+  labels: [2012, 2013, 2014, 2015, 2016],
+  datasets: [{
+    label: 'Raisins',
+    data: [12, 6, 5, 18, 12]
+  }, {
+    label: 'Bananas',
+    data: [4, 8, 16, 5, 5]
+  }]
+}
+}</textarea>
+    </div>
+  </div>
+  <div class="arrowcol"></div>
+  <div class="col">
+    <div id="sandbox-tag" class="sandbox-tag"></div>
+    <img class="img-example" id="sandbox-img" src="/chart?bkg=white&c={
+type: 'bar',
+data: {
+labels: [2012, 2013, 2014, 2015, 2016],
+datasets: [{
+  label: 'Raisins',
+  data: [12, 6, 5, 18, 12]
+}, {
+  label: 'Bananas',
+  data: [4, 8, 16, 5, 5]
+}]
+}
+}"/>
+  </div>
+</div>
