@@ -52,6 +52,9 @@ if (process.env.RATE_LIMIT_PER_MIN) {
       }
       return ret;
     },
+    keyGenerator: req => {
+      return req.headers['x-forwarded-for'] || req.ip;
+    },
   });
   app.use('/chart', limiter);
   app.use('/qr', limiter);
