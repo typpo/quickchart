@@ -12,6 +12,8 @@
   width: 100%;
   background-color: #fafafa;
   border-collapse: collapse;
+
+  font-size: 1.2em;
 }
 
 .pricing-table .row-header {
@@ -22,6 +24,12 @@
   text-align: center;
   border: 1px solid #000;
   padding: 1em 0.5em;
+  font-weight: normal;
+}
+
+.plan-title {
+  font-size: 1.5em;
+  font-weight: bold;
 }
 </style>
 {% endblock %}
@@ -49,9 +57,9 @@
     <table class="pricing-table">
       <tr>
         <th></th>
-        <th>Free &amp; Open Source</th>
-        <th>QuickChart Pro<br>$25/mo</th>
-        <th>QuickChart Pro + SLA<br>$40/mo</th>
+        <th><span class="plan-title">Community</span><br>$0/mo</th>
+        <th><span class="plan-title">Professional</span><br>$25/mo</th>
+        <th><span class="plan-title">Enterprise</span><br>$40/mo</th>
       </tr>
       <tr>
         <td class="row-header">License</td>
@@ -85,24 +93,24 @@
       </tr>
       <tr>
         <td></td>
-        <td></td>
+        <td>No signup required</td>
         <td>
           <button
-            style="background-color:#6772E5;color:#FFF;padding:8px 12px;border:0;border-radius:4px;font-size:1em;cursor:pointer"
+            style="background-color:#6772E5;color:#FFF;padding:16px 24px;border:0;border-radius:4px;font-size:1em;cursor:pointer;font-weight:bold"
             id="checkout-button-plan_G0HhunFNwnLLiU"
             role="link"
           >
-            Sign Up
+            Subscribe
           </button>
           <div id="error-message-plan_G0HhunFNwnLLiU"></div>
         </td>
         <td>
           <button
-            style="background-color:#6772E5;color:#FFF;padding:8px 12px;border:0;border-radius:4px;font-size:1em;cursor:pointer"
+            style="background-color:#6772E5;color:#FFF;padding:16px 24px;border:0;border-radius:4px;font-size:1em;cursor:pointer;font-weight:bold"
             id="checkout-button-plan_FzxDcjIG1vDdWD"
             role="link"
           >
-            Sign Up
+            Subscribe
           </button>
           <div id="error-message-plan_FzxDcjIG1vDdWD"></div>
         </td>
