@@ -4,6 +4,10 @@
 
 {% block styles %}
 <style>
+body p {
+  font-size: 1.2em;
+}
+
 code strong {
   font-size: 1.25em;
 }
@@ -76,7 +80,8 @@ code strong {
 <div class="split-container">
   <div class="left-container">
     <ul class="docs-list">
-      <li><a href="#parameters">Basic API</a></li>
+      <li><a href="#getting-started">Getting Started</a></li>
+      <li><a href="#parameters">API parameters</a></li>
       <li>
         <a href="#advanced-api">Advanced API</a>
         <ul>
@@ -107,6 +112,29 @@ code strong {
     </ul>
   </div>
   <div class="right-container">
+    <h2 id="getting-started">Getting Started</h2>
+    <p>
+      QuickChart is a web service that generates chart images on-the-fly.  These images are suitable for embedding in email, SMS, chatbots, and other formats.  Charts are rendered by Chart.js, a popular open-source charting library.  QuickChart is 100% <a href="https://github.com/typpo/quickchart">open-source</a>.
+    </p>
+    <h3>Quick Example</h3>
+    <p>
+      QuickChart works by taking Chart.js configuration objects and rendering them on the backend as an image.  You can provide a configuration object using HTTP GET or POST requests.
+    </p>
+    <p>
+      For example, this simple URL: <a rel="nofollow" href="https://quickchart.io/chart?bkg=white&c={type:'bar',data:{labels:[2012,2013,2014,2015,2016],datasets:[{label:'Users',data:[120,60,50,180,120]}]}}">https://quickchart.io/chart?c={type:'bar',<wbr>data:{labels:[2012,2013,2014,2015,2016],<wbr>datasets:[{label:'Users',<wbr>data:[120,60,50,180,120]}]}}</a>
+    </p>
+    <p>
+      Shows this image:
+    </p>
+    <div style="text-align: center">
+      <img style="width:40em; height:auto" src="https://quickchart.io/chart?c={type:'bar',data:{labels:[2012,2013,2014,2015,2016],datasets:[{label:'Users',data:[120,60,50,180,120]}]}}" />
+    </div>
+    <p>
+      QuickChart supports many types of charts and is highly customizable.  Explore the documentation below to learn how to use it, jump to the <a href="#chart-types">chart gallery</a>, or experiment in the <a href="#sandbox">live editor</a>.
+    </p>
+    <p>
+      If you're stuck or running into a problem, feel free to <a href="mailto:support@quickchart.io">email support</a> or <a href="https://github.com/typpo/quickchart/issues">open a Github issue</a>.
+    </p>
     <h2 id="parameters">Chart API Parameters</h2>
     <p>
       The chart endpoint <code>https://quickchart.io/chart</code> accepts these query parameters:
@@ -117,8 +145,8 @@ code strong {
         </li>
         <li><code><strong>width</strong>=500</code>: Width of the image. Abbreviated as "w"</li>
         <li><code><strong>height</strong>=300</code>: Height of the image. Abbreviated as "h"</li>
-        <li><code><strong>backgroundColor</strong>=transparent</code>: Background of the chart canvas. Abbreviated as "bkg"</li>
-        <li><code><strong>format</strong>=png</code>: Format of your output. Currently the two supported output formats are PNG and PDF. Abbreviated as "f"</li>
+        <li><code><strong>backgroundColor</strong>=transparent</code>: Background of the chart canvas. Accepts rgb (<code>rgb(255,255,120)</code>), colors (<code>red</code>), and url-encoded hex values (<code>%23ff00ff</code>). Abbreviated as "bkg"</li>
+        <li><code><strong>format</strong>=png</code>: Format of your output. Supported output formats are PNG and PDF. Abbreviated as "f"</li>
         <li><code><strong>devicePixelRatio</strong>=2.0</code>: Device pixel ratio of the output (defaults to retina=2.0). Note that width and height are multiplied by this value.</li>
         <li><code><strong>encoding</strong>=url</code>: Encoding of your "chart" parameter. Accepted values are <code>url</code> and <code>base64</code>.</li>
       </ul>
@@ -143,7 +171,7 @@ code strong {
     </p>
     <h3 id="short-urls">Short URLs</h3>
     <p>
-      You may like to create a shorter URL for your charts, especially if you are sending them via email or SMS.  To generate a short URL alias, send a POST request to <code>https://quickchart.io/chart/create</code> per the above POST spec.  For example:
+      You may want to create a shorter URL for your charts, especially if you are sending them via email or SMS.  To generate a short URL alias, send a POST request to <code>https://quickchart.io/chart/create</code> per the above POST spec.  For example:
     </p>
     <code><pre>
   curl -X POST \

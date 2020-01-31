@@ -36,9 +36,11 @@ As you can see, the Javascript or JSON object contained in the URL defines the c
 
 ## Configuring your chart
 
-The chart configuration object is based on the popular Chart.js API.  Check out the [Chart.js documentation](https://www.chartjs.org/docs/latest/charts/) for more information on how to customize your chart, or see [QuickChart.io](https://quickchart.io/) for more examples.
+**See [full QuickChart documentation](https://quickchart.io/documentation) for more information and examples.**
 
-QuickChart includes several Chart.js plugins that allow you to add chart annotations, data labels, and more.  See [full QuickChart documentation](https://quickchart.io/#chart-types) for examples.
+The chart configuration object is based on the popular Chart.js API.  Check out the [Chart.js documentation](https://www.chartjs.org/docs/latest/charts/) for more information on how to customize your chart, or see [QuickChart documentation](https://quickchart.io/documentation#parameters) for API options.
+
+QuickChart includes several Chart.js plugins that allow you to add chart annotations, data labels, and more: chartjs-plugin-datalabels, chartjs-plugin-annotation, and chartjs-plugin-piechart-outlabels.
 
 ## QR Codes
 
