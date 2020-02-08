@@ -33,6 +33,12 @@ body p {
   font-size: 1.5em;
   font-weight: bold;
 }
+
+.brag-container {
+  font-size: 1.2em;
+  background-color: linen;
+  padding: 1.2em;
+}
 </style>
 {% endblock %}
 
@@ -118,6 +124,17 @@ body p {
         </td>
       </tr>
     </table>
+  </div>
+  <div class="hero brag-container">
+    <div class="col">
+      <span class="brag">⚡ 130M+ charts rendered</span>
+    </div>
+    <div class="col">
+      <span class="brag">✅ Built on open standards</span>
+    </div>
+    <div class="col">
+      <span class="brag">📈 All the flexibility of Chart.js</span>
+    </div>
   </div>
   {% include 'faq.html' %}
 </div>
