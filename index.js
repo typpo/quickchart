@@ -5,6 +5,7 @@ const expressNunjucks = require('express-nunjucks');
 const qs = require('qs');
 const rateLimit = require('express-rate-limit');
 const text2png = require('text2png');
+const javascriptStringify = require('javascript-stringify').stringify;
 
 const apiKeys = require('./api_keys');
 const packageJson = require('./package.json');
@@ -12,6 +13,7 @@ const telemetry = require('./telemetry');
 const { getPdfBufferFromPng, getPdfBufferWithText } = require('./lib/pdf');
 const { logger } = require('./logging');
 const { renderChart } = require('./lib/charts');
+const { toChartJs } = require('./lib/google_image_charts');
 const { renderQr, DEFAULT_QR_SIZE } = require('./lib/qr');
 
 const app = express();
@@ -75,6 +77,10 @@ app.get('/pricing', (req, res) => {
 
 app.get('/documentation', (req, res) => {
   res.render('docs');
+});
+
+app.get('/documentation/migrating-from-google-image-charts', (req, res) => {
+  res.render('google_image_charts_replacement');
 });
 
 app.get('/robots.txt', (req, res) => {
@@ -206,7 +212,38 @@ function doRender(req, res, opts) {
     });
 }
 
+function handleGChart(req, res) {
+  const converted = toChartJs(req.query);
+  if (req.query.format === 'chartjs-config') {
+    res.end(javascriptStringify(converted.chart, undefined, 2));
+    return;
+  }
+
+  renderChart(
+    converted.width,
+    converted.height,
+    converted.backgroundColor,
+    undefined,
+    converted.chart,
+  ).then(buf => {
+    res.writeHead(200, {
+      'Content-Type': 'image/png',
+      'Content-Length': buf.length,
+
+      // 1 week cache
+      'Cache-Control': 'public, max-age=604800',
+    });
+    res.end(buf);
+  });
+  // TODO(ian): Telemetry.
+}
+
 app.get('/chart', (req, res) => {
+  if (req.query.cht) {
+    // This is a Google Image Charts-compatible request.
+    return handleGChart(req, res);
+  }
+
   const opts = {
     chart: req.query.c || req.query.chart,
     height: req.query.h || req.query.height,
@@ -301,6 +338,8 @@ app.get('/qr', (req, res) => {
 
   telemetry.count('qrCount');
 });
+
+app.get('/gchart', handleGChart);
 
 app.get('/healthcheck', (req, res) => {
   // A lightweight healthcheck endpoint.

@@ -1,0 +1,67 @@
+<style>
+body p {
+  font-size: 1.2em;
+}
+
+code strong {
+  font-size: 1.25em;
+}
+
+.header {
+  padding-left: 3em;
+}
+
+.tip {
+  background-color: #eee;
+  padding: 1em;
+}
+
+.split-container {
+  display: flex;
+  padding: 0.5em;
+}
+
+.left-container {
+  position: sticky;
+  top: 5em;
+  flex: 1;
+  align-self: flex-start;
+}
+
+.right-container {
+  flex: 4;
+}
+
+.docs-list {
+  list-style-type: none;
+}
+
+.warning-container {
+  background-color: bisque;
+  font-size: 1.3em;
+  padding: 1em;
+}
+
+@media (max-height: 630px) {
+  .docs-list {
+    line-height: 1.4;
+  }
+}
+
+@media (max-height: 530px) {
+  .docs-list {
+    line-height: 1;
+  }
+}
+
+@media (max-width: 850px) {
+  .split-container {
+    display: block;
+  }
+
+  .left-container {
+    position: relative;
+    top: 0;
+  }
+}
+</style>

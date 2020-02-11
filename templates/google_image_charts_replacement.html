@@ -1,0 +1,711 @@
+{% extends 'layout.html' %}
+
+{% block title %}How to replace Google Image Charts with open source | QuickChart{% endblock %}
+
+{% block styles %}
+{% include 'docs_styles.css' %}
+<style>
+  h4 {
+    font-size: 1.1em;
+  }
+
+  p code, ul code {
+    background-color: #eee;
+    padding: 0.3em;
+  }
+
+  .list-normal-size {
+    font-size: 1.2em;
+  }
+
+  .list-normal-size li {
+    margin-bottom: 1em;
+  }
+
+  .list-normal-size li:last-child {
+    margin-bottom: 0;
+  }
+
+  .parameter-container {
+    border: 1px solid #ccc;
+    padding: 0 1em;
+    margin-bottom: 1em;
+  }
+
+  .chart-caption {
+    font-family: monospace;
+  }
+
+  .syntax {
+    background-color: #eee;
+    padding: 1em;
+  }
+
+  .syntax code {
+    font-weight: bold;
+  }
+
+  .img-container {
+    background-color: #fafafa;
+    padding: 1em;
+    text-align: center;
+  }
+
+  .img-container img {
+    display: block;
+    margin: 0 auto;
+    padding: 0;
+  }
+
+  .img-container span {
+    display: block;
+    margin-top: 0.5em;
+  }
+
+  .params-table thead {
+    background-color: #e8eaed;
+  }
+
+  .params-table {
+    border-collapse: collapse;
+    margin: 0 auto;
+  }
+
+  .params-table th, .params-table td {
+    border: 1px solid #404040;
+    padding: 0.5em 1em;
+  }
+
+  .params-table .parameter {
+    font-weight: bold;
+  }
+</style>
+{% endblock %}
+
+{% block nav_menu %}
+<a href="/"><li>Home</li></a>
+<a href="/documentation" class="mobile-hide"><li>Documentation</li></a>
+<a href="/pricing"><li>Pricing</li></a>
+<a href="https://github.com/typpo/quickchart"><li>Open Source</li></a>
+<a href="/documentation#faq"><li>FAQ</li></a>
+<a href="mailto:support@quickchart.io" class="mobile-hide"><li>Support</li></a>
+{% endblock %}
+
+{% block content %}
+<div class="header header-small">
+  <h1>How to <span class="highlight">replace Google Image Charts</span> with QuickChart</h1>
+</div>
+<div class="split-container">
+  <div class="left-container">
+    <ul class="docs-list">
+      <li><a href="#getting-started">Getting started</a></li>
+      <li><a href="#migrating">Migrating</a></li>
+      <li><a href="#parameters">Supported chart parameters</a></li>
+      <li>
+        <ul>
+          <li><a href="#cht-param">Chart type</a></li>
+          <li><a href="#chd-param">Data</a></li>
+          <li><a href="#chs-param">Size</a></li>
+          <li><a href="#chdl-param">Legend</a></li>
+          <li><a href="#chf-param">Background color</a></li>
+          <li><a href="#chg-param">Grid lines</a></li>
+          <li><a href="#chl-param">Data labels</a></li>
+          <li><a href="#chm-param">Data value markers</a></li>
+          <li><a href="#chxt-param">Visible axes</a></li>
+          <li><a href="#chtt-param">Chart title</a></li>
+          <li><a href="#chxr-param">Axis range</a></li>
+          <li><a href="#chxl-param">Axis labels</a></li>
+          <li><a href="#chxs-param">Axis style</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#chart-gallery">Chart gallery</a>
+        <ul>
+          <li><a href="#bar-graph">Bar</a></li>
+          <li><a href="#line-graph">Line</a></li>
+          <li><a href="#pie-chart">Pie</a></li>
+          <li><a href="#google-o-meter">Google-o-meter</a></li>
+          <li><a href="#qr">QR codes</a></li>
+          <li><a href="#other-charts">Compound &amp; Multi-Axis</a></li>
+        </ul>
+      </li>
+      <li><a href="#convert-to-chartjs">Chart.js converter</a></li>
+      <li><a href="/documentation">Full documentation</a></li>
+      <li><a href="mailto:support@quickchart.io">Contact support</a></li>
+    </ul>
+  </div>
+  <div class="right-container">
+    <h2 id="getting-started">Getting Started</h2>
+    <p>
+      Welcome to the QuickChart guide for replacing Google Image Charts with QuickChart.  QuickChart is mostly compatible with the Google Image Charts API and serves as a <strong>drop-in replacement</strong>.
+    </p>
+    <p>
+      Here are a few things you should know before getting started:
+    </p>
+    <ul class="list-normal-size">
+      <li>QuickChart is an open-source service that renders static chart images.  You can <a href="https://github.com/typpo/quickchart">host your own</a> server using the source code or a Docker container, or you can use the reliable <a href="https://quickchart.io">QuickChart.io</a> web service and not worry about hosting.</li>
+      <li>
+        This page is for people looking to replace existing Google Image Charts implementations.  To start from scratch with QuickChart, go to the <a href="/documentation">main documentation</a>.
+      </li>
+      <li>
+        If you're starting fresh, use the open-source <a href="/documentation">Chart.js format</a> instead of Google Image Charts format.  It's more flexible, has a strong community, and will never be deprecated.
+      </li>
+    </ul>
+    <h2 id="migrating">Migrating from Google Image Charts</h2>
+    <p>
+      Just replace <strong><code>chart.googleapis.com</code></strong> with <strong><code>quickchart.io</code></strong> in the URL.
+    </p>
+    <p>
+      For example, the URL: <a href="https://chart.googleapis.com/chart?cht=bvg&chs=300x200&chd=t:5,5,5|10,10,10|15,15,15&chco=4d89f9,c6d9fd,00B88A&chds=0,20&chbh=a&chxs=0,000000,0,0,_&chxt=y&chm=N,000000,0,,10|N,000000,1,,10|N,000000,2,,10">https://<strong>chart.googleapis.com</strong>/chart?cht=bvg&chs=300x200<wbr>&chd=t:5,5,5|10,10,10|15,15,15<wbr>&chco=4d89f9,c6d9fd,00B88A&chds=0,20&chbh=a<wbr>&chxs=0,000000,0,0,_&chxt=y<wbr>&chm=N,000000,0,,10|N,000000,1,,10|N,000000,2,,10</a>
+    </p>
+    <div class="img-container">
+      <img src="https://chart.googleapis.com/chart?cht=bvg&chs=300x200&chd=t:5,5,5|10,10,10|15,15,15&chco=4d89f9,c6d9fd,00B88A&chds=0,20&chbh=a&chxs=0,000000,0,0,_&chxt=y&chm=N,000000,0,,10|N,000000,1,,10|N,000000,2,,10" />
+      <span><em>Google Image Charts</em></span>
+    </div>
+    <p>
+      Should be changed to: <a href="https://quickchart.io/chart?cht=bvg&chs=300x200&chd=t:5,5,5|10,10,10|15,15,15&chco=4d89f9,c6d9fd,00B88A&chds=0,20&chbh=a&chxs=0,000000,0,0,_&chxt=y&chm=N,000000,0,,10|N,000000,1,,10|N,000000,2,,10">https://<strong>quickchart.io</strong>/chart?cht=bvg&chs=300x200<wbr>&chd=t:5,5,5|10,10,10|15,15,15<wbr>&chco=4d89f9,c6d9fd,00B88A&chds=0,20&chbh=a<wbr>&chxs=0,000000,0,0,_&chxt=y<wbr>&chm=N,000000,0,,10|N,000000,1,,10|N,000000,2,,10</a>
+    </p>
+    <div class="img-container">
+      <img src="/chart?cht=bvg&chs=300x200&chd=t:5,5,5|10,10,10|15,15,15&chco=4d89f9,c6d9fd,00B88A&chds=0,20&chbh=a&chxs=0,000000,0,0,_&chxt=y&chm=N,000000,0,,10|N,000000,1,,10|N,000000,2,,10" />
+      <span><em>QuickChart equivalent</em></span>
+    </div>
+
+    <h2 id="parameters">Supported Parameters</h2>
+    <p>
+      The most common Google Image Charts parameters are supported.  The implementation of each parameter matches the <a href="https://developers.google.com/chart/image/docs/chart_params">Google Image Charts</a> implementation as closely as possible.
+    </p>
+    <table class="params-table">
+      <thead>
+        <tr>
+          <th>Parameter</th>
+          <th>Description and Syntax</th>
+          <th>Chart Types</th>
+        </tr>
+      </thead>
+      <tr>
+        <td class="parameter"><a href="#cht-param">cht</a></td>
+        <td>Chart type</td>
+        <td><strong>Required</strong> for all charts</td>
+      </tr>
+      <tr>
+        <td class="parameter"><a href="#chd-param">chd</a></td>
+        <td>Chart data string</td>
+        <td><strong>Required</strong> for all charts</td>
+      </tr>
+      <tr>
+        <td class="parameter"><a href="#chs-param">chs</a></td>
+        <td>Chart size</td>
+        <td>All charts</td>
+      </tr>
+      <tr>
+        <td class="parameter"><a href="#chdl-param">chdl, chdlp, chdls</a></td>
+        <td>Chart legend text and style</td>
+        <td>All charts</td>
+      </tr>
+      <tr>
+        <td class="parameter"><a href="#chf-param">chf</a></td>
+        <td>Chart fill</td>
+        <td>All charts</td>
+      </tr>
+      <tr>
+        <td class="parameter"><a href="#chg-param">chg</a></td>
+        <td>Chart grid lines</td>
+        <td>Bar, Line</td>
+      </tr>
+      <tr>
+        <td class="parameter"><a href="#chl-param">chl</a></td>
+        <td>Data labels</td>
+        <td>Bar, Line, Pie</td>
+      </tr>
+      <tr>
+        <td class="parameter"><a href="#chm-param">chm</a></td>
+        <td>Text and Data Value Markers</td>
+        <td>Bar, Line</td>
+      </tr>
+      <tr>
+        <td class="parameter"><a href="#chxt-param">chxt</a></td>
+        <td>Visible axes</td>
+        <td>Bar, Line</td>
+      </tr>
+      <tr>
+        <td class="parameter"><a href="#chtt-param">chtt, chts</a></td>
+        <td>Chart title and style</td>
+        <td>All charts</td>
+      </tr>
+      <tr>
+        <td class="parameter"><a href="#chxr-param">chxr</a></td>
+        <td>Axis ranges</td>
+        <td>Bar, Line</td>
+      </tr>
+      <tr>
+        <td class="parameter"><a href="#chxl-param">chxl</a></td>
+        <td>Axis labels</td>
+        <td>Bar, Line</td>
+      </tr>
+      <tr>
+        <td class="parameter"><a href="#chxs-param">chxs</a></td>
+        <td>Axis label styles</td>
+        <td>Bar, Line</td>
+      </tr>
+    </table>
+    <p class="warning-container">
+      <strong><span class="highlight">Parameter missing, or need more customization options?</span></strong>  Don't get locked into a proprietary format.  See the <a href="/documentation">main documentation</a> to use the more powerful open-source Chart.js format.
+    </p>
+    <h3>Parameter Information</h3>
+    <div id="cht-param" class="parameter-container">
+      <h4>Chart type (cht)</h4>
+      <p class="syntax">
+        <code>cht=&lt;chart_type&gt;</code>
+      </p>
+      <p>
+        This is a required parameter that specifies the type of chart that is rendered.
+        Accepted values include:
+      </p>
+      <ul>
+        <li>Bar charts
+          <ul>
+            <li><strong>bhg</strong>: Horizontal bar chart with grouped bars</li>
+            <li><strong>bvg</strong>: Vertical bar chart with grouped bars</li>
+            <li><strong>bhs</strong>: Horizontal bar chart with stacked bars</li>
+            <li><strong>bvs</strong>: Vertical bar chart with stacked bars</li>
+            <li><strong>bvo</strong>: Vertical bar chart with stacked bars in front of one another (automatically downgraded to "bvs")</li>
+          </ul>
+        </li>
+        <li>Line charts
+          <ul>
+            <li><strong>lc</strong>: Line chart</li>
+            <li><strong>ls</strong>: Sparkline (line chart without axes)</li>
+          </ul>
+        </li>
+        <li>Pie charts
+          <ul>
+            <li><strong>p</strong>: Pie chart</li>
+            <li><strong>pc</strong>: Concentric pie chart</li>
+            <li><strong>p3</strong>: 3D pie chart (automatically downgraded to "p")</li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <div id="chd-param" class="parameter-container">
+      <h4>Chart data (chd)</h4>
+      <p class="syntax">
+        <code>chd=&lt;format&gt;:data1,data2,data3...</code>
+      </p>
+      <p>
+        This is a required parameter that sets data for your chart.
+      </p>
+      <p>
+        QuickChart supports <a href="https://developers.google.com/chart/image/docs/data_formats">all the data formats</a> offered by Google Image Charts, including basic text format, text format with custom scaling, simple encoding format, and extended encoding format.
+      </p>
+      <p>
+        If you're looking for something easier than Google's cryptic encoding formats, we support an additional "automatic" format (<code><strong>a</strong></code>), which accepts a comma-delimited list of values without requiring any special encoding.
+        For example:
+      </p>
+      <div class="img-container">
+        <img src="/chart?cht=bvg&chd=a:30,50,-1000,1234&chs=100x100" />
+        <span class="chart-caption">cht=a:30,50,-1000,1234</span>
+      </div>
+    </div>
+    <div id="chs-param" class="parameter-container">
+      <h4>Chart size (chs)</h4>
+      <p class="syntax">
+        <code>chs=&lt;width&gt;x&lt;height&gt;</code>
+      </p>
+      <p>
+        Width and height in pixels.
+      </p>
+    </div>
+    <div id="chdl-param" class="parameter-container">
+      <h4>Chart legend text and style (chdl, chdlp, chdls)</h4>
+      <p class="syntax">
+        Legend labels: <code>chd=&lt;series_label_1&gt;|&lt;series_label_2&gt;|&lt;series_label_3&gt;|...</code>
+        <br>
+        Legend position: <code>chlp=&lt;position&gt;</code>
+        <br>
+        Legend style: <code>chdls=&lt;font_color&gt;,&lt;font_size&gt;</code>
+      </p>
+      <p>
+        Legend labels are strings delimited by "|".
+      </p>
+      <p>
+        The "position" value should be one of: <code>b, t, r, l</code> - corresponding to bottom, top, left, right.
+      </p>
+      <p>
+        The "style" tuple takes a hexidecimal font color (e.g. <code>00aaff</code>) followed by font size in pixels (e.g. <code>14</code>).
+      </p>
+      <div class="img-container">
+        <img src="/chart?&cht=ls&chd=t:0,30,60,70,90,95,100|20,30,40,50,60,70,80|10,30,40,45,52&chco=ff0000,00ff00,0000ff&chs=250x150&chdl=NASDAQ|FTSE100|DOW" />
+        <span class="chart-caption">chdl=NASDAQ|FTSE100|DOW</span>
+      </div>
+    </div>
+    <div id="chf-param" class="parameter-container">
+      <h4>Chart fill (chf)</h4>
+      <p class="syntax">
+        <code>chf=&lt;fill_type&gt;,s,&lt;color&gt;</code>
+      </p>
+      <p>
+        <code>fill_type</code> is either the string <code>bg</code> (for background fill) or <code>a</code> (for transparent fill).  In most cases, you should choose <code>bg</code>.
+      </p>
+      <p>
+        <code>color</code> is the hex color of the chart background, e.g. <code>00aaff</code>.  Transparency is supported, e.g. <code>00aaffbb</code>.
+      </p>
+      <p>
+        For backwards compatibility purposes, if fill_type <code>a</code> is selected, QuickChart will expect an 8-digit hex code but apply only the last two alpha digits to change chart transparency.
+      </p>
+      <p>
+        If you are looking to color bar charts, we recommend that you use the <a href="#chco-param">chco</a> param instead.
+      </p>
+      <div class="img-container">
+        <img src="/chart?cht=lc&chd=s:Uf9a,a3fG&chs=300x200&chl=1%7C2%7C3%7C4&chf=bg,s,e0e0e0&chco=000000,0000FF&chma=30,30,30,30&chdl=Temp%7CSales" />
+        <span class="chart-caption">chf=bg,s,e0e0e0</span>
+      </div>
+    </div>
+    <div id="chg-param" class="parameter-container">
+      <h4>Chart grid lines (chg)</h4>
+      <p class="syntax">
+        <code>chg=&lt;x_axis_enabled&gt;,&lt;y_axis_enabled&gt;</code>
+      </p>
+      <p>
+        If set to any non-zero number, the axis will display grid lines.  Currently not all Google Image Charts gridline options are implemented.
+      </p>
+      <div class="img-container">
+        <img src="/chart?cht=lc&chd=s:cEAELFJHHHKUju9uuXUc&chco=76A4FB&chls=2.0,0.0,0.0&chxt=x,y&chxl=0:%7C0%7C1%7C2%7C3%7C4%7C5%7C1:%7C0%7C50%7C100&chs=200x125&chg=20,50" />
+        <span class="chart-caption">chg=10,10</span>
+      </div>
+    </div>
+    <div id="chl-param" class="parameter-container">
+      <h4>Data labels (chl)</h4>
+      <p class="syntax">
+        <code>chl=&lt;label_value_1&gt;|&lt;label_value_2&gt;|&lt;label_value_3&gt;|...</code>
+      </p>
+      <p>
+        Labels are applied consecutively to the data points in chd. If you have multiple series, labels are applied to all points in all sequences in the order specified in chd.  Empty labels are allowed.
+      </p>
+      <div class="img-container">
+        <img src="/chart?cht=p&chd=s:Uf9a&chs=200x200&chl=Jan|Feb|Mar|Apr" />
+        <span class="chart-caption">chl=Jan|Feb|Mar|Apr</span>
+      </div>
+    </div>
+    <div id="chm-param" class="parameter-container">
+      <h4>Text and data value markers (chm)</h4>
+      <p class="syntax">
+        <code>chm=
+  &lt;<em>marker_type</em>&gt;,&lt;<em>color</em>&gt;,&lt;<em>series_index</em>&gt;,&lt;<em>opt_which_points</em>&gt;,&lt;<em>size</em>&gt;,&lt;<em>opt_z_order</em>&gt;,&lt;<em>opt_placement</em>&gt;
+    |...|
+  &lt;<em>marker_type</em>&gt;,&lt;<em>color</em>&gt;,&lt;<em>series_index</em>&gt;,&lt;<em>opt_which_points</em>&gt;,&lt;<em>size</em>&gt;,&lt;<em>opt_z_order</em>&gt;,&lt;<em>opt_placement</em>&gt;</code>
+      </p>
+      <p>
+        Currently QuickChart only uses the <code>series_index</code> parameter, which determines whether data labels are shown for a given data series provided in the <code>chd</code> parameter.
+      </p>
+      <p>
+        Future support for data label colors, size, etc is planned.  For more detail, see the <a href="https://developers.google.com/chart/image/docs/chart_params#gcharts_data_point_labels">full Google Image Charts</a> documentation.
+      </p>
+      <div class="img-container">
+        <img src="/chart?cht=bvs&chs=100x150&chd=t:5,5,5|10,10,10|15,15,15&chds=0,120&chco=4d89f9,c6d9fd,00B88A&chbh=20&chds=0,40&chm=N,000000,0,0,10|N,000000,0,1,10|N,000000,0,2,10|N,000000,1,0,10|N,000000,1,1,10|N,000000,1,2,10|N,000000,2,0,10|N,000000,2,1,10|N,000000,2,2,10&chxs=0,000000,0,0,_&chxt=y&chma=20,20,20,20" />
+        <span class="chart-caption">chm=N,000000,1|N,000000,1|...|</span>
+      </div>
+    </div>
+    <div id="chxt-param" class="parameter-container">
+      <h4>Visible axes (chxt)</h4>
+      <p class="syntax">
+        <code>chxt= &lt;<em>axis_1</em>&gt;
+    ,...,
+  &lt;<em>axis_n</em>&gt;</code>
+      </p>
+      <p>
+        Specific which axis to display.  This is used to specify how other axis parameters are applied.  Accepted values are: <code>x</code>, <code>y</code>, <code>x,y</code>, or <code>y,x</code>.
+      </p>
+      <p>
+        Currently we do not support multiple axes (e.g. 2+ X-axes or 2+ Y-axes).
+      </p>
+    </div>
+    <div id="chtt-param" class="parameter-container">
+      <h4>Chart title and style (chtt, chts)</h4>
+      <p class="syntax">
+        Chart title: <code>chtt=&lt;chart_title&gt;</code>
+        <br>
+        Chart style: <code>chts=&lt;font_color&gt;,&lt;font_size&gt;</code>
+      </p>
+      <p>
+        Chart title is a string that is displayed atop the chart.  You can insert newlines by using the "|" character.
+      </p>
+      <p>
+        Chart style is determined by font color, a hex code (e.g. <code>00aaff</code>) and font size in pixels (e.g. <code>14</code>).
+      </p>
+      <div class="img-container">
+        <img src="/chart?cht=bvs&chd=s:YUVmw1&chco=FF0000&chs=180x150&chtt=Site+visitors+by+month&chbh=22,4" />
+        <span class="chart-caption">chtt=Site+visitors+by+month</span>
+      </div>
+    </div>
+    <div id="chxr-param" class="parameter-container">
+      <h4>Axis ranges (chxr)</h4>
+      <p class="syntax">
+        <code>chxr=
+            &lt;<em>axis_index</em>&gt;,
+            &lt;<em>start_val</em>&gt;,
+            &lt;<em>end_val</em>&gt;,
+      &lt;<em>opt_step</em>&gt; | ...</code>
+      </p>
+      <p>
+        Specify the range of values that appear on each axis independently using the chxr parameter.  Note that unlike the Google Image Charts API, scaling the axes also scales the presentation of the chart.
+      </p>
+      <p>
+        You must make an axis visible using the chxt parameter if you want to specify its range. To specify custom axis values, use the chxl parameter.
+      </p>
+      <p>
+        Separate multiple axis label ranges using the pipe character ( | ).
+      </p>
+      <p>
+      <p>
+        <a href="https://developers.google.com/chart/image/docs/chart_params#axis_range">Full axis range documentation</a>
+      </p>
+    </div>
+    <div id="chxl-param" class="parameter-container">
+      <h4>Axis labels (chxl)</h4>
+      <p class="syntax">
+        <code>chxl=
+  &lt;<em>axis_index</em>&gt;:|&lt;<em>label_1</em>&gt;|...|&lt;<em>label_n</em>&gt;
+    |...|
+  &lt;<em>axis_index</em>&gt;:|&lt;<em>label_1</em>&gt;|...|&lt;<em>label_n</em>&gt;</code>
+      </p>
+      <p>
+        Specify custom string axis labels on any axis using the chxl parameter. If you display an axis (using the chxt parameter) and do not specify custom labels, numeric labels will be applied.
+      </p>
+      <p>
+        <code>axis_index</code>: Which axis to apply labels to. This is an index into the <code>chxt</code> parameter array. For example, if you have <code>chxt=x,y</code> then index 0 would be the x-axis, 1 would be the y-axis.
+      </p>
+      <p>
+        <code>&lt;label_1&gt;| ... |&lt;label_n&gt;</code>: One or more labels to place along this axis. These can be string or number values. Separate labels with a pipe character.
+      </p>
+      <p>
+        <a href="https://developers.google.com/chart/image/docs/chart_params#axis_labels">Full axis labels documentation</a>
+      </p>
+      <div class="img-container">
+        <img src="/chart?chxt=x,y&cht=bvs&chd=s:cEj9U&chco=76A4FB&chls=2.0&chs=300x200&chxl=0:|2001|2002|2003&chxp=0,0" />
+        <span class="chart-caption">chxl=|2001|2002|2003</span>
+      </div>
+    </div>
+    <div id="chxs-param" class="parameter-container">
+      <h4>Axis label styles (chxs)</h4>
+      <p class="syntax">
+        <code>
+          chxs=
+ &lt;<em>axis_index</em>&gt;&lt;<em>opt_format_string</em>&gt;,&lt;<em>opt_label_color</em>&gt;,&lt;<em>opt_font_size</em>&gt;,&lt;<em>opt_alignment</em>&gt;,&lt;<em>opt_axis_or_tick</em>&gt;,&lt;<em>opt_tick_color</em>&gt;,&lt;<em>opt_axis_color</em>&gt;
+   |...|
+ &lt;repeated&gt;
+        </code>
+      </p>
+      <p>
+        You can specify the font size, color, alignment, and label format for axis labels. All labels on an axis share the same format.
+      </p>
+      <p>
+        <code>axis_index</code>: Which axis to apply labels to. This is an index into the <code>chxt</code> parameter array. For example, if you have <code>chxt=x,y</code> then index 0 would be the x-axis, 1 would be the y-axis.
+      </p>
+      <p>
+        <code>opt_format_string</code>: An optional format string that, if used, follows
+    immediately after the axis index number without an intervening comma. It starts
+    with a letter "N" followed by a command-separated list of values, all options.
+			</p>
+			<p>
+				The formatting string syntax is as follows:
+				<code>N&lt;<em>preceding_text</em>&gt;*&lt;<em>number_type</em>&gt;&lt;<em>decimal_places</em>&gt;zs&lt;<em>x
+        or y</em>&gt;*&lt;<em>following_text</em>&gt;</code>
+			</p>
+			<p>
+				The meaning of each element:
+      </p>
+			<ul>
+				<li><code>&lt;preceding_text&gt;</code> - Literal text to precede
+					each value.</li>
+				<li><code>*...*</code> - An optional block wrapped in literal asterisks,
+							in which you can specify formatting details for numbers. The following
+							values are supported, and are all optional:
+					<ul>
+						<li><code><em>&lt;number_type&gt;</em></code> - The number format, for
+								numeric values. Choose one of the following:
+							<ul>
+								<li><code>f</code> - [<em>Default</em>] Floating point format.
+											Consider specifying precision as well with the &lt;<em>decimal_places</em>&gt;
+									value.</li>
+								<li><code>p</code> - Percentage format. A % sign is appended automatically. <strong>Note:</strong> When
+										using this format, data values from 0.0 — 1.0 map to 0 — 100%
+								(for example, 0.43 will be shown as 43%).</li>
+								<li><code>e</code> - Scientific notation format.</li>
+								<li><code>c&lt;<em>CUR</em>&gt;</code> - Format the number in the
+										currency specified, with the appropriate currency marker. Replace <code>&lt;<em>CUR</em>&gt;</code> with
+										a three-letter currency code. Example: <code>cEUR</code> for Euros.
+										You can find a list of codes on the <a href="http://www.iso.org/iso/home/store/catalogue_tc/catalogue_detail.htm?csnumber=46121">ISO
+								web site</a>, although not all symbols are supported.</li>
+							</ul>
+						</li>
+						<li><em><code>&lt;decimal_places&gt;</code></em> - An integer specifying
+									how many decimal places to show. The value is rounded (not truncated)
+							to this length. <em>Default is 2.</em></li>
+<!--
+						<li><code>z</code> - Display trailing zeros. <em>Default is no</em>.</li>
+-->
+						<li><code>s</code> - Display group separators. <em>Default is no</em>.</li>
+<!--
+						<li><code>x</code> or <code>y</code> -Display the data from the x- or
+									y-coordinate, as specified. The meaning of x data varies by chart
+									type: experiment with your chart to determine what it means. <em>Default
+							is 'y'</em>.</li>
+-->
+					</ul>
+				</li>
+				<li><code>&lt;<em>following_text</em>&gt;</code> - Literal text to follow
+					each value.</li>
+			</ul>
+      <p>
+      </p>
+      <p>
+      </p>
+      <p>
+      </p>
+      <p>
+      </p>
+      <p>
+      </p>
+      <p>
+      </p>
+      <p>
+      </p>
+      <p>
+        <a href="https://developers.google.com/chart/image/docs/chart_params#axis-label-styles-chxs">Full axis label styles documentation</a>
+      </p>
+      <div class="img-container">
+        <img src="/chart?cht=bvg&chs=300x200&chd=t:5,5,5|10,10,10|15,15,15&chco=4d89f9,c6d9fd,00B88A&chds=0,20&chbh=a&chxs=0N*cUSD*Mil,000000&chxt=y" />
+        <span class="chart-caption">chxs=0N*cUSD*Mil,000000</span>
+      </div>
+    </div>
+
+    <hr/>
+
+    <h2 id="chart-gallery">Chart Gallery</h2>
+
+    <h2 id="bar-charts">Bar charts</h2>
+    <p>
+      Here are some examples of bar charts.  Each example shows a chart generated by Google Image Charts followed by the equivalent chart generated by QuickChart.
+    </p>
+    <h3>Vertical bar charts</h3>
+    <div class="img-container">
+      <img src="/chart?chxt=x,y&cht=bvs&chd=s:cEj9U&chco=76A4FB&chls=2.0&chs=300x200&chxl=0:|2001|2002|2003&chxp=0,0" />
+      <span class="chart-caption">chxt=x,y&amp;<wbr>cht=bvs&amp;<wbr>chd=s:cEj9U&amp;<wbr>chco=76A4FB&amp;<wbr>chls=2.0&amp;<wbr>chs=300x200&amp;<wbr>chxl=0:|2001|2002|2003&amp;<wbr>chxp=0,0</span>
+    </div>
+    <h3>Horizontal bar charts</h3>
+    <div class="img-container">
+      <img src="/chart?cht=bhs&chs=300x200&chd=t:10,50,60,80,40|50,60,100,40,20&chco=4d89f9,c6d9fd&chbh=20&chds=0,160" />
+      <span class="chart-caption">cht=bhs&amp;<wbr>chs=300x200&amp;<wbr>chd=t:10,50,60,80,40|50,60,100,40,20&amp;<wbr>chco=4d89f9,c6d9fd&amp;<wbr>chbh=20&amp;<wbr>chds=0,160</span>
+    </div>
+    <div class="img-container">
+      <img src="/chart?cht=bhs&chco=000000,FF0000|00FF00|0000FF&chs=300x200&chd=s:FOE,elo&chxt=x,y&chxl=1:|Dec|Nov|Oct|0:||20K||60K||100K|" />
+      <span class="chart-caption">cht=bhs&amp;<wbr>chco=000000,FF0000|00FF00|0000FF&amp;<wbr>chs=300x200&amp;<wbr>chd=s:FOE,elo&amp;<wbr>chxt=x,y&amp;<wbr>chxl=1:|Dec|Nov|Oct|0:||20K||60K||100K|</span>
+    </div>
+    <div class="img-container">
+      <img src="/chart?cht=bhs&chco=FF0000|00FF00|0000FF,FFC6A5|DEF3BD|C6EFF7&chs=300x200&chd=s:FOE,elo&chxt=x,y&chxl=1:|Dec|Nov|Oct|0:||20K||60K||100K|" />
+      <span class="chart-caption">cht=bhs&amp;<wbr>chco=FF0000|00FF00|0000FF,FFC6A5|DEF3BD|C6EFF7&amp;<wbr>chs=300x200&amp;<wbr>chd=s:FOE,elo&amp;<wbr>chxt=x,y&amp;<wbr>chxl=1:|Dec|Nov|Oct|0:||20K||60K||100K|</span>
+    </div>
+    <h2 id="line-graph">Line Charts</h2>
+    <div class="img-container">
+      <img src="/chart?cht=lc&chco=FF0000,00FF00,0000FF&chs=300x200&chd=s:FOETHECat,lkjtf3asv,KATYPSNXJ&chxt=x,y&chxl=0:|Oct|Nov|Dec|1:||20K||60K||100K" />
+      <span class="chart-caption">cht=lc&amp;<wbr>chco=FF0000,00FF00,0000FF&amp;<wbr>chs=300x200&amp;<wbr>chd=s:FOETHECat,lkjtf3asv,KATYPSNXJ&amp;<wbr>chxt=x,y&amp;<wbr>chxl=0:|Oct|Nov|Dec|1:||20K||60K||100K</span>
+    </div>
+    <div class="img-container">
+      <img src="/chart?chxt=x,y&chxl=0:%7CJan%7CFeb%7CMarch%7CApril%7CMay%7C1:%7CMin%7CMid%7CMax&cht=lc&chd=s:cEAELFJHHHKUju9uuXUc&chco=76A4FB&chls=2.0&chs=300x200" />
+      <span class="chart-caption">chxt=x,y&amp;<wbr>chxl=0:%7CJan%7CFeb%7CMarch%7CApril%7CMay%7C1:%7CMin%7CMid%7CMax&amp;<wbr>cht=lc&amp;<wbr>chd=s:cEAELFJHHHKUju9uuXUc&amp;<wbr>chco=76A4FB&amp;<wbr>chls=2.0&amp;<wbr>chs=300x200</span>
+    </div>
+<!--
+    <p>
+      before
+    </p>
+    <div class="img-container">
+      <img src="https://chart.googleapis.com/chart?chxt=x,y,r,t&cht=bhs&chd=s:EUjVu&chco=76A4FB&chls=2.0&chs=200x190" />
+    </div>
+    <p>
+      after
+    </p>
+    <div class="img-container">
+      <img src="/chart?chxt=x,y,r,t&cht=bhs&chd=s:EUjVu&chco=76A4FB&chls=2.0&chs=200x190" />
+    </div>
+-->
+    <h2 id="pie-chart">Pie Charts</h2>
+    <div class="img-container">
+      <img src="/chart?cht=pc&chd=s:Helo,Wrld&chs=200x100" />
+      <span class="chart-caption">cht=pc&chd=s:Helo,Wrld&chs=200x100</span>
+    </div>
+    <h2 id="qr">QR Codes</h2>
+    <p>
+      Render a QR code like so:
+    </p>
+    <div class="centered">
+      <p>
+        <code><strong>https://quickchart.io/qr?text=</strong>Here's my text</code>
+      </p>
+      <p>
+        <img src="/qr?text=Here's my text">
+      </p>
+    </div>
+    <h2 id="google-o-meter">Google-O-Meter Charts</h2>
+    <p>
+      See documentation for creating a <a href="/documentation#radial-gauge">Radial Gauge</a>.
+    </p>
+    <h2 id="other-charts">Other types of charts</h2>
+    <p>
+      Compound charts and multi-axis charts should use Chart.js syntax.  See the documentation for <a href="/documentation#mixed-chart">Mixed Charts</a>.
+    </p>
+    <h2 id="convert-to-chartjs">Converting to Chart.js</h2>
+    <p>
+      Existing Google Image Charts users may be interested in converting their charts to <a href="https://www.chartjs.org">Chart.js</a>.  The format is flexible, open-source, and therefore much more future-proof than a proprietary chart format.  Also, you can use Chart.js in the browser to enable interactivity.
+		</p>
+		<p>
+			Obtain an equivalent Chart.js JSON config by appending <code><strong>format=chartjs-config</strong></code> to your Google Image Charts request.  The response will look something like this:
+    </p>
+      <a href="/chart?cht=pc&chd=s:Helo,Wrld&chs=200x100&format=chartjs-config">/chart?cht=pc&amp;chd=s:Helo,Wrld&amp;chs=200x100&amp;<span class="highlight"><strong>format=chartjs-config</strong></span></a>
+    </p>
+    <code><pre>{
+  data: {
+    labels: [ 0, 1, 2, 3 ],
+    datasets: [
+      {
+        data: [ 22, 43, 37, 29 ],
+        fill: false,
+        backgroundColor: undefined,
+        borderColor: undefined,
+        borderWidth: 2,
+        pointRadius: 0
+      },
+      {
+        data: [ 7, 30, 37, 40 ],
+        fill: false,
+        backgroundColor: undefined,
+        borderColor: undefined,
+        borderWidth: 2,
+        pointRadius: 0
+      }
+    ]
+  },
+  options: {
+    plugins: {
+      datalabels: {
+        display: false
+      }
+    },
+    legend: {
+      display: false
+    },
+    layout: {
+      padding: { left: 0, right: 0, top: 10, bottom: 0 }
+    }
+  },
+  type: 'pie'
+}
+    </pre></code>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{% include "sandbox_js.html" %}
+{% include "tracking.html" %}
+<script src="https://js.stripe.com/v3" async></script>
+{% endblock %}

@@ -3,63 +3,7 @@
 {% block title %}Documentation | QuickChart{% endblock %}
 
 {% block styles %}
-<style>
-body p {
-  font-size: 1.2em;
-}
-
-code strong {
-  font-size: 1.25em;
-}
-
-.tip {
-  background-color: #eee;
-  padding: 1em;
-}
-
-.split-container {
-  display: flex;
-  padding: 0.5em;
-}
-
-.left-container {
-  position: sticky;
-  top: 5em;
-  flex: 1;
-  align-self: flex-start;
-}
-
-.right-container {
-  flex: 4;
-}
-
-.docs-list {
-  list-style-type: none;
-}
-
-@media (max-height: 630px) {
-  .docs-list {
-    line-height: 1.4;
-  }
-}
-
-@media (max-height: 530px) {
-  .docs-list {
-    line-height: 1;
-  }
-}
-
-@media (max-width: 850px) {
-  .split-container {
-    display: block;
-  }
-
-  .left-container {
-    position: relative;
-    top: 0;
-  }
-}
-</style>
+{% include 'docs_styles.css' %}
 {% endblock %}
 
 {% block nav_menu %}
@@ -73,9 +17,7 @@ code strong {
 
 {% block content %}
 <div class="header header-small">
-  <div class="page-container">
-    <h1>QuickChart Documentation</h1>
-  </div>
+  <h1>QuickChart Documentation</h1>
 </div>
 <div class="split-container">
   <div class="left-container">
@@ -118,7 +60,7 @@ code strong {
     </p>
     <h3>Quick Example</h3>
     <p>
-      QuickChart works by taking Chart.js configuration objects and rendering them on the backend as an image.  You can provide a configuration object using HTTP GET or POST requests.
+      QuickChart works by taking <a href="https://www.chartjs.org/docs/latest/getting-started/usage.html">Chart.js configurations</a> and rendering them on the backend as an image.  You can provide a configuration object using HTTP GET or POST requests.
     </p>
     <p>
       For example, this simple URL: <a rel="nofollow" href="https://quickchart.io/chart?bkg=white&c={type:'bar',data:{labels:[2012,2013,2014,2015,2016],datasets:[{label:'Users',data:[120,60,50,180,120]}]}}">https://quickchart.io/chart?c={type:'bar',<wbr>data:{labels:[2012,2013,2014,2015,2016],<wbr>datasets:[{label:'Users',<wbr>data:[120,60,50,180,120]}]}}</a>
@@ -134,6 +76,10 @@ code strong {
     </p>
     <p>
       If you're stuck or running into a problem, feel free to <a href="mailto:support@quickchart.io">email support</a> or <a href="https://github.com/typpo/quickchart/issues">open a Github issue</a>.
+    </p>
+    <h2>Migrating from Google Image Charts</h2>
+    <p>
+      QuickChart supports the most common parts of Google Image Charts format.  For more information, see <a href="/documentation/migrating-from-google-image-charts">Migrating from Google Image Charts</a>.
     </p>
     <h2 id="parameters">Chart API Parameters</h2>
     <p>
