@@ -20,6 +20,7 @@
     "@google-cloud/logging-bunyan": "^2.0.2",
     "bunyan": "^1.8.12",
     "chart.js": "^2.9.3",
+    "chartjs-chart-box-and-violin-plot": "^2.2.0",
     "chartjs-chart-radial-gauge": "^1.0.3",
     "chartjs-node-canvas": "https://github.com/typpo/ChartjsNodeCanvas.git#c34802fc3c30e4d1992678134d3ee10d160f65f4",
     "chartjs-plugin-annotation": "^0.5.7",

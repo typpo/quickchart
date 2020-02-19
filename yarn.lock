@@ -176,6 +176,11 @@
   resolved "https://registry.yarnpkg.com/@protobufjs/utf8/-/utf8-1.1.0.tgz#a777360b5b39a1a2e5106f8e858f2fd2d060c570"
   integrity sha1-p3c2C1s5oaLlEG+OhY8v0tBgxXA=
 
+"@sgratzl/science@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@sgratzl/science/-/science-2.0.0.tgz#9154f6f5d55c5712f48887c25492a4dc7bc6cc99"
+  integrity sha512-LO3gArm8rVczcksg35xnZbOLEOE091VjyvvzR8mnPjP5K5+xqZEWhBi+lDcEk50dAlfPBoBHfwmu+MmiiSpXHw==
+
 "@types/long@^4.0.0":
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/@types/long/-/long-4.0.0.tgz#719551d2352d301ac8b81db732acb6bdc28dbdef"
@@ -851,13 +856,21 @@ chart.js@^2.4.0:
     chartjs-color "^2.1.0"
     moment "^2.10.2"
 
-chart.js@^2.9.3:
+chart.js@^2.8.0, chart.js@^2.9.3:
   version "2.9.3"
   resolved "https://registry.yarnpkg.com/chart.js/-/chart.js-2.9.3.tgz#ae3884114dafd381bc600f5b35a189138aac1ef7"
   integrity sha512-+2jlOobSk52c1VU6fzkh3UwqHMdSlgH1xFv9FKMqHiNCpXsGPQa/+81AFa+i3jZ253Mq9aAycPwDjnn1XbRNNw==
   dependencies:
     chartjs-color "^2.1.0"
     moment "^2.10.2"
+
+chartjs-chart-box-and-violin-plot@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/chartjs-chart-box-and-violin-plot/-/chartjs-chart-box-and-violin-plot-2.2.0.tgz#9a6d9616f236b273a985ae083891cd7a1b8ca7ea"
+  integrity sha512-xT49PqHVAYahUItzlzLglipwvxG17iSOB25km9RdTgWXYTcBNCVc++eF7Pgel1c72uBRYWMyRUbwOX09HGUEJw==
+  dependencies:
+    "@sgratzl/science" "^2.0.0"
+    chart.js "^2.8.0"
 
 chartjs-chart-radial-gauge@^1.0.3:
   version "1.0.3"
