@@ -1,11 +1,12 @@
 const path = require('path');
 
+const RedisStore = require('rate-limit-redis');
 const express = require('express');
 const expressNunjucks = require('express-nunjucks');
+const javascriptStringify = require('javascript-stringify').stringify;
 const qs = require('qs');
 const rateLimit = require('express-rate-limit');
 const text2png = require('text2png');
-const javascriptStringify = require('javascript-stringify').stringify;
 
 const apiKeys = require('./api_keys');
 const packageJson = require('./package.json');
@@ -38,13 +39,22 @@ if (process.env.RATE_LIMIT_PER_MIN) {
   const limitMax = parseInt(process.env.RATE_LIMIT_PER_MIN, 10);
   logger.info('Enabling rate limit:', limitMax);
 
+  let store = undefined;
+  if (process.env.REDIS_URL) {
+    logger.info(`Connecting to redis: ${process.env.REDIS_URL}`);
+    store = new RedisStore({
+      redisURL: process.env.REDIS_URL,
+    });
+  }
+
   const limiter = rateLimit({
+    store,
     windowMs: 60 * 1000,
     max: limitMax,
     message:
-      'Please slow down your requests! This is a shared public endpoint. Email contact@quickchart.io for rate limit exceptions or to purchase a commercial license.',
-    onLimitReached: () => {
-      logger.info('User hit rate limit!');
+      'Please slow down your requests! This is a shared public endpoint. Email support@quickchart.io or go to https://quickchart.io/pricing for rate limit exceptions or to purchase a commercial license.',
+    onLimitReached: req => {
+      logger.info('User hit rate limit!', req.ip);
     },
     skip: req => {
       // If user has a special key, bypass rate limiting.
