@@ -69,7 +69,6 @@ if (process.env.RATE_LIMIT_PER_MIN) {
     },
   });
   app.use('/chart', limiter);
-  app.use('/qr', limiter);
 }
 
 expressNunjucks(app, {
