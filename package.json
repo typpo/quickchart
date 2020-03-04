@@ -25,6 +25,7 @@
     "chartjs-node-canvas": "https://github.com/typpo/ChartjsNodeCanvas.git#c34802fc3c30e4d1992678134d3ee10d160f65f4",
     "chartjs-plugin-annotation": "^0.5.7",
     "chartjs-plugin-datalabels": "^0.5.0",
+    "chartjs-plugin-doughnutlabel": "^2.0.3",
     "chartjs-plugin-piechart-outlabels": "^0.1.4",
     "express": "^4.16.4",
     "express-nunjucks": "^2.2.3",

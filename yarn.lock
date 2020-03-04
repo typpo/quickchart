@@ -905,6 +905,11 @@ chartjs-plugin-datalabels@^0.5.0:
   version "0.5.0"
   resolved "https://registry.yarnpkg.com/chartjs-plugin-datalabels/-/chartjs-plugin-datalabels-0.5.0.tgz#b9c7a99857b2a52b6db70f63fc9f3a65d887d523"
 
+chartjs-plugin-doughnutlabel@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/chartjs-plugin-doughnutlabel/-/chartjs-plugin-doughnutlabel-2.0.3.tgz#0aa19b040dc68e12163e3215a01609cb3e0b5a7b"
+  integrity sha512-it815BZSPggTkyhC3b4BVqDwlySKtzO0kZ11DCUs/nD29DGoj6w5luDu4slczg97ml7VRROHawxlS0HvGEIVdw==
+
 chartjs-plugin-piechart-outlabels@^0.1.4:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/chartjs-plugin-piechart-outlabels/-/chartjs-plugin-piechart-outlabels-0.1.4.tgz#e97e19a12202d74f9040d9e4641987c9d1e458fc"
