@@ -47,6 +47,8 @@
           <li><a href="#qr">QR codes</a></li>
         </ul>
       </li>
+      <li><a href="#js-functions">Using JS functions</a></li>
+      <li><a href="#plugins">Using Chart.js plugins</a></li>
       <li><a href="#plugins">Annotations &amp; labels</a></li>
       <li><a href="#sandbox">Sandbox Editor</a></li>
       <li><a href="#faq">FAQ</a></li>
@@ -322,7 +324,32 @@
         <img src="/qr?text=Here's%20my%20text&dark=f00&light=0ff&ecLevel=Q&margin=2&format=svg">
       </p>
     </div>
-    <h2 id="plugins">Chart Annotations and Plugins</h2>
+    <hr/>
+    <h2 id="js-functions">Using Javascript functions</h2>
+    <p>
+      Simple chart configs are defined using only JSON, but more complex chart configs may include Javascript functions.  QuickChart accepts charts containing Javascript.
+    </p>
+    <p>
+      If you're using a GET request, all you need to do is include your function in the chart definition.  If you're using a POST request, make sure you send the <code>chart</code> parameter as a <em>string</em> rather than a JSON object.
+    </p>
+    <h3>Building chart objects in Javascript</h3>
+    <p>
+      Below are a few Javascript examples showing how to build a chart definition containing a function:
+    </p>
+    <p>
+      Option 1: Build the config as a string, not an object. This is the most straightforward way.
+    </p>
+    <script src="https://gist.github.com/typpo/ac818236e1f5da8ba76764b357afdffa.js"></script>
+    <p>
+      Option 2: Construct your chart as a JSON object.  Later, substitute your Javascript function.
+    </p>
+    <script src="https://gist.github.com/typpo/838a6a7fd6f95ca968646847973901d1.js"></script>
+    <p>
+      Option 3: Serialize a normal Javascript object containing a function using <a href="https://github.com/blakeembrey/javascript-stringify">javascript-stringify</a>. This is probably the easiest to work with but it requires an external dependency.
+    </p>
+    <script src="https://gist.github.com/typpo/1c6009f70e47962bcd32c163268b7ea9.js"></script>
+    <hr/>
+    <h2 id="plugins">Plugins: Annotations and Labels</h2>
     <p>
       Three additional Chart.js plugins are supported: Data Labels (<a href="https://github.com/chartjs/chartjs-plugin-datalabels">chartjs-plugin-datalabels</a>), Annotations (<a href="https://github.com/chartjs/chartjs-plugin-annotation">chartjs-plugin-annotation</a>), and Outlabels (<a href="https://github.com/Neckster/chartjs-plugin-piechart-outlabels">chartjs-plugin-piechart-outlabels</a>).  These allow you to add various markup to your chart.  Have a look at the documentation for each plugin to learn more about the possibilities.
     </p>
