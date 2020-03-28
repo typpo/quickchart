@@ -151,7 +151,7 @@ function doRenderChart(req, res, opts) {
       'Content-Length': buf.length,
 
       // 1 week cache
-      'Cache-Control': 'public, max-age=604800',
+      'Cache-Control': isDev ? undefined : 'public, max-age=604800',
     });
     res.end(buf);
   };
@@ -168,7 +168,7 @@ async function doRenderPdf(req, res, opts) {
       'Content-Length': pdfBuf.length,
 
       // 1 week cache
-      'Cache-Control': 'public, max-age=604800',
+      'Cache-Control': isDev ? undefined : 'public, max-age=604800',
     });
     res.end(pdfBuf);
   };
@@ -240,7 +240,7 @@ function handleGChart(req, res) {
       'Content-Length': buf.length,
 
       // 1 week cache
-      'Cache-Control': 'public, max-age=604800',
+      'Cache-Control': isDev ? undefined : 'public, max-age=604800',
     });
     res.end(buf);
   });
@@ -337,7 +337,7 @@ app.get('/qr', (req, res) => {
         'Content-Length': buf.length,
 
         // 1 week cache
-        'Cache-Control': 'public, max-age=604800',
+        'Cache-Control': isDev ? undefined : 'public, max-age=604800',
       });
       res.end(buf);
     })
