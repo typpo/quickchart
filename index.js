@@ -2,7 +2,6 @@ const path = require('path');
 
 const RedisStore = require('rate-limit-redis');
 const express = require('express');
-const expressNunjucks = require('express-nunjucks');
 const javascriptStringify = require('javascript-stringify').stringify;
 const qs = require('qs');
 const rateLimit = require('express-rate-limit');
@@ -30,8 +29,6 @@ app.set('query parser', str =>
     },
   }),
 );
-app.set('views', `${__dirname}/templates`);
-app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 app.use(express.urlencoded());
 
@@ -71,29 +68,8 @@ if (process.env.RATE_LIMIT_PER_MIN) {
   app.use('/chart', limiter);
 }
 
-expressNunjucks(app, {
-  watch: isDev,
-  noCache: isDev,
-});
-
 app.get('/', (req, res) => {
-  res.render('index');
-});
-
-app.get('/pricing', (req, res) => {
-  res.render('pricing');
-});
-
-app.get('/documentation', (req, res) => {
-  res.render('docs');
-});
-
-app.get('/documentation/migrating-from-google-image-charts', (req, res) => {
-  res.render('google_image_charts_replacement');
-});
-
-app.get('/robots.txt', (req, res) => {
-  res.sendFile(path.join(__dirname, './templates/robots.txt'));
+  res.send('it works!');
 });
 
 app.post('/telemetry', (req, res) => {
@@ -109,10 +85,6 @@ app.post('/telemetry', (req, res) => {
   }
 
   res.send({ success: true });
-});
-
-app.get('/payment-success', (req, res) => {
-  res.render('payment_success');
 });
 
 app.get('/api/account/:key', (req, res) => {
