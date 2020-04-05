@@ -6,24 +6,15 @@ const imageSize = require('image-size');
 const request = require('supertest');
 
 const app = require('../../index');
-const { BASIC_CHART, JS_CHART } = require('./chart_helpers');
-const { deltaE } = require('./color_helpers');
+const { getBasicChart, getJsChart } = require('./chart_helpers');
+const { assertSimilarRgb } = require('./color_helpers');
 
 const colorThief = new ColorThief();
-
-function assertSimilarRgb(expected, actual, tolerance = 6) {
-  const diff = deltaE(expected, actual);
-  if (diff > tolerance) {
-    throw new Error(
-      `Expected rgb ${expected} but got ${actual}, scored at diff=${diff} which is greater than ${tolerance}`,
-    );
-  }
-}
 
 describe('chart request', () => {
   it('returns a basic chart via GET', done => {
     request(app)
-      .get(`/chart?c=${encodeURIComponent(JSON.stringify(BASIC_CHART))}`)
+      .get(`/chart?c=${encodeURIComponent(JSON.stringify(getBasicChart()))}`)
       .expect('Content-Type', 'image/png')
       .expect(200)
       .end((err, res) => {
@@ -34,10 +25,29 @@ describe('chart request', () => {
       });
   });
 
+  it('returns a basic chart via GET with color wheel', done => {
+    const url = `/chart?defaultColors=${encodeURIComponent(
+      '["purple"]',
+    )}&bkg=white&c=${encodeURIComponent(JSON.stringify(getBasicChart()))}`;
+    console.log(url);
+    request(app)
+      .get(url)
+      .expect('Content-Type', 'image/png')
+      .expect(200)
+      .end((err, res) => {
+        const rgb = colorThief.getColor(res.body);
+
+        assertSimilarRgb([214, 208, 214], rgb);
+        done();
+      });
+  });
+
   it('returns a basic chart via GET, base64 encoded', done => {
     request(app)
       .get(
-        `/chart?c=${Buffer.from(JSON.stringify(BASIC_CHART)).toString('base64')}&encoding=base64`,
+        `/chart?c=${Buffer.from(JSON.stringify(getBasicChart())).toString(
+          'base64',
+        )}&encoding=base64`,
       )
       .expect('Content-Type', 'image/png')
       .expect(200)
@@ -51,7 +61,7 @@ describe('chart request', () => {
 
   it('returns an JS chart via GET', done => {
     request(app)
-      .get(`/chart?c=${encodeURIComponent(JS_CHART)}`)
+      .get(`/chart?c=${encodeURIComponent(getJsChart())}`)
       .expect('Content-Type', 'image/png')
       .expect(200)
       .end((err, res) => {
@@ -66,7 +76,7 @@ describe('chart request', () => {
     request(app)
       .get(
         `/chart?c=${encodeURIComponent(
-          JSON.stringify(BASIC_CHART),
+          JSON.stringify(getBasicChart()),
         )}&width=200&height=100&devicePixelRatio=1&backgroundColor=rgb(249, 193, 202)`,
       )
       .expect('Content-Type', 'image/png')
@@ -86,7 +96,7 @@ describe('chart request', () => {
     request(app)
       .post('/chart')
       .send({
-        chart: BASIC_CHART,
+        chart: getBasicChart(),
       })
       .expect('Content-Type', 'image/png')
       .expect(200)
@@ -102,7 +112,7 @@ describe('chart request', () => {
     request(app)
       .post('/chart')
       .send({
-        chart: Buffer.from(JSON.stringify(BASIC_CHART)).toString('base64'),
+        chart: Buffer.from(JSON.stringify(getBasicChart())).toString('base64'),
         encoding: 'base64',
       })
       .expect('Content-Type', 'image/png')
@@ -119,7 +129,7 @@ describe('chart request', () => {
     request(app)
       .post('/chart')
       .send({
-        chart: JS_CHART,
+        chart: getJsChart(),
       })
       .expect('Content-Type', 'image/png')
       .expect(200)
@@ -135,7 +145,7 @@ describe('chart request', () => {
     request(app)
       .post('/chart')
       .send({
-        chart: JS_CHART,
+        chart: getJsChart(),
         width: 456,
         height: 123,
         devicePixelRatio: 1.0,
@@ -158,7 +168,7 @@ describe('chart request', () => {
     request(app)
       .post('/chart')
       .send({
-        chart: Buffer.from(JS_CHART).toString('base64'),
+        chart: Buffer.from(getJsChart()).toString('base64'),
         width: 369,
         height: 150,
         devicePixelRatio: 1.0,
@@ -183,7 +193,7 @@ describe('chart request', () => {
     request(app)
       .post('/chart')
       .send({
-        chart: BASIC_CHART,
+        chart: getBasicChart(),
       })
       .expect('Content-Type', 'image/png')
       .expect(200)

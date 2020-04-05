@@ -39,6 +39,15 @@ function rgb2lab(rgb) {
   return [116 * y - 16, 500 * (x - y), 200 * (y - z)];
 }
 
+function assertSimilarRgb(expected, actual, tolerance = 6) {
+  const diff = deltaE(expected, actual);
+  if (diff > tolerance) {
+    throw new Error(
+      `Expected rgb ${expected} but got ${actual}, scored at diff=${diff} which is greater than ${tolerance}`,
+    );
+  }
+}
+
 module.exports = {
-  deltaE,
+  assertSimilarRgb,
 };

@@ -115,7 +115,7 @@ async function failPdf(res, msg) {
   res.end(buf);
 }
 
-function doRenderChart(req, res, opts) {
+function doRenderChartImage(req, res, opts) {
   opts.failFn = failPng;
   opts.onRenderHandler = buf => {
     res.writeHead(200, {
@@ -127,10 +127,10 @@ function doRenderChart(req, res, opts) {
     });
     res.end(buf);
   };
-  doRender(req, res, opts);
+  doRenderChart(req, res, opts);
 }
 
-async function doRenderPdf(req, res, opts) {
+async function doRenderPdfImage(req, res, opts) {
   opts.failFn = failPdf;
   opts.onRenderHandler = async buf => {
     const pdfBuf = await getPdfBufferFromPng(buf);
@@ -144,10 +144,10 @@ async function doRenderPdf(req, res, opts) {
     });
     res.end(pdfBuf);
   };
-  doRender(req, res, opts);
+  doRenderChart(req, res, opts);
 }
 
-function doRender(req, res, opts) {
+function doRenderChart(req, res, opts) {
   if (!opts.chart) {
     opts.failFn(res, 'You are missing variable `c` or `chart`');
     return;
@@ -185,7 +185,7 @@ function doRender(req, res, opts) {
 
   const backgroundColor = opts.backgroundColor || 'transparent';
 
-  renderChart(width, height, backgroundColor, devicePixelRatio, untrustedInput)
+  renderChart(width, height, backgroundColor, devicePixelRatio, opts.defaultColors, untrustedInput)
     .then(opts.onRenderHandler)
     .catch(err => {
       logger.warn('Chart error', err);
@@ -204,7 +204,8 @@ function handleGChart(req, res) {
     converted.width,
     converted.height,
     converted.backgroundColor,
-    undefined,
+    undefined /* devicePixelRatio */,
+    undefined /* defaultColors */,
     converted.chart,
   ).then(buf => {
     res.writeHead(200, {
@@ -232,14 +233,15 @@ app.get('/chart', (req, res) => {
     backgroundColor: req.query.backgroundColor || req.query.bkg,
     devicePixelRatio: req.query.devicePixelRatio,
     encoding: req.query.encoding || 'url',
+    defaultColors: req.query.defaultColors ? JSON.parse(req.query.defaultColors) : null,
   };
 
   const outputFormat = (req.query.f || req.query.format || '').toLowerCase();
 
   if (outputFormat === 'pdf') {
-    doRenderPdf(req, res, opts);
+    doRenderPdfImage(req, res, opts);
   } else {
-    doRenderChart(req, res, opts);
+    doRenderChartImage(req, res, opts);
   }
 
   telemetry.count('chartCount');
@@ -253,13 +255,14 @@ app.post('/chart', (req, res) => {
     backgroundColor: req.body.backgroundColor || req.body.bkg,
     devicePixelRatio: req.body.devicePixelRatio,
     encoding: req.body.encoding || 'url',
+    defaultColors: req.body.defaultColors || null,
   };
   const outputFormat = (req.body.f || req.body.format || '').toLowerCase();
 
   if (outputFormat === 'pdf') {
-    doRenderPdf(req, res, opts);
+    doRenderPdfImage(req, res, opts);
   } else {
-    doRenderChart(req, res, opts);
+    doRenderChartImage(req, res, opts);
   }
 
   telemetry.count('chartCount');
