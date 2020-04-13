@@ -1,24 +1,24 @@
-//
-// This file handles exceptions to rate limiting via a api_key_list.js file.
-//
-// Queries are rate limited according to the RATE_LIMIT_PER_MIN envar. You can
-// configure exceptions to the rate limiting rule by creating a api_key_list.js
-// file that exports a list of arbitrary "keys" that a user may attach to their
-// request (&key=xxx) in order to by pass rate limiting.
-//
+const crypto = require('crypto');
 
 const { logger } = require('./logging');
 
-let rawKeys;
-try {
-  rawKeys = require('./api_key_list.js');
-  logger.info(`Loaded ${rawKeys.length} keys from API keyfile`);
-} catch (err) {
-  // No keyfile. That's ok.
-  rawKeys = [];
+const keys = new Set();
+const accountIdToKey = {};
+
+function addKeyLine(line) {
+  const splits = line.split(':');
+  keys.add(splits[0]);
+  if (splits[1]) {
+    accountIdToKey[splits[1]] = splits[0];
+  }
 }
 
-const keys = new Set(rawKeys);
+try {
+  const raw = require('./api_key_list.js').forEach(addKeyLine);
+  logger.info(`Loaded ${keys.size} keys from API keyfile`);
+} catch (err) {
+  // No keyfile. That's ok.
+}
 
 // Map from key to number of recent requests - this is not persisted through
 // restarts.
@@ -61,10 +61,28 @@ function getNumRecentRequests(key) {
   return recentRequestCount[key] || 0;
 }
 
+function verifySignature(content, sig, accountId) {
+  const expectedSig = crypto
+    .createHmac('sha256', accountIdToKey[accountId] || '')
+    .update(content, 'utf8')
+    .digest('hex');
+  if (expectedSig.length !== sig.length) {
+    return false;
+  }
+  const verified = crypto.timingSafeEqual(
+    Buffer.from(expectedSig, 'utf8'),
+    Buffer.from(sig, 'utf8'),
+  );
+  return verified;
+}
+
 module.exports = {
   isValidKey,
   getKeyFromRequest,
   requestHasValidKey,
   countRequest,
   getNumRecentRequests,
+  verifySignature,
+
+  addKeyLine,
 };

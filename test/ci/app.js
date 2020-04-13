@@ -1,11 +1,14 @@
 /* eslint-env node, mocha */
 
-const ColorThief = require('color-thief');
 const assert = require('assert');
+const crypto = require('crypto');
+
+const ColorThief = require('color-thief');
 const imageSize = require('image-size');
 const request = require('supertest');
 
 const app = require('../../index');
+const { addKeyLine } = require('../../api_keys');
 const { BASIC_CHART, JS_CHART } = require('./chart_helpers');
 const { deltaE } = require('./color_helpers');
 
@@ -196,6 +199,134 @@ describe('chart request', () => {
         const dimensions = imageSize(res.body);
         assert.equal(500 * 2, dimensions.width);
         assert.equal(300 * 2, dimensions.height);
+        done();
+      });
+  });
+});
+
+describe('qr endpoint', () => {
+  it('renders basic qr', done => {
+    const qrText = 'hello werld';
+    const qrPublicUrl = `/qr?text=${encodeURIComponent(qrText)}`;
+    request(app)
+      .get(qrPublicUrl)
+      .expect('Content-Type', 'image/png')
+      .expect(200)
+      .end((err, res) => {
+        const dimensions = imageSize(res.body);
+        assert.equal(150, dimensions.width);
+        assert.equal(150, dimensions.height);
+        done();
+      });
+  });
+});
+
+describe('authentication', () => {
+  it('rejects unknown qr signature', done => {
+    const ACCOUNT_ID = '12345';
+    const API_KEY = 'abc123';
+
+    // Generate a URL for QR code
+    const qrText = 'Hello world';
+    const qrSignedParam = crypto
+      .createHmac('sha256', API_KEY + 'x')
+      .update(qrText)
+      .digest('hex');
+
+    const qrPublicUrl = `/qr?text=${encodeURIComponent(
+      qrText,
+    )}&sig=${qrSignedParam}&accountId=${ACCOUNT_ID}`;
+    request(app)
+      .get(qrPublicUrl)
+      .expect('Content-Type', 'image/png')
+      .expect(403)
+      .end(done);
+  });
+
+  it('accepts known qr signature', done => {
+    addKeyLine('abc123:12345');
+
+    const ACCOUNT_ID = '12345';
+    const API_KEY = 'abc123';
+
+    const qrText = 'Hello world';
+    const qrSignedParam = crypto
+      .createHmac('sha256', API_KEY)
+      .update(qrText)
+      .digest('hex');
+
+    const qrPublicUrl = `/qr?text=${encodeURIComponent(
+      qrText,
+    )}&sig=${qrSignedParam}&accountId=${ACCOUNT_ID}`;
+    request(app)
+      .get(qrPublicUrl)
+      .expect('Content-Type', 'image/png')
+      .expect(200)
+      .end((err, res) => {
+        const dimensions = imageSize(res.body);
+        assert.equal(150, dimensions.width);
+        assert.equal(150, dimensions.height);
+        done();
+      });
+  });
+
+  it('rejects unknown chart signature', done => {
+    const ACCOUNT_ID = '5678';
+    const API_KEY = 'xyz123';
+
+    const chartObj = JSON.stringify({
+      type: 'bar',
+      data: {
+        labels: ['January', 'February', 'March', 'April', 'May'],
+        datasets: [
+          { label: 'Dogs', data: [50, 60, 70, 180, 190] },
+          { label: 'Cats', data: [100, 200, 300, 400, 500] },
+        ],
+      },
+    });
+    const chartSignedParam = crypto
+      .createHmac('sha256', API_KEY)
+      .update(chartObj)
+      .digest('hex');
+
+    const chartPublicUrl = `/chart?chart=${chartObj}&sig=${chartSignedParam}&accountId=${ACCOUNT_ID}`;
+    request(app)
+      .get(chartPublicUrl)
+      .expect('Content-Type', 'image/png')
+      .expect(403)
+      .end(done);
+  });
+
+  it('accepts known chart signature', done => {
+    addKeyLine('xyz123:5678');
+
+    const ACCOUNT_ID = '5678';
+    const API_KEY = 'xyz123';
+
+    const chartObj = JSON.stringify({
+      type: 'bar',
+      data: {
+        labels: ['January', 'February', 'March', 'April', 'May'],
+        datasets: [
+          { label: 'Dogs', data: [50, 60, 70, 180, 190] },
+          { label: 'Cats', data: [100, 200, 300, 400, 500] },
+        ],
+      },
+    });
+    const chartSignedParam = crypto
+      .createHmac('sha256', API_KEY)
+      .update(chartObj)
+      .digest('hex');
+
+    const chartPublicUrl = `/chart?chart=${chartObj}&sig=${chartSignedParam}&accountId=${ACCOUNT_ID}`;
+    request(app)
+      .get(chartPublicUrl)
+      .expect('Content-Type', 'image/png')
+      .expect(200)
+      .end((err, res) => {
+        const dimensions = imageSize(res.body);
+        assert.equal(1000, dimensions.width);
+        assert.equal(600, dimensions.height);
         done();
       });
   });
