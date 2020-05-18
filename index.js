@@ -29,7 +29,11 @@ app.set('query parser', str =>
     },
   }),
 );
-app.use(express.json());
+
+app.use(express.json({
+  limit: process.env.EXPRESS_JSON_LIMIT || '100kb'
+}));
+
 app.use(express.urlencoded());
 
 if (process.env.RATE_LIMIT_PER_MIN) {
