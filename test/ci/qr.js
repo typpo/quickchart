@@ -5,7 +5,7 @@ const imageSize = require('image-size');
 
 const { renderQr, DEFAULT_QR_SIZE } = require('../../lib/qr');
 
-describe('charts.js', () => {
+describe('qr code rendering', () => {
   it('renders a basic QR svg', async () => {
     const buf = await renderQr('svg', undefined /* mode */, 'hello world', {});
     assert(buf.length > 0);

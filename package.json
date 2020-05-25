@@ -37,6 +37,7 @@
     "rate-limit-redis": "^1.7.0",
     "request": "^2.88.0",
     "text2png": "^2.1.0",
+    "viz.js": "^2.1.2",
     "vm2": "^3.8.4"
   },
   "devDependencies": {
