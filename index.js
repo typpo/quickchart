@@ -13,6 +13,7 @@ const telemetry = require('./telemetry');
 const { getPdfBufferFromPng, getPdfBufferWithText } = require('./lib/pdf');
 const { logger } = require('./logging');
 const { renderChart } = require('./lib/charts');
+const { renderGraphviz } = require('./lib/graphviz');
 const { toChartJs } = require('./lib/google_image_charts');
 const { renderQr, DEFAULT_QR_SIZE } = require('./lib/qr');
 
@@ -30,9 +31,11 @@ app.set('query parser', str =>
   }),
 );
 
-app.use(express.json({
-  limit: process.env.EXPRESS_JSON_LIMIT || '100kb'
-}));
+app.use(
+  express.json({
+    limit: process.env.EXPRESS_JSON_LIMIT || '100kb',
+  }),
+);
 
 app.use(express.urlencoded());
 
@@ -109,6 +112,24 @@ function failPng(res, msg, statusCode = 500) {
       backgroundColor: '#fff',
     }),
   );
+}
+
+function failSvg(res, msg, statusCode = 500) {
+  res.writeHead(statusCode, {
+    'Content-Type': 'image/svg+xml',
+  });
+  res.end(`
+<svg viewBox="0 0 240 80" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    p {
+      font-size: 8px;
+    }
+  </style>
+  <foreignObject width="240" height="80"
+   requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+    <p xmlns="http://www.w3.org/1999/xhtml">${msg}</p>
+  </foreignObject>
+</svg>`);
 }
 
 async function failPdf(res, msg) {
@@ -197,9 +218,31 @@ function doRender(req, res, opts) {
     });
 }
 
-function handleGChart(req, res) {
+async function handleGChart(req, res) {
+  if (req.query.cht.startsWith('gv')) {
+    // Graphviz chart
+    const format = 'svg'; // Hardcode to svg for now
+    const engine = req.query.cht.indexOf(':') > -1 ? req.query.cht.split(':')[1] : 'dot';
+    try {
+      const buf = await renderGraphviz(req.query.chl, format, engine);
+      res
+        .status(200)
+        .type(format === 'png' ? 'image/png' : 'image/svg+xml')
+        .end(buf);
+    } catch (err) {
+      if (format === 'png') {
+        failPng(res, `Graph Error: ${err}`);
+      } else {
+        failSvg(res, `Graph Error: ${err}`);
+      }
+    }
+  }
   const converted = toChartJs(req.query);
   if (req.query.format === 'chartjs-config') {
+    // Chart.js config
+    res.writeHead(200, {
+      'Content-Type': 'application/json',
+    });
     res.end(javascriptStringify(converted.chart, undefined, 2));
     return;
   }
@@ -223,10 +266,10 @@ function handleGChart(req, res) {
   // TODO(ian): Telemetry.
 }
 
-app.get('/chart', (req, res) => {
+app.get('/chart', async (req, res) => {
   if (req.query.cht) {
     // This is a Google Image Charts-compatible request.
-    return handleGChart(req, res);
+    return await handleGChart(req, res);
   }
 
   const opts = {
