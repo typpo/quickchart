@@ -76,7 +76,9 @@ if (process.env.RATE_LIMIT_PER_MIN) {
 }
 
 app.get('/', (req, res) => {
-  res.send('it works!');
+  res.send(
+    'QuickChart is running!<br><br>If you are using QuickChart commercially, please consider <a href="https://quickchart.io/pricing/">purchasing a license</a> to support the project.',
+  );
 });
 
 app.post('/telemetry', (req, res) => {

@@ -22,7 +22,6 @@ RUN apk del .build-deps
 COPY *.js ./
 COPY lib/*.js lib/
 COPY templates templates/
-COPY public public/
 COPY LICENSE .
 
 EXPOSE 3400
