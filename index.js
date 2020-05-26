@@ -14,7 +14,7 @@ const { getPdfBufferFromPng, getPdfBufferWithText } = require('./lib/pdf');
 const { logger } = require('./logging');
 const { renderChart } = require('./lib/charts');
 const { renderGraphviz } = require('./lib/graphviz');
-const { toChartJs } = require('./lib/google_image_charts');
+const { toChartJs, parseSize } = require('./lib/google_image_charts');
 const { renderQr, DEFAULT_QR_SIZE } = require('./lib/qr');
 
 const app = express();
@@ -223,10 +223,19 @@ function doRender(req, res, opts) {
 async function handleGChart(req, res) {
   if (req.query.cht.startsWith('gv')) {
     // Graphviz chart
-    const format = 'svg'; // Hardcode to svg for now
+    const format = req.query.chof;
     const engine = req.query.cht.indexOf(':') > -1 ? req.query.cht.split(':')[1] : 'dot';
+    const opts = {
+      format,
+      engine,
+    };
+    if (req.query.chs) {
+      const size = parseSize(req.query.chs);
+      opts.width = size.width;
+      opts.height = size.height;
+    }
     try {
-      const buf = await renderGraphviz(req.query.chl, format, engine);
+      const buf = await renderGraphviz(req.query.chl, opts);
       res
         .status(200)
         .type(format === 'png' ? 'image/png' : 'image/svg+xml')
@@ -238,6 +247,7 @@ async function handleGChart(req, res) {
         failSvg(res, `Graph Error: ${err}`);
       }
     }
+    return;
   }
   const converted = toChartJs(req.query);
   if (req.query.format === 'chartjs-config') {
