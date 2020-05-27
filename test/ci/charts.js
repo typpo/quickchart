@@ -8,7 +8,7 @@ const { BASIC_CHART, JS_CHART } = require('./chart_helpers');
 
 describe('charts.js', () => {
   it('renders a JSON chart', async () => {
-    const buf = await chartsLib.renderChart(200, 100, 'white', 1.0, BASIC_CHART);
+    const buf = await chartsLib.renderChartJs(200, 100, 'white', 1.0, BASIC_CHART);
 
     assert(buf.length > 0);
     const dimensions = imageSize(buf);
@@ -18,7 +18,7 @@ describe('charts.js', () => {
   });
 
   it('adjusts chart size based on device pixel ratio', async () => {
-    const buf = await chartsLib.renderChart(200, 100, 'white', 2.0, BASIC_CHART);
+    const buf = await chartsLib.renderChartJs(200, 100, 'white', 2.0, BASIC_CHART);
 
     assert(buf.length > 0);
     const dimensions = imageSize(buf);
@@ -28,7 +28,7 @@ describe('charts.js', () => {
   });
 
   it('renders a JS chart', async () => {
-    const buf = await chartsLib.renderChart(200, 100, 'white', 2.0, JS_CHART);
+    const buf = await chartsLib.renderChartJs(200, 100, 'white', 2.0, JS_CHART);
     assert(buf.length > 0);
   });
 });

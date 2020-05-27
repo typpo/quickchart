@@ -12,7 +12,7 @@ const packageJson = require('./package.json');
 const telemetry = require('./telemetry');
 const { getPdfBufferFromPng, getPdfBufferWithText } = require('./lib/pdf');
 const { logger } = require('./logging');
-const { renderChart } = require('./lib/charts');
+const { renderChartJs } = require('./lib/charts');
 const { renderGraphviz } = require('./lib/graphviz');
 const { toChartJs, parseSize } = require('./lib/google_image_charts');
 const { renderQr, DEFAULT_QR_SIZE } = require('./lib/qr');
@@ -142,7 +142,7 @@ async function failPdf(res, msg) {
   res.end(buf);
 }
 
-function doRenderChart(req, res, opts) {
+function renderChartToImage(req, res, opts) {
   opts.failFn = failPng;
   opts.onRenderHandler = buf => {
     res.writeHead(200, {
@@ -154,10 +154,10 @@ function doRenderChart(req, res, opts) {
     });
     res.end(buf);
   };
-  doRender(req, res, opts);
+  doChartjsRender(req, res, opts);
 }
 
-async function doRenderPdf(req, res, opts) {
+async function renderChartToPdf(req, res, opts) {
   opts.failFn = failPdf;
   opts.onRenderHandler = async buf => {
     const pdfBuf = await getPdfBufferFromPng(buf);
@@ -171,17 +171,17 @@ async function doRenderPdf(req, res, opts) {
     });
     res.end(pdfBuf);
   };
-  doRender(req, res, opts);
+  doChartjsRender(req, res, opts);
 }
 
-function doRender(req, res, opts) {
+function doChartjsRender(req, res, opts) {
   if (!opts.chart) {
     opts.failFn(res, 'You are missing variable `c` or `chart`');
     return;
   }
 
-  let height = 300;
   let width = 500;
+  let height = 300;
   if (opts.height) {
     const heightNum = parseInt(opts.height, 10);
     if (!Number.isNaN(heightNum)) {
@@ -195,12 +195,9 @@ function doRender(req, res, opts) {
     }
   }
 
-  // Choose retina resolution by default. This will cause images to be 2x size
-  // in absolute terms.
-  const devicePixelRatio = opts.devicePixelRatio || 2.0;
-
   let untrustedInput = opts.chart;
   if (opts.encoding === 'base64') {
+    // TODO(ian): Move this decoding up the call stack.
     try {
       untrustedInput = Buffer.from(opts.chart, 'base64').toString('utf8');
     } catch (err) {
@@ -210,9 +207,7 @@ function doRender(req, res, opts) {
     }
   }
 
-  const backgroundColor = opts.backgroundColor || 'transparent';
-
-  renderChart(width, height, backgroundColor, devicePixelRatio, untrustedInput)
+  renderChartJs(width, height, opts.backgroundColor, opts.devicePixelRatio, untrustedInput)
     .then(opts.onRenderHandler)
     .catch(err => {
       logger.warn('Chart error', err);
@@ -220,7 +215,23 @@ function doRender(req, res, opts) {
     });
 }
 
-async function handleGChart(req, res) {
+async function handleGraphviz(req, res, graphVizDef, opts) {
+  try {
+    const buf = await renderGraphviz(req.query.chl, opts);
+    res
+      .status(200)
+      .type(opts.format === 'png' ? 'image/png' : 'image/svg+xml')
+      .end(buf);
+  } catch (err) {
+    if (opts.format === 'png') {
+      failPng(res, `Graph Error: ${err}`);
+    } else {
+      failSvg(res, `Graph Error: ${err}`);
+    }
+  }
+}
+
+function handleGChart(req, res) {
   if (req.query.cht.startsWith('gv')) {
     // Graphviz chart
     const format = req.query.chof;
@@ -234,19 +245,7 @@ async function handleGChart(req, res) {
       opts.width = size.width;
       opts.height = size.height;
     }
-    try {
-      const buf = await renderGraphviz(req.query.chl, opts);
-      res
-        .status(200)
-        .type(format === 'png' ? 'image/png' : 'image/svg+xml')
-        .end(buf);
-    } catch (err) {
-      if (format === 'png') {
-        failPng(res, `Graph Error: ${err}`);
-      } else {
-        failSvg(res, `Graph Error: ${err}`);
-      }
-    }
+    handleGraphviz(req, res, req.query.chl, opts);
     return;
   }
   const converted = toChartJs(req.query);
@@ -259,7 +258,7 @@ async function handleGChart(req, res) {
     return;
   }
 
-  renderChart(
+  renderChartJs(
     converted.width,
     converted.height,
     converted.backgroundColor,
@@ -301,9 +300,9 @@ app.get('/chart', async (req, res) => {
   const outputFormat = (req.query.f || req.query.format || '').toLowerCase();
 
   if (outputFormat === 'pdf') {
-    doRenderPdf(req, res, opts);
+    renderChartToPdf(req, res, opts);
   } else {
-    doRenderChart(req, res, opts);
+    renderChartToImage(req, res, opts);
   }
 
   telemetry.count('chartCount');
@@ -321,9 +320,9 @@ app.post('/chart', (req, res) => {
   const outputFormat = (req.body.f || req.body.format || '').toLowerCase();
 
   if (outputFormat === 'pdf') {
-    doRenderPdf(req, res, opts);
+    renderChartToPdf(req, res, opts);
   } else {
-    doRenderChart(req, res, opts);
+    renderChartToImage(req, res, opts);
   }
 
   telemetry.count('chartCount');
