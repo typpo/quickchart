@@ -1,6 +1,6 @@
 QuickChart
 ---
-[![Build Status](https://api.travis-ci.org/typpo/quickchart.svg?branch=master)](https://travis-ci.org/typpo/quickchart)
+[![Build Status](https://api.travis-ci.com/typpo/quickchart.svg?branch=master)](https://travis-ci.com/typpo/quickchart)
 
 [QuickChart](https://quickchart.io/) is a service that generates images of charts from a URL.  Because these charts are simple images, they are very easy to embed in non-dynamic environments such as email, SMS, chat rooms, and so on.
 
@@ -56,7 +56,7 @@ The `/qr` endpoint has the following query parameters:
   - `ecLevel` - Error correction level (defaults to M)
   - `dark` - Hex color code for dark portion of QR code (defaults to `000000`)
   - `light` - Hex color code for light portion of QR code (defauls to `ffffff`)
-  
+
 ## Client libraries
 
   - [quickchart-js](https://github.com/typpo/quickchart-js/) - Javascript
