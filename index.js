@@ -232,6 +232,8 @@ async function handleGraphviz(req, res, graphVizDef, opts) {
 }
 
 function handleGChart(req, res) {
+  // TODO(ian): Move these special cases into Google Image Charts-specific
+  // handler.
   if (req.query.cht.startsWith('gv')) {
     // Graphviz chart
     const format = req.query.chof;
@@ -247,7 +249,39 @@ function handleGChart(req, res) {
     }
     handleGraphviz(req, res, req.query.chl, opts);
     return;
+  } else if (req.query.cht === 'qr') {
+    const size = parseInt(req.query.chs.split('x')[0], 10);
+    const qrData = req.query.chl;
+    const chldVals = (req.query.chld || '').split('|');
+    const ecLevel = chldVals[0] || 'L';
+    const margin = chldVals[1] || 4;
+    const qrOpts = {
+      margin: margin,
+      width: size,
+      errorCorrectionLevel: ecLevel,
+    };
+
+    const format = 'png';
+    const encoding = 'UTF-8';
+    renderQr(format, encoding, qrData, qrOpts)
+      .then(buf => {
+        res.writeHead(200, {
+          'Content-Type': format === 'png' ? 'image/png' : 'image/svg+xml',
+          'Content-Length': buf.length,
+
+          // 1 week cache
+          'Cache-Control': isDev ? 'no-cache' : 'public, max-age=604800',
+        });
+        res.end(buf);
+      })
+      .catch(err => {
+        failPng(res, err);
+      });
+
+    telemetry.count('qrCount');
+    return;
   }
+
   const converted = toChartJs(req.query);
   if (req.query.format === 'chartjs-config') {
     // Chart.js config
@@ -274,7 +308,7 @@ function handleGChart(req, res) {
     });
     res.end(buf);
   });
-  // TODO(ian): Telemetry.
+  telemetry.count('chartCount');
 }
 
 app.get('/chart', async (req, res) => {

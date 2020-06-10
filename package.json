@@ -50,9 +50,11 @@
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.16.0",
     "image-size": "^0.8.3",
+    "jimp": "^0.13.0",
     "mocha": "^6.2.2",
     "pixelmatch": "^5.1.0",
     "prettier": "^1.18.2",
+    "qrcode-reader": "^1.0.4",
     "supertest": "^4.0.2"
   }
 }

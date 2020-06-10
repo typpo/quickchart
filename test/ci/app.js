@@ -8,9 +8,10 @@ const imageSize = require('image-size');
 const request = require('supertest');
 
 const app = require('../../index');
-const { addKeyLine } = require('../../api_keys');
 const { BASIC_CHART, JS_CHART } = require('./chart_helpers');
+const { addKeyLine } = require('../../api_keys');
 const { deltaE } = require('./color_helpers');
+const { getQrValue } = require('./qr_helpers');
 
 const colorThief = new ColorThief();
 
@@ -212,10 +213,30 @@ describe('qr endpoint', () => {
       .get(qrPublicUrl)
       .expect('Content-Type', 'image/png')
       .expect(200)
-      .end((err, res) => {
+      .end(async (err, res) => {
         const dimensions = imageSize(res.body);
         assert.equal(150, dimensions.width);
         assert.equal(150, dimensions.height);
+
+        const result = await getQrValue(res.body);
+        assert.equal(qrText, result);
+        done();
+      });
+  });
+
+  it('renders basic qr - google image charts compatible', done => {
+    const qrPublicUrl = '/chart?chs=300x300&cht=qr&chl=Hola mundo&choe=UTF-8&chld=M|10';
+    request(app)
+      .get(qrPublicUrl)
+      .expect('Content-Type', 'image/png')
+      .expect(200)
+      .end(async (err, res) => {
+        const dimensions = imageSize(res.body);
+        assert.equal(300, dimensions.width);
+        assert.equal(300, dimensions.height);
+
+        const result = await getQrValue(res.body);
+        assert.equal('Hola mundo', result);
         done();
       });
   });
