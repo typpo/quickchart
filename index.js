@@ -145,14 +145,14 @@ async function failPdf(res, msg) {
 function renderChartToImage(req, res, opts) {
   opts.failFn = failPng;
   opts.onRenderHandler = buf => {
-    res.writeHead(200, {
-      'Content-Type': 'image/png',
-      'Content-Length': buf.length,
-
-      // 1 week cache
-      'Cache-Control': isDev ? 'no-cache' : 'public, max-age=604800',
-    });
-    res.end(buf);
+    res
+      .type('png')
+      .set({
+        // 1 week cache
+        'Cache-Control': isDev ? 'no-cache' : 'public, max-age=604800',
+      })
+      .send(buf)
+      .end();
   };
   doChartjsRender(req, res, opts);
 }
@@ -180,20 +180,8 @@ function doChartjsRender(req, res, opts) {
     return;
   }
 
-  let width = 500;
-  let height = 300;
-  if (opts.height) {
-    const heightNum = parseInt(opts.height, 10);
-    if (!Number.isNaN(heightNum)) {
-      height = heightNum;
-    }
-  }
-  if (opts.width) {
-    const widthNum = parseInt(opts.width, 10);
-    if (!Number.isNaN(widthNum)) {
-      width = widthNum;
-    }
-  }
+  const width = parseInt(opts.width, 10) || 500;
+  const height = parseInt(opts.height, 10) || 300;
 
   let untrustedInput = opts.chart;
   if (opts.encoding === 'base64') {
@@ -311,10 +299,11 @@ function handleGChart(req, res) {
   telemetry.count('chartCount');
 }
 
-app.get('/chart', async (req, res) => {
+app.get('/chart', (req, res) => {
   if (req.query.cht) {
     // This is a Google Image Charts-compatible request.
-    return await handleGChart(req, res);
+    handleGChart(req, res);
+    return;
   }
 
   const opts = {
@@ -335,8 +324,10 @@ app.get('/chart', async (req, res) => {
 
   if (outputFormat === 'pdf') {
     renderChartToPdf(req, res, opts);
-  } else {
+  } else if (!outputFormat || outputFormat === 'png') {
     renderChartToImage(req, res, opts);
+  } else {
+    res.status(500).end(`Unsupported format ${outputFormat}`);
   }
 
   telemetry.count('chartCount');
@@ -451,7 +442,7 @@ app.get('/healthcheck/chart', (req, res) => {
 const port = process.env.PORT || 3400;
 const server = app.listen(port);
 
-const timeout = parseInt(process.env.REQUEST_TIMEOUT_MS, 10) || 1000;
+const timeout = parseInt(process.env.REQUEST_TIMEOUT_MS, 10) || 5000;
 server.setTimeout(timeout);
 logger.info(`Setting request timeout: ${timeout} ms`);
 
