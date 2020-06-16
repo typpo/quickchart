@@ -335,6 +335,7 @@ app.get('/chart', (req, res) => {
   } else if (!outputFormat || outputFormat === 'png') {
     renderChartToImage(req, res, opts);
   } else {
+    logger.error(`Request for unsupported format ${outputFormat}`);
     res.status(500).end(`Unsupported format ${outputFormat}`);
   }
 
