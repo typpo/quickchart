@@ -270,7 +270,15 @@ function handleGChart(req, res) {
     return;
   }
 
-  const converted = toChartJs(req.query);
+  let converted;
+  try {
+    converted = toChartJs(req.query);
+  } catch (err) {
+    logger.error(`GChart error: Could not interpret ${req.originalUrl}`);
+    res.status(500).end('Sorry, this chart configuration is not supported right now');
+    return;
+  }
+
   if (req.query.format === 'chartjs-config') {
     // Chart.js config
     res.writeHead(200, {
