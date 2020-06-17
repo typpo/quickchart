@@ -387,14 +387,6 @@ app.get('/qr', (req, res) => {
   const darkColor = req.query.dark || '000';
   const lightColor = req.query.light || 'fff';
 
-  let qrData;
-  try {
-    qrData = decodeURIComponent(qrText);
-  } catch (err) {
-    logger.warn('URI malformed', err);
-    failPng(res, 'URI malformed');
-    return;
-  }
   const qrOpts = {
     margin,
     width: size,
@@ -405,7 +397,7 @@ app.get('/qr', (req, res) => {
     },
   };
 
-  renderQr(format, mode, qrData, qrOpts)
+  renderQr(format, mode, qrText, qrOpts)
     .then(buf => {
       res.writeHead(200, {
         'Content-Type': format === 'png' ? 'image/png' : 'image/svg+xml',
