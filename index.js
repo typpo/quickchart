@@ -7,7 +7,6 @@ const qs = require('qs');
 const rateLimit = require('express-rate-limit');
 const text2png = require('text2png');
 
-const apiKeys = require('./api_keys');
 const packageJson = require('./package.json');
 const telemetry = require('./telemetry');
 const { getPdfBufferFromPng, getPdfBufferWithText } = require('./lib/pdf');
@@ -60,14 +59,6 @@ if (process.env.RATE_LIMIT_PER_MIN) {
     onLimitReached: req => {
       logger.info('User hit rate limit!', req.ip);
     },
-    skip: req => {
-      // If user has a special key, bypass rate limiting.
-      const ret = apiKeys.requestHasValidKey(req);
-      if (ret) {
-        apiKeys.countRequest(req);
-      }
-      return ret;
-    },
     keyGenerator: req => {
       return req.headers['x-forwarded-for'] || req.ip;
     },
@@ -94,14 +85,6 @@ app.post('/telemetry', (req, res) => {
   }
 
   res.send({ success: true });
-});
-
-app.get('/api/account/:key', (req, res) => {
-  const key = req.params.key;
-  res.send({
-    isValid: apiKeys.isValidKey(key),
-    numRecentRequests: apiKeys.getNumRecentRequests(key),
-  });
 });
 
 function failPng(res, msg, statusCode = 500) {
@@ -323,11 +306,6 @@ app.get('/chart', (req, res) => {
     encoding: req.query.encoding || 'url',
   };
 
-  if (req.query.sig && !apiKeys.verifySignature(opts.chart, req.query.sig, req.query.accountId)) {
-    failPng(res, 'Invalid signature', 403);
-    return;
-  }
-
   const outputFormat = (req.query.f || req.query.format || '').toLowerCase();
 
   if (outputFormat === 'pdf') {
@@ -366,11 +344,6 @@ app.get('/qr', (req, res) => {
   const qrText = req.query.text;
   if (!qrText) {
     failPng(res, 'You are missing variable `text`');
-    return;
-  }
-
-  if (req.query.sig && !apiKeys.verifySignature(qrText, req.query.sig, req.query.accountId)) {
-    failPng(res, 'Invalid signature', 403);
     return;
   }
 
