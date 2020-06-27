@@ -9,19 +9,10 @@ const request = require('supertest');
 
 const app = require('../../index');
 const { BASIC_CHART, JS_CHART } = require('./chart_helpers');
-const { deltaE } = require('./color_helpers');
+const { assertSimilarRgb } = require('./color_helpers');
 const { getQrValue } = require('./qr_helpers');
 
 const colorThief = new ColorThief();
-
-function assertSimilarRgb(expected, actual, tolerance = 6) {
-  const diff = deltaE(expected, actual);
-  if (diff > tolerance) {
-    throw new Error(
-      `Expected rgb ${expected} but got ${actual}, scored at diff=${diff} which is greater than ${tolerance}`,
-    );
-  }
-}
 
 describe('chart request', () => {
   it('returns a basic chart via GET', done => {

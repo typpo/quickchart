@@ -1,14 +1,19 @@
 /* eslint-env node, mocha */
 
 const assert = require('assert');
+
+const ColorThief = require('color-thief');
 const imageSize = require('image-size');
 
 const chartsLib = require('../../lib/charts');
-const { BASIC_CHART, JS_CHART } = require('./chart_helpers');
+const charts = require('./chart_helpers');
+const { assertSimilarRgb } = require('./color_helpers');
+
+const colorThief = new ColorThief();
 
 describe('charts.js', () => {
   it('renders a JSON chart', async () => {
-    const buf = await chartsLib.renderChartJs(200, 100, 'white', 1.0, BASIC_CHART);
+    const buf = await chartsLib.renderChartJs(200, 100, 'white', 1.0, charts.BASIC_CHART);
 
     assert(buf.length > 0);
     const dimensions = imageSize(buf);
@@ -18,7 +23,7 @@ describe('charts.js', () => {
   });
 
   it('adjusts chart size based on device pixel ratio', async () => {
-    const buf = await chartsLib.renderChartJs(200, 100, 'white', 2.0, BASIC_CHART);
+    const buf = await chartsLib.renderChartJs(200, 100, 'white', 2.0, charts.BASIC_CHART);
 
     assert(buf.length > 0);
     const dimensions = imageSize(buf);
@@ -28,7 +33,13 @@ describe('charts.js', () => {
   });
 
   it('renders a JS chart', async () => {
-    const buf = await chartsLib.renderChartJs(200, 100, 'white', 2.0, JS_CHART);
+    const buf = await chartsLib.renderChartJs(200, 100, 'white', 2.0, charts.JS_CHART);
     assert(buf.length > 0);
+  });
+
+  it('renders a chart color scheme', async () => {
+    const buf = await chartsLib.renderChartJs(200, 100, 'white', 2.0, charts.CHART_COLOR_SCHEME);
+    const rgb = colorThief.getColor(buf);
+    assertSimilarRgb([156, 156, 252], rgb);
   });
 });

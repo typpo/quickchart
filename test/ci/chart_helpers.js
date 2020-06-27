@@ -64,7 +64,28 @@ const JS_CHART = javascriptStringify({
   },
 });
 
+const CHART_COLOR_SCHEME = {
+  type: 'bar',
+  data: {
+    labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+    datasets: [
+      {
+        label: 'Users',
+        data: [50, 60, 70, 180],
+      },
+    ],
+  },
+  options: {
+    plugins: {
+      colorschemes: {
+        scheme: 'office.Excel16',
+      },
+    },
+  },
+};
+
 module.exports = {
   BASIC_CHART,
   JS_CHART,
+  CHART_COLOR_SCHEME,
 };

@@ -1,5 +1,13 @@
-// From https://stackoverflow.com/questions/13586999/color-difference-similarity-between-two-values-with-js
+function assertSimilarRgb(expected, actual, tolerance = 6) {
+  const diff = deltaE(expected, actual);
+  if (diff > tolerance) {
+    throw new Error(
+      `Expected rgb ${expected} but got ${actual}, scored at diff=${diff} which is greater than ${tolerance}`,
+    );
+  }
+}
 
+// From https://stackoverflow.com/questions/13586999/color-difference-similarity-between-two-values-with-js
 function deltaE(rgbA, rgbB) {
   let labA = rgb2lab(rgbA);
   let labB = rgb2lab(rgbB);
@@ -40,5 +48,5 @@ function rgb2lab(rgb) {
 }
 
 module.exports = {
-  deltaE,
+  assertSimilarRgb,
 };

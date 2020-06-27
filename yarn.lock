@@ -1173,6 +1173,11 @@ chartjs-plugin-annotation@^0.5.7:
   dependencies:
     chart.js "^2.4.0"
 
+chartjs-plugin-colorschemes@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/chartjs-plugin-colorschemes/-/chartjs-plugin-colorschemes-0.4.0.tgz#7a310c32411ef0b5135df1f47da4d379e22220f7"
+  integrity sha512-GUAulGFa6igdhi/xF9XopLJknwtXZT0wwEB+e/D4SJcRGY1HdwzX84pVn5BSpnk1idF6RJxZoA7w396R7BOE9A==
+
 chartjs-plugin-datalabels@^0.5.0:
   version "0.5.0"
   resolved "https://registry.yarnpkg.com/chartjs-plugin-datalabels/-/chartjs-plugin-datalabels-0.5.0.tgz#b9c7a99857b2a52b6db70f63fc9f3a65d887d523"
