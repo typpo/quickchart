@@ -265,7 +265,7 @@ function handleGChart(req, res) {
     converted.width,
     converted.height,
     converted.backgroundColor,
-    undefined,
+    1.0 /* devicePixelRatio */,
     converted.chart,
   ).then(buf => {
     res.writeHead(200, {
