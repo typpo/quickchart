@@ -80,6 +80,7 @@ app.post('/telemetry', (req, res) => {
 function failPng(res, msg, statusCode = 500) {
   res.writeHead(statusCode, {
     'Content-Type': 'image/png',
+    'X-quickchart-error': msg,
   });
   res.end(
     text2png(`Chart Error: ${msg}`, {
@@ -92,6 +93,7 @@ function failPng(res, msg, statusCode = 500) {
 function failSvg(res, msg, statusCode = 500) {
   res.writeHead(statusCode, {
     'Content-Type': 'image/svg+xml',
+    'X-quickchart-error': msg,
   });
   res.end(`
 <svg viewBox="0 0 240 80" xmlns="http://www.w3.org/2000/svg">
@@ -111,6 +113,7 @@ async function failPdf(res, msg) {
   const buf = await getPdfBufferWithText(msg);
   res.writeHead(500, {
     'Content-Type': 'application/pdf',
+    'X-quickchart-error': msg,
   });
   res.end(buf);
 }
