@@ -5,11 +5,12 @@ const javascriptStringify = require('javascript-stringify').stringify;
 const qs = require('qs');
 const rateLimit = require('express-rate-limit');
 const text2png = require('text2png');
+const morgan = require("morgan");
 
 const packageJson = require('./package.json');
 const telemetry = require('./telemetry');
 const { getPdfBufferFromPng, getPdfBufferWithText } = require('./lib/pdf');
-const { logger } = require('./logging');
+const { logger, accessLogStream } = require('./logging');
 const { renderChartJs } = require('./lib/charts');
 const { renderGraphviz } = require('./lib/graphviz');
 const { toChartJs, parseSize } = require('./lib/google_image_charts');
@@ -36,6 +37,13 @@ app.use(
 );
 
 app.use(express.urlencoded());
+
+app.use(morgan('combined', { 
+  stream: accessLogStream,
+  skip: (req, res) => {
+      return req.path === '/healthcheck';
+  }
+}));
 
 if (process.env.RATE_LIMIT_PER_MIN) {
   const limitMax = parseInt(process.env.RATE_LIMIT_PER_MIN, 10);
