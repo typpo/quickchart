@@ -31,6 +31,7 @@
     "express": "^4.16.4",
     "express-rate-limit": "^5.0.0",
     "javascript-stringify": "^2.0.0",
+    "morgan": "^1.10.0",
     "patternomaly": "^1.3.2",
     "pdfkit": "^0.10.0",
     "qrcode": "^1.3.3",
