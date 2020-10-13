@@ -1,4 +1,5 @@
 const path = require('path');
+const fs = require('fs');
 
 const bunyan = require('bunyan');
 const { LoggingBunyan } = require('@google-cloud/logging-bunyan');
@@ -24,6 +25,12 @@ const logger = bunyan.createLogger({
   streams: getStreams(),
 });
 
+const LOG_PATH = process.env.LOG_PATH || "/var/logs";
+const accessLogStream = fs.createWriteStream(path.join(LOG_PATH, "access.log"), {
+  flags: "a",
+});
+
 module.exports = {
   logger,
+  accessLogStream
 };
