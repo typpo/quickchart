@@ -18,7 +18,7 @@ The above image can be included anywhere you like.  Here is its URL:
 
 As you can see, the Javascript or JSON object contained in the URL defines the chart:
 
-```
+```js
 {
   type: 'bar',
   data: {
