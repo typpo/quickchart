@@ -21,7 +21,7 @@ const isDev = app.get('env') === 'development' || app.get('env') === 'test';
 
 app.set('query parser', str =>
   qs.parse(str, {
-    decode(s) {
+    decoder(s) {
       // Default express implementation replaces '+' with space. We don't want
       // that. See https://github.com/expressjs/express/issues/3453
       return decodeURIComponent(s);
