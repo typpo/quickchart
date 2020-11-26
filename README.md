@@ -62,6 +62,8 @@ The `/qr` endpoint has the following query parameters:
   - [quickchart-js](https://github.com/typpo/quickchart-js) - Javascript
   - [quickchart-python](https://github.com/typpo/quickchart-python) - Python
   - [quickchart-ruby](https://github.com/typpo/quickchart-ruby) - Ruby
+  - [quickchart-php](https://github.com/typpo/quickchart-php) - PHP
+  - [quickchart-csharp](https://github.com/typpo/quickchart-csharp) - C#
   - [chartjs-to-image](https://www.npmjs.com/package/chartjs-to-image) - Javascript package for Chart.js images
 
 ## Dependencies and Installation
