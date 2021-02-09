@@ -17,7 +17,6 @@
     "test:watch": "PORT=2998 NODE_ENV=test chokidar '**/*.js' --initial --ignore node_modules -c 'mocha --exit --recursive test/'"
   },
   "dependencies": {
-    "@google-cloud/logging-bunyan": "^2.0.2",
     "bunyan": "^1.8.12",
     "chart.js": "^2.9.3",
     "chartjs-chart-box-and-violin-plot": "^2.2.0",
