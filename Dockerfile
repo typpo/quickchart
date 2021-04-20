@@ -22,6 +22,7 @@ RUN rm -rf /var/cache/apk/* && \
 RUN apk del .build-deps
 
 COPY *.js ./
+COPY *.svg ./
 COPY lib/*.js lib/
 COPY LICENSE .
 
