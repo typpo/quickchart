@@ -16,7 +16,6 @@ const { toChartJs, parseSize } = require('./lib/google_image_charts');
 const { renderQr, DEFAULT_QR_SIZE } = require('./lib/qr');
 
 const { createCanvas, loadImage } = require('canvas');
-const { createGzip } = require('zlib');
 
 const app = express();
 
@@ -180,22 +179,27 @@ function doChartjsRender(req, res, opts) {
         let chart = await loadImage(buf);
 
         // Create a padded canvas to give extra space for watermark
-        const canvas = createCanvas(chart.width, chart.height + 70);
+        const canvas = createCanvas(chart.width, chart.height + 80);
         const ctx = canvas.getContext('2d');
 
+        // Fill the canvas background white
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
         // Draw the chart onto the canvas
+
         ctx.drawImage(chart, 0, 0, chart.width, chart.height);
 
         // Draw a 60px high box at the bottom in 'PauliusPurple'
         ctx.fillStyle = '#703aa3';
-        ctx.fillRect(0, chart.height + 10, chart.width, 60);
+        ctx.fillRect(0, chart.height + 20, chart.width, 60);
 
-        ctx.font = '25px Arial';
+        ctx.font = '23px Arial';
         ctx.fillStyle = '#FFFFFF';
-        ctx.fillText('www.micronutrient.support', 120, chart.height + 47);
+        ctx.fillText('www.micronutrient.support', 180, chart.height + 58);
 
-        let watermark = await loadImage('./watermark.svg');
-        ctx.drawImage(watermark, 10, chart.height + 18, 80, 45);
+        let watermark = await loadImage('./watermark.png');
+        ctx.drawImage(watermark, 10, chart.height + 28, 149, 45);
 
         console.log(req.get('Referrer'));
 
@@ -217,9 +221,9 @@ function doChartjsRender(req, res, opts) {
         };
         let qrBuf = await renderQr('png', null, 'https://micronutrient.support', qrOpts);
         let qrImg = await loadImage(qrBuf);
-        ctx.drawImage(qrImg, chart.width - 80, chart.height + 70 - 80, 80, 80);
+        ctx.drawImage(qrImg, chart.width - 80, chart.height + 80 - 80, 80, 80);
 
-        ctx.rect(chart.width - 80 - 2, chart.height + 70 - 80 - 2, 84, 84);
+        ctx.rect(chart.width - 80 - 2, chart.height + 80 - 80 - 2, 84, 84);
         ctx.lineWidth = 4;
         ctx.strokeStyle = '#703aa3';
         ctx.stroke();
