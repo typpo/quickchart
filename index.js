@@ -15,6 +15,9 @@ const { renderGraphviz } = require('./lib/graphviz');
 const { toChartJs, parseSize } = require('./lib/google_image_charts');
 const { renderQr, DEFAULT_QR_SIZE } = require('./lib/qr');
 
+const { createCanvas, loadImage } = require('canvas');
+const { createGzip } = require('zlib');
+
 const app = express();
 
 const isDev = app.get('env') === 'development' || app.get('env') === 'test';
@@ -172,6 +175,59 @@ function doChartjsRender(req, res, opts) {
   }
 
   renderChartJs(width, height, opts.backgroundColor, opts.devicePixelRatio, untrustedInput)
+    .then(
+      (onRenderHandler = async buf => {
+        let chart = await loadImage(buf);
+
+        // Create a padded canvas to give extra space for watermark
+        const canvas = createCanvas(chart.width, chart.height + 70);
+        const ctx = canvas.getContext('2d');
+
+        // Draw the chart onto the canvas
+        ctx.drawImage(chart, 0, 0, chart.width, chart.height);
+
+        // Draw a 60px high box at the bottom in 'PauliusPurple'
+        ctx.fillStyle = '#703aa3';
+        ctx.fillRect(0, chart.height + 10, chart.width, 60);
+
+        ctx.font = '25px Arial';
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillText('www.micronutrient.support', 120, chart.height + 47);
+
+        let watermark = await loadImage('./watermark.svg');
+        ctx.drawImage(watermark, 10, chart.height + 18, 80, 45);
+
+        console.log(req.get('Referrer'));
+
+        // Create a QR code
+        const margin = typeof req.query.margin === 'undefined' ? 4 : parseInt(req.query.margin, 10);
+        const ecLevel = req.query.ecLevel || undefined;
+        const size = Math.min(3000, parseInt(req.query.size, 10)) || DEFAULT_QR_SIZE;
+        const darkColor = req.query.dark || '703aa3';
+        const lightColor = req.query.light || 'fff';
+
+        const qrOpts = {
+          margin,
+          width: size,
+          errorCorrectionLevel: ecLevel,
+          color: {
+            dark: darkColor,
+            light: lightColor,
+          },
+        };
+        let qrBuf = await renderQr('png', null, 'https://micronutrient.support', qrOpts);
+        let qrImg = await loadImage(qrBuf);
+        ctx.drawImage(qrImg, chart.width - 80, chart.height + 70 - 80, 80, 80);
+
+        ctx.rect(chart.width - 80 - 2, chart.height + 70 - 80 - 2, 84, 84);
+        ctx.lineWidth = 4;
+        ctx.strokeStyle = '#703aa3';
+        ctx.stroke();
+
+        // Return the buffer of the updated canvas
+        return canvas.toBuffer();
+      }),
+    )
     .then(opts.onRenderHandler)
     .catch(err => {
       logger.warn('Chart error', err);
