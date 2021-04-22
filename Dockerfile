@@ -12,9 +12,8 @@ RUN apk add --no-cache --virtual .fonts libmount ttf-dejavu ttf-droid ttf-freefo
 RUN apk add wqy-zenhei --no-cache --repository http://nl.alpinelinux.org/alpine/edge/testing --allow-untrusted
 RUN apk add --no-cache --virtual .runtime-deps graphviz
 
-COPY package*.json .
-COPY yarn.lock .
-RUN yarn install --production
+COPY package*.json ./
+RUN npm install --production
 
 RUN apk update
 RUN rm -rf /var/cache/apk/* && \
