@@ -37,7 +37,11 @@ app.use(
   }),
 );
 
-app.use(express.urlencoded());
+app.use(
+  express.urlencoded({
+    extended: true,
+  }),
+);
 
 if (process.env.RATE_LIMIT_PER_MIN) {
   const limitMax = parseInt(process.env.RATE_LIMIT_PER_MIN, 10);
@@ -46,8 +50,7 @@ if (process.env.RATE_LIMIT_PER_MIN) {
   const limiter = rateLimit({
     windowMs: 60 * 1000,
     max: limitMax,
-    message:
-      'Please slow down your requests! This is a shared public endpoint. Email support@quickchart.io or go to https://quickchart.io/pricing/ for rate limit exceptions or to purchase a commercial license.',
+    message: 'Please slow down your requests! This is a shared public endpoint.',
     onLimitReached: req => {
       logger.info('User hit rate limit!', req.ip);
     },
@@ -59,9 +62,7 @@ if (process.env.RATE_LIMIT_PER_MIN) {
 }
 
 app.get('/', (req, res) => {
-  res.send(
-    'QuickChart is running!<br><br>If you are using QuickChart commercially, please consider <a href="https://quickchart.io/pricing/">purchasing a license</a> to support the project.',
-  );
+  res.send('QuickChart is running!');
 });
 
 app.post('/telemetry', (req, res) => {
@@ -76,7 +77,9 @@ app.post('/telemetry', (req, res) => {
     telemetry.receive(pid, 'qrCount', qrCount);
   }
 
-  res.send({ success: true });
+  res.send({
+    success: true,
+  });
 });
 
 function failPng(res, msg, statusCode = 500) {
@@ -201,7 +204,7 @@ function doChartjsRender(req, res, opts) {
         let watermark = await loadImage('./watermark.png');
         ctx.drawImage(watermark, 10, chart.height + 28, 149, 45);
 
-        console.log(req.get('Referrer'));
+        // console.log(req.get('Referrer'));
 
         // Create a QR code
         const margin = typeof req.query.margin === 'undefined' ? 4 : parseInt(req.query.margin, 10);
@@ -445,7 +448,10 @@ app.get('/gchart', handleGChart);
 
 app.get('/healthcheck', (req, res) => {
   // A lightweight healthcheck endpoint.
-  res.send({ success: true, version: packageJson.version });
+  res.send({
+    success: true,
+    version: packageJson.version,
+  });
 });
 
 app.get('/healthcheck/chart', (req, res) => {
@@ -473,7 +479,7 @@ const timeout = parseInt(process.env.REQUEST_TIMEOUT_MS, 10) || 5000;
 server.setTimeout(timeout);
 logger.info(`Setting request timeout: ${timeout} ms`);
 
-logger.info(`NODE_ENV: ${process.env.NODE_ENV}`);
+// logger.info(`NODE_ENV: ${process.env.NODE_ENV}`);
 logger.info(`Listening on port ${port}`);
 
 if (!isDev) {
