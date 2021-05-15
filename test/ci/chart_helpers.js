@@ -84,8 +84,42 @@ const CHART_COLOR_SCHEME = {
   },
 };
 
+const CHART_GRADIENT_FILL = `{
+  type: 'bar',
+  data: {
+    labels: [2012, 2013, 2014, 2015, 2016],
+    datasets: [{
+      label: 'abc',
+      data: [12, 6, 5, 18, 12],
+      backgroundColor: getGradientFillHelper('vertical', ["#36a2eb", "#a336eb", "#eb3639"]),
+    }]
+  }
+}`;
+
+const CHART_VIOLIN = {
+  type: 'violin',
+  data: {
+    labels: [2012, 2013, 2014, 2015],
+    datasets: [
+      {
+        label: 'Data',
+        data: [
+          [12, 6, 3, 4],
+          [1, 8, 8, 15],
+          [1, 1, 1, 2, 3, 5, 9, 8],
+          [19, -3, 18, 8, 5, 9, 9],
+        ],
+        backgroundColor: 'rgba(56,123,45,0.2)',
+        borderColor: 'rgba(56,123,45,1.9)',
+      },
+    ],
+  },
+};
+
 module.exports = {
   BASIC_CHART,
   JS_CHART,
   CHART_COLOR_SCHEME,
+  CHART_GRADIENT_FILL,
+  CHART_VIOLIN,
 };

@@ -42,4 +42,17 @@ describe('charts.js', () => {
     const rgb = colorThief.getColor(buf);
     assertSimilarRgb([156, 156, 252], rgb);
   });
+
+  it('renders a chart with gradient fill', async () => {
+    const buf = await chartsLib.renderChartJs(300, 200, 'white', 2.0, charts.CHART_GRADIENT_FILL);
+    const rgb = colorThief.getColor(buf);
+    assertSimilarRgb([172, 58, 199], rgb);
+  });
+
+  it('renders a violin chart', async () => {
+    const buf = await chartsLib.renderChartJs(300, 200, 'white', 2.0, charts.CHART_VIOLIN);
+    const dimensions = imageSize(buf);
+    assert.equal(600, dimensions.width);
+    assert.equal(400, dimensions.height);
+  });
 });
