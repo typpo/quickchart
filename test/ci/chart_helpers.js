@@ -116,10 +116,25 @@ const CHART_VIOLIN = {
   },
 };
 
+const CHART_PROGRESSBAR = {
+  type: 'progressBar',
+  data: {
+    datasets: [
+      {
+        data: [50],
+      },
+      {
+        data: [100],
+      },
+    ],
+  },
+};
+
 module.exports = {
   BASIC_CHART,
   JS_CHART,
   CHART_COLOR_SCHEME,
   CHART_GRADIENT_FILL,
   CHART_VIOLIN,
+  CHART_PROGRESSBAR,
 };

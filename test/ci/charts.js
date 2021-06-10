@@ -55,4 +55,10 @@ describe('charts.js', () => {
     assert.equal(600, dimensions.width);
     assert.equal(400, dimensions.height);
   });
+
+  it('renders a progress bar', async () => {
+    const buf = await chartsLib.renderChartJs(100, 50, 'white', 2.0, charts.CHART_PROGRESSBAR);
+    const rgb = colorThief.getColor(buf);
+    assertSimilarRgb([76, 124, 164], rgb);
+  });
 });
