@@ -167,6 +167,85 @@ const CHART_PROGRESSBAR = {
   },
 };
 
+const DATETIME_V3 = {
+  type: 'line',
+  data: {
+    labels: [
+      new Date('2020-06-14T16:08:20.288Z'),
+      new Date('2020-06-15T16:08:20.288Z'),
+      new Date('2020-06-16T16:08:20.289Z'),
+      new Date('2020-06-17T16:08:20.289Z'),
+      new Date('2020-06-18T16:08:20.289Z'),
+      new Date('2020-06-19T16:08:20.289Z'),
+      new Date('2020-06-20T16:08:20.289Z'),
+    ],
+    datasets: [
+      {
+        label: 'My First dataset',
+        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+        borderColor: 'rgb(255, 99, 132)',
+        fill: false,
+        data: [38, -19, 35, -2, 77, 78, -93],
+      },
+      {
+        label: 'My Second dataset',
+        backgroundColor: 'rgba(54, 162, 235, 0.5)',
+        borderColor: 'rgb(54, 162, 235)',
+        fill: false,
+        data: [18, -7, 49, 86, 63, -92, -35],
+      },
+      {
+        label: 'Dataset with point data',
+        backgroundColor: 'rgba(75, 192, 192, 0.5)',
+        borderColor: 'rgb(75, 192, 192)',
+        fill: false,
+        data: [
+          {
+            x: '06/14/2020 09:08',
+            y: -29,
+          },
+          {
+            x: '06/19/2020 09:08',
+            y: -34,
+          },
+          {
+            x: '06/21/2020 09:08',
+            y: -62,
+          },
+          {
+            x: '06/29/2020 09:08',
+            y: 1,
+          },
+        ],
+      },
+    ],
+  },
+  options: {
+    locale: 'fr',
+    title: {
+      text: 'Chart.js Time Scale',
+    },
+    scales: {
+      x: {
+        type: 'time',
+        time: {
+          parser: 'MM/DD/YYYY HH:mm',
+        },
+        scaleLabel: {
+          display: true,
+          labelString: 'Date',
+        },
+      },
+      y: {
+        scaleLabel: {
+          display: true,
+          labelString: 'value',
+        },
+      },
+    },
+  },
+};
+
 module.exports = {
   BASIC_CHART,
   BASIC_CHART_V3,
@@ -175,4 +254,5 @@ module.exports = {
   CHART_GRADIENT_FILL,
   CHART_VIOLIN,
   CHART_PROGRESSBAR,
+  DATETIME_V3,
 };

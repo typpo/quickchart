@@ -959,6 +959,10 @@ chart.js@^2.4.0, chart.js@^2.8.0, chart.js@^2.9.4:
     chartjs-color "^2.1.0"
     moment "^2.10.2"
 
+"chartjs-adapter-moment@https://github.com/typpo/chartjs-adapter-moment.git#e9bc92ab6e0e500c91c4a9871db7b14d15b5c2e7":
+  version "1.0.0"
+  resolved "https://github.com/typpo/chartjs-adapter-moment.git#e9bc92ab6e0e500c91c4a9871db7b14d15b5c2e7"
+
 chartjs-chart-box-and-violin-plot@^2.4.0:
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/chartjs-chart-box-and-violin-plot/-/chartjs-chart-box-and-violin-plot-2.4.0.tgz#fa92b00752ceb8712f8892dbbd203dcd39ca0117"

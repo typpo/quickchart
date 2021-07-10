@@ -92,4 +92,14 @@ describe('charts.js', () => {
     const rgb = colorThief.getColor(buf);
     assertSimilarRgb([76, 124, 164], rgb);
   });
+
+  it('renders a datetime chart in Chart.js V3', async () => {
+    const buf = await chartsLib.renderChartJs(200, 100, 'white', 1.0, '3', charts.DATETIME_V3);
+
+    assert(buf.length > 0);
+    const dimensions = imageSize(buf);
+    // Device pixel ratio is 2.0, so multiply dimensions by that.
+    assert.equal(200, dimensions.width);
+    assert.equal(100, dimensions.height);
+  });
 });
