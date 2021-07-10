@@ -176,7 +176,7 @@ function doChartjsRender(req, res, opts) {
     height,
     opts.backgroundColor,
     opts.devicePixelRatio,
-    opts.version || '2.9.3',
+    opts.version || '2.9.4',
     untrustedInput,
   )
     .then(opts.onRenderHandler)
@@ -276,7 +276,7 @@ function handleGChart(req, res) {
     converted.height,
     converted.backgroundColor,
     1.0 /* devicePixelRatio */,
-    '2.9.3' /* version */,
+    '2.9.4' /* version */,
     converted.chart,
   ).then(buf => {
     res.writeHead(200, {

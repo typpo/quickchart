@@ -13,7 +13,7 @@ const colorThief = new ColorThief();
 
 describe('charts.js', () => {
   it('renders a JSON chart', async () => {
-    const buf = await chartsLib.renderChartJs(200, 100, 'white', 1.0, '2.9.3', charts.BASIC_CHART);
+    const buf = await chartsLib.renderChartJs(200, 100, 'white', 1.0, '2.9.4', charts.BASIC_CHART);
 
     assert(buf.length > 0);
     const dimensions = imageSize(buf);
@@ -33,7 +33,7 @@ describe('charts.js', () => {
   });
 
   it('adjusts chart size based on device pixel ratio', async () => {
-    const buf = await chartsLib.renderChartJs(200, 100, 'white', 2.0, '2.9.3', charts.BASIC_CHART);
+    const buf = await chartsLib.renderChartJs(200, 100, 'white', 2.0, '2.9.4', charts.BASIC_CHART);
 
     assert(buf.length > 0);
     const dimensions = imageSize(buf);
@@ -43,7 +43,7 @@ describe('charts.js', () => {
   });
 
   it('renders a JS chart', async () => {
-    const buf = await chartsLib.renderChartJs(200, 100, 'white', 2.0, '2.9.3', charts.JS_CHART);
+    const buf = await chartsLib.renderChartJs(200, 100, 'white', 2.0, '2.9.4', charts.JS_CHART);
     assert(buf.length > 0);
   });
 
@@ -53,7 +53,7 @@ describe('charts.js', () => {
       100,
       'white',
       2.0,
-      '2.9.3',
+      '2.9.4',
       charts.CHART_COLOR_SCHEME,
     );
     const rgb = colorThief.getColor(buf);
@@ -66,7 +66,7 @@ describe('charts.js', () => {
       200,
       'white',
       2.0,
-      '2.9.3',
+      '2.9.4',
       charts.CHART_GRADIENT_FILL,
     );
     const rgb = colorThief.getColor(buf);
@@ -74,7 +74,7 @@ describe('charts.js', () => {
   });
 
   it('renders a violin chart', async () => {
-    const buf = await chartsLib.renderChartJs(300, 200, 'white', 2.0, '2.9.3', charts.CHART_VIOLIN);
+    const buf = await chartsLib.renderChartJs(300, 200, 'white', 2.0, '2.9.4', charts.CHART_VIOLIN);
     const dimensions = imageSize(buf);
     assert.equal(600, dimensions.width);
     assert.equal(400, dimensions.height);
@@ -86,7 +86,7 @@ describe('charts.js', () => {
       50,
       'white',
       2.0,
-      '2.9.3',
+      '2.9.4',
       charts.CHART_PROGRESSBAR,
     );
     const rgb = colorThief.getColor(buf);
