@@ -171,7 +171,14 @@ function doChartjsRender(req, res, opts) {
     }
   }
 
-  renderChartJs(width, height, opts.backgroundColor, opts.devicePixelRatio, untrustedInput)
+  renderChartJs(
+    width,
+    height,
+    opts.backgroundColor,
+    opts.devicePixelRatio,
+    opts.version || '2.9.4',
+    untrustedInput,
+  )
     .then(opts.onRenderHandler)
     .catch(err => {
       logger.warn('Chart error', err);
@@ -269,6 +276,7 @@ function handleGChart(req, res) {
     converted.height,
     converted.backgroundColor,
     1.0 /* devicePixelRatio */,
+    '2.9.4' /* version */,
     converted.chart,
   ).then(buf => {
     res.writeHead(200, {
@@ -296,6 +304,7 @@ app.get('/chart', (req, res) => {
     width: req.query.w || req.query.width,
     backgroundColor: req.query.backgroundColor || req.query.bkg,
     devicePixelRatio: req.query.devicePixelRatio,
+    version: req.query.v || req.query.version,
     encoding: req.query.encoding || 'url',
   };
 
@@ -320,6 +329,7 @@ app.post('/chart', (req, res) => {
     width: req.body.w || req.body.width,
     backgroundColor: req.body.backgroundColor || req.body.bkg,
     devicePixelRatio: req.body.devicePixelRatio,
+    version: req.body.v || req.body.version,
     encoding: req.body.encoding || 'url',
   };
   const outputFormat = (req.body.f || req.body.format || '').toLowerCase();

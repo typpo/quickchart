@@ -13,6 +13,43 @@ const BASIC_CHART = {
   },
 };
 
+const BASIC_CHART_V3 = {
+  type: 'bar',
+  data: {
+    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+    datasets: [
+      {
+        label: '# of Votes',
+        data: [12, 19, 3, 5, 2, 3],
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(153, 102, 255, 0.2)',
+          'rgba(255, 159, 64, 0.2)',
+        ],
+        borderColor: [
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)',
+        ],
+        borderWidth: 1,
+      },
+    ],
+  },
+  options: {
+    scales: {
+      y: {
+        beginAtZero: true,
+      },
+    },
+  },
+};
+
 const JS_CHART = javascriptStringify({
   type: 'bar',
   data: {
@@ -130,11 +167,92 @@ const CHART_PROGRESSBAR = {
   },
 };
 
+const DATETIME_V3 = {
+  type: 'line',
+  data: {
+    labels: [
+      new Date('2020-06-14T16:08:20.288Z'),
+      new Date('2020-06-15T16:08:20.288Z'),
+      new Date('2020-06-16T16:08:20.289Z'),
+      new Date('2020-06-17T16:08:20.289Z'),
+      new Date('2020-06-18T16:08:20.289Z'),
+      new Date('2020-06-19T16:08:20.289Z'),
+      new Date('2020-06-20T16:08:20.289Z'),
+    ],
+    datasets: [
+      {
+        label: 'My First dataset',
+        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+        borderColor: 'rgb(255, 99, 132)',
+        fill: false,
+        data: [38, -19, 35, -2, 77, 78, -93],
+      },
+      {
+        label: 'My Second dataset',
+        backgroundColor: 'rgba(54, 162, 235, 0.5)',
+        borderColor: 'rgb(54, 162, 235)',
+        fill: false,
+        data: [18, -7, 49, 86, 63, -92, -35],
+      },
+      {
+        label: 'Dataset with point data',
+        backgroundColor: 'rgba(75, 192, 192, 0.5)',
+        borderColor: 'rgb(75, 192, 192)',
+        fill: false,
+        data: [
+          {
+            x: '06/14/2020 09:08',
+            y: -29,
+          },
+          {
+            x: '06/19/2020 09:08',
+            y: -34,
+          },
+          {
+            x: '06/21/2020 09:08',
+            y: -62,
+          },
+          {
+            x: '06/29/2020 09:08',
+            y: 1,
+          },
+        ],
+      },
+    ],
+  },
+  options: {
+    locale: 'fr',
+    title: {
+      text: 'Chart.js Time Scale',
+    },
+    scales: {
+      x: {
+        type: 'time',
+        time: {
+          parser: 'MM/DD/YYYY HH:mm',
+        },
+        scaleLabel: {
+          display: true,
+          labelString: 'Date',
+        },
+      },
+      y: {
+        scaleLabel: {
+          display: true,
+          labelString: 'value',
+        },
+      },
+    },
+  },
+};
+
 module.exports = {
   BASIC_CHART,
+  BASIC_CHART_V3,
   JS_CHART,
   CHART_COLOR_SCHEME,
   CHART_GRADIENT_FILL,
   CHART_VIOLIN,
   CHART_PROGRESSBAR,
+  DATETIME_V3,
 };

@@ -120,6 +120,12 @@ A second endpoint, `/healthcheck/chart` returns a 302 status code and redirects 
 
 The hosted QuickChart service uses [monit](https://mmonit.com/monit/) to make sure the service is online and restart it if not.  An example monit config is in `test/monit`.
 
+## Chart.js v3
+
+Chart.js v3 is supported via the `version` parameter ([documentation](https://quickchart.io/documentation/) to read more about parameters).  Custom chart plugins such as annotations and outlabels are disabled for >= 3.0.0 due to lack of support.
+
+Each QuickChart instance should use 1 specific version of the Chart.js library.  Mixing and matching versions (e.g., rendering a v2 chart followed by a v3 chart) is not well supported.
+
 ## License
 
 QuickChart is open source, licensed under version 3 of the GNU AGPL.  If you would like to modify this project for commercial purposes (and not release the source code), please [contact me](https://www.ianww.com/).
