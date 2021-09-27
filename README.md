@@ -42,6 +42,12 @@ The chart configuration object is based on the popular Chart.js API.  Check out 
 
 QuickChart includes several Chart.js plugins that allow you to add chart annotations, data labels, and more: `chartjs-plugin-datalabels`, `chartjs-plugin-annotation`, `chartjs-plugin-piechart-outlabels`, `chartjs-chart-radial-gauge`, `chartjs-chart-box-and-violin-plot `, `chartjs-plugin-doughnutlabel`, and `chartjs-plugin-colorschemes`.
 
+### Chart.js v3
+
+Chart.js v3 is supported via the `version` parameter ([documentation](https://quickchart.io/documentation/) to read more about parameters).  Custom chart plugins such as annotations and outlabels are disabled for >= 3.0.0 due to lack of support.
+
+Each QuickChart instance should use 1 specific version of the Chart.js library.  Mixing and matching versions (e.g., rendering a v2 chart followed by a v3 chart) is not well supported.
+
 ## QR Codes
 
 The service also produces QR codes.  For example, https://quickchart.io/qr?text=Hello+world produces:
@@ -119,12 +125,6 @@ QuickChart has two API endpoints to determine the health of the service.
 A second endpoint, `/healthcheck/chart` returns a 302 status code and redirects to a chart with random attributes.  Although it is a more expensive endpoint, it can be useful for cache busting or testing chart rendering.
 
 The hosted QuickChart service uses [monit](https://mmonit.com/monit/) to make sure the service is online and restart it if not.  An example monit config is in `test/monit`.
-
-## Chart.js v3
-
-Chart.js v3 is supported via the `version` parameter ([documentation](https://quickchart.io/documentation/) to read more about parameters).  Custom chart plugins such as annotations and outlabels are disabled for >= 3.0.0 due to lack of support.
-
-Each QuickChart instance should use 1 specific version of the Chart.js library.  Mixing and matching versions (e.g., rendering a v2 chart followed by a v3 chart) is not well supported.
 
 ## License
 
