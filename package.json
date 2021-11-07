@@ -21,7 +21,7 @@
     "canvas": "^2.8.0",
     "canvas-5-polyfill": "^0.1.5",
     "chart.js": "^2.9.4",
-    "chart.js-v3": "npm:chart.js@3.4.1",
+    "chart.js-v3": "npm:chart.js@3.6.0",
     "chartjs-adapter-moment": "https://github.com/typpo/chartjs-adapter-moment.git#e9bc92ab6e0e500c91c4a9871db7b14d15b5c2e7",
     "chartjs-chart-box-and-violin-plot": "^2.4.0",
     "chartjs-chart-radial-gauge": "^1.0.3",
