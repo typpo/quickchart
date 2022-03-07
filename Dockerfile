@@ -1,4 +1,4 @@
-FROM node:12-alpine3.11
+FROM node:12-alpine3.12
 
 ENV NODE_ENV production
 
@@ -6,6 +6,7 @@ WORKDIR /quickchart
 
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories
 
+RUN apk add --upgrade apk-tools 
 RUN apk add --no-cache --virtual .build-deps yarn git build-base g++ python3
 RUN apk add --no-cache --virtual .npm-deps cairo-dev pango-dev libjpeg-turbo-dev
 RUN apk add --no-cache --virtual .fonts libmount ttf-dejavu ttf-droid ttf-freefont ttf-liberation ttf-ubuntu-font-family font-noto font-noto-emoji fontconfig
