@@ -60,5 +60,8 @@
     "prettier": "^1.18.2",
     "qrcode-reader": "^1.0.4",
     "supertest": "^4.0.2"
+  },
+  "peerDependencies": {
+    "chart.js": ">= 2.0.0"
   }
 }
