@@ -1,4 +1,4 @@
-FROM node:12-alpine3.12
+FROM node:12-alpine3.15
 
 ENV NODE_ENV production
 
@@ -6,10 +6,10 @@ WORKDIR /quickchart
 
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories
 
-RUN apk add --upgrade apk-tools 
+RUN apk add --upgrade apk-tools
 RUN apk add --no-cache --virtual .build-deps yarn git build-base g++ python3
-RUN apk add --no-cache --virtual .npm-deps cairo-dev pango-dev libjpeg-turbo-dev
-RUN apk add --no-cache --virtual .fonts libmount ttf-dejavu ttf-droid ttf-freefont ttf-liberation ttf-ubuntu-font-family font-noto font-noto-emoji fontconfig
+RUN apk add --no-cache --virtual .npm-deps cairo-dev pango-dev libjpeg-turbo-dev librsvg-dev
+RUN apk add --no-cache --virtual .fonts libmount ttf-dejavu ttf-droid ttf-freefont ttf-liberation font-noto font-noto-emoji fontconfig
 RUN apk add wqy-zenhei --no-cache --repository http://nl.alpinelinux.org/alpine/edge/testing --allow-untrusted
 RUN apk add libimagequant-dev --no-cache --repository=http://dl-cdn.alpinelinux.org/alpine/edge/main
 RUN apk add vips-dev --no-cache --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community
