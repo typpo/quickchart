@@ -83,7 +83,7 @@ const JS_CHART = javascriptStringify({
         {
           stacked: true,
           ticks: {
-            callback: function(value) {
+            callback: function (value) {
               return '$' + value;
             },
           },
@@ -158,7 +158,7 @@ const CHART_PROGRESSBAR = {
   data: {
     datasets: [
       {
-        data: [50],
+        data: [90],
       },
       {
         data: [100],

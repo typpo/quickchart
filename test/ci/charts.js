@@ -62,7 +62,7 @@ describe('charts.js', () => {
     const buf = await chartsLib.renderChartJs(
       300,
       200,
-      'white',
+      'transparent',
       2.0,
       '2.9.4',
       charts.CHART_GRADIENT_FILL,
@@ -82,7 +82,7 @@ describe('charts.js', () => {
     const buf = await chartsLib.renderChartJs(
       100,
       50,
-      'white',
+      'transparent',
       2.0,
       '2.9.4',
       charts.CHART_PROGRESSBAR,
