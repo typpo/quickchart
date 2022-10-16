@@ -3,7 +3,7 @@
 const assert = require('assert');
 const crypto = require('crypto');
 
-const ColorThief = require('color-thief');
+const getColors = require('get-image-colors');
 const imageSize = require('image-size');
 const request = require('supertest');
 
@@ -12,10 +12,8 @@ const { BASIC_CHART, JS_CHART } = require('./chart_helpers');
 const { assertSimilarRgb } = require('./color_helpers');
 const { getQrValue } = require('./qr_helpers');
 
-const colorThief = new ColorThief();
-
 describe('chart request', () => {
-  it('returns a basic chart via GET', done => {
+  it('returns a basic chart via GET', (done) => {
     request(app)
       .get(`/chart?c=${encodeURIComponent(JSON.stringify(BASIC_CHART))}`)
       .expect('Content-Type', 'image/png')
@@ -28,7 +26,7 @@ describe('chart request', () => {
       });
   });
 
-  it('returns a basic chart via GET, base64 encoded', done => {
+  it('returns a basic chart via GET, base64 encoded', (done) => {
     request(app)
       .get(
         `/chart?c=${Buffer.from(JSON.stringify(BASIC_CHART)).toString('base64')}&encoding=base64`,
@@ -43,7 +41,7 @@ describe('chart request', () => {
       });
   });
 
-  it('returns an JS chart via GET', done => {
+  it('returns an JS chart via GET', (done) => {
     request(app)
       .get(`/chart?c=${encodeURIComponent(JS_CHART)}`)
       .expect('Content-Type', 'image/png')
@@ -56,7 +54,7 @@ describe('chart request', () => {
       });
   });
 
-  it('returns a basic chart via GET with parameters', done => {
+  it('returns a basic chart via GET with parameters', (done) => {
     request(app)
       .get(
         `/chart?c=${encodeURIComponent(
@@ -65,8 +63,8 @@ describe('chart request', () => {
       )
       .expect('Content-Type', 'image/png')
       .expect(200)
-      .end((err, res) => {
-        const rgb = colorThief.getColor(res.body);
+      .end(async (err, res) => {
+        const rgb = (await getColors(res.body, 'image/png'))[0].rgb();
         assertSimilarRgb([249, 193, 202], rgb);
 
         const dimensions = imageSize(res.body);
@@ -76,7 +74,7 @@ describe('chart request', () => {
       });
   });
 
-  it('returns a basic chart via POST', done => {
+  it('returns a basic chart via POST', (done) => {
     request(app)
       .post('/chart')
       .send({
@@ -92,7 +90,7 @@ describe('chart request', () => {
       });
   });
 
-  it('returns a basic chart via POST, base64 encoded', done => {
+  it('returns a basic chart via POST, base64 encoded', (done) => {
     request(app)
       .post('/chart')
       .send({
@@ -109,7 +107,7 @@ describe('chart request', () => {
       });
   });
 
-  it('returns an advanced chart via POST', done => {
+  it('returns an advanced chart via POST', (done) => {
     request(app)
       .post('/chart')
       .send({
@@ -125,7 +123,7 @@ describe('chart request', () => {
       });
   });
 
-  it('returns an advanced chart via POST with parameters', done => {
+  it('returns an advanced chart via POST with parameters', (done) => {
     request(app)
       .post('/chart')
       .send({
@@ -137,8 +135,8 @@ describe('chart request', () => {
       })
       .expect('Content-Type', 'image/png')
       .expect(200)
-      .end((err, res) => {
-        const rgb = colorThief.getColor(res.body);
+      .end(async (err, res) => {
+        const rgb = (await getColors(res.body, 'image/png'))[0].rgb();
         assertSimilarRgb([90, 80, 70], rgb);
 
         const dimensions = imageSize(res.body);
@@ -148,7 +146,7 @@ describe('chart request', () => {
       });
   });
 
-  it('returns an advanced chart via POST with parameters and base 64', done => {
+  it('returns an advanced chart via POST with parameters and base 64', (done) => {
     request(app)
       .post('/chart')
       .send({
@@ -161,8 +159,8 @@ describe('chart request', () => {
       })
       .expect('Content-Type', 'image/png')
       .expect(200)
-      .end((err, res) => {
-        const rgb = colorThief.getColor(res.body);
+      .end(async (err, res) => {
+        const rgb = (await getColors(res.body, 'image/png'))[0].rgb();
         assertSimilarRgb([190, 180, 170], rgb);
 
         const dimensions = imageSize(res.body);
@@ -172,7 +170,7 @@ describe('chart request', () => {
       });
   });
 
-  it('reverts correctly to background transparency', done => {
+  it('reverts correctly to background transparency', (done) => {
     // Don't let background selection stick between requests.
     request(app)
       .post('/chart')
@@ -181,8 +179,8 @@ describe('chart request', () => {
       })
       .expect('Content-Type', 'image/png')
       .expect(200)
-      .end((err, res) => {
-        const rgb = colorThief.getColor(res.body);
+      .end(async (err, res) => {
+        const rgb = (await getColors(res.body, 'image/png'))[0].rgb();
         // Image is transparent by default - expect dominant color to be blue
         // bars.
         assertSimilarRgb([76, 124, 164], rgb);
@@ -196,7 +194,7 @@ describe('chart request', () => {
 });
 
 describe('qr endpoint', () => {
-  it('renders basic qr', done => {
+  it('renders basic qr', (done) => {
     const qrText = 'hello werld';
     const qrPublicUrl = `/qr?text=${encodeURIComponent(qrText)}`;
     request(app)
@@ -214,7 +212,7 @@ describe('qr endpoint', () => {
       });
   });
 
-  it('renders basic qr - google image charts compatible', done => {
+  it('renders basic qr - google image charts compatible', (done) => {
     const qrPublicUrl = '/chart?chs=300x300&cht=qr&chl=Hola mundo&choe=UTF-8&chld=M|10';
     request(app)
       .get(qrPublicUrl)
@@ -233,7 +231,7 @@ describe('qr endpoint', () => {
 });
 
 describe('graphviz endpoint', () => {
-  it('renders graphviz png', done => {
+  it('renders graphviz png', (done) => {
     const graphStr =
       'digraph{C_0[shape=box];C_0->H_0[type=s];C_0->H_1[type=s];C_0->H_2[type=s];C_0->C_1[type=s];C_1->H_3[type=s];C_1->H_4[type=s];C_1->H_5[color=blue]}';
     const url = `/chart?cht=gv&chl=${graphStr}&chs=500x200&chof=png`;
@@ -249,7 +247,7 @@ describe('graphviz endpoint', () => {
       });
   });
 
-  it('renders graphviz svg', done => {
+  it('renders graphviz svg', (done) => {
     const graphStr =
       'digraph{C_0[shape=box];C_0->H_0[type=s];C_0->H_1[type=s];C_0->H_2[type=s];C_0->C_1[type=s];C_1->H_3[type=s];C_1->H_4[type=s];C_1->H_5[color=blue]}';
     const url = `/chart?cht=gv&chl=${graphStr}`;

@@ -2,14 +2,12 @@
 
 const assert = require('assert');
 
-const ColorThief = require('color-thief');
+const getColors = require('get-image-colors');
 const imageSize = require('image-size');
 
 const chartsLib = require('../../lib/charts');
 const charts = require('./chart_helpers');
 const { assertSimilarRgb } = require('./color_helpers');
-
-const colorThief = new ColorThief();
 
 describe('charts.js', () => {
   it('renders a JSON chart', async () => {
@@ -56,7 +54,7 @@ describe('charts.js', () => {
       '2.9.4',
       charts.CHART_COLOR_SCHEME,
     );
-    const rgb = colorThief.getColor(buf);
+    const rgb = (await getColors(buf, 'image/png'))[0].rgb();
     assertSimilarRgb([156, 156, 252], rgb);
   });
 
@@ -69,7 +67,7 @@ describe('charts.js', () => {
       '2.9.4',
       charts.CHART_GRADIENT_FILL,
     );
-    const rgb = colorThief.getColor(buf);
+    const rgb = (await getColors(buf, 'image/png'))[0].rgb();
     assertSimilarRgb([172, 58, 199], rgb);
   });
 
@@ -89,7 +87,7 @@ describe('charts.js', () => {
       '2.9.4',
       charts.CHART_PROGRESSBAR,
     );
-    const rgb = colorThief.getColor(buf);
+    const rgb = (await getColors(buf, 'image/png'))[0].rgb();
     assertSimilarRgb([76, 124, 164], rgb);
   });
 
