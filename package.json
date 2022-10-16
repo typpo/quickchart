@@ -1,6 +1,6 @@
 {
   "name": "quickchart",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "main": "index.js",
   "license": "AGPL-3.0",
   "homepage": "https://quickchart.io/",
@@ -16,9 +16,15 @@
     "test": "PORT=3401 NODE_ENV=test mocha --exit --recursive test/ci/",
     "test:watch": "PORT=2998 NODE_ENV=test chokidar '**/*.js' --initial --ignore node_modules -c 'mocha --exit --recursive test/'"
   },
+  "overrides": {
+    "canvas": "2.9.3"
+  },
+  "resolutions": {
+    "canvas": "2.9.3"
+  },
   "dependencies": {
     "bunyan": "^1.8.12",
-    "canvas": "^2.8.0",
+    "canvas": "2.9.3",
     "canvas-5-polyfill": "^0.1.5",
     "chart.js": "^2.9.4",
     "chart.js-v3": "npm:chart.js@3.9.1",
