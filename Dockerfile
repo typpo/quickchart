@@ -10,8 +10,8 @@ RUN apk add --upgrade apk-tools
 RUN apk add --no-cache --virtual .build-deps yarn git build-base g++ python3
 RUN apk add --no-cache --virtual .npm-deps cairo-dev pango-dev libjpeg-turbo-dev librsvg-dev
 RUN apk add --no-cache --virtual .fonts libmount ttf-dejavu ttf-droid ttf-freefont ttf-liberation font-noto font-noto-emoji fontconfig
-RUN apk add wqy-zenhei --no-cache --repository http://nl.alpinelinux.org/alpine/edge/testing --allow-untrusted
-RUN apk add libimagequant-dev --no-cache --repository=http://dl-cdn.alpinelinux.org/alpine/edge/main
+RUN apk add font-wqy-zenhei --no-cache --repository https://dl-cdn.alpinelinux.org/alpine/edge/testing #--allow-untrusted
+RUN apk add libimagequant-dev --no-cache --repository=https://dl-cdn.alpinelinux.org/alpine/edge/main
 RUN apk add vips-dev --no-cache --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community
 RUN apk add --no-cache --virtual .runtime-deps graphviz
 
