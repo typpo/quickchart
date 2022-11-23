@@ -122,15 +122,15 @@ describe('charts.js', () => {
 
   it('renders a progress bar', async () => {
     const buf = await chartsLib.renderChartJs(
-      100,
+      500,
       50,
-      'transparent',
+      'red',
       2.0,
       '2.9.4',
       'png',
       charts.CHART_PROGRESSBAR,
     );
-    const rgb = (await getColors(buf, 'image/png'))[0].rgb();
+    const rgb = (await getColors(buf, 'image/png'))[2].rgb();
     assertSimilarRgb([76, 124, 164], rgb);
   });
 
