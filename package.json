@@ -10,9 +10,7 @@
   },
   "scripts": {
     "start": "node --max-http-header-size=65536 index.js",
-    "lint": "eslint .",
-    "lint:fix": "eslint --fix .",
-    "format": "prettier --single-quote --trailing-comma all --print-width 100 --write \"**/*.js\"",
+    "format": "prettier --write \"**/*.js\"",
     "test": "PORT=3401 NODE_ENV=test mocha --exit --recursive test/ci/",
     "test:watch": "PORT=2998 NODE_ENV=test chokidar '**/*.js' --initial --ignore node_modules -c 'mocha --exit --recursive test/'"
   },

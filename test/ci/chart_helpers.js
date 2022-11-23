@@ -83,7 +83,7 @@ const JS_CHART = javascriptStringify({
         {
           stacked: true,
           ticks: {
-            callback: function (value) {
+            callback: function(value) {
               return '$' + value;
             },
           },
