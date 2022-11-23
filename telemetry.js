@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const request = require('request');
+const fetch = require('node-fetch');
 
 const { logger } = require('./logging');
 
@@ -55,10 +55,13 @@ function send() {
     qrCount: telemetry[PROCESS_ID].qrCount,
   };
   try {
-    request
-      .post('https://quickchart.io/telemetry', { timeout: 1000 })
-      .form(data)
-      .on('error', () => {});
+    fetch('https://quickchart.io/telemetry', {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+        'content-type': 'application/json',
+      },
+    });
   } catch (err) {}
 
   telemetry = {};

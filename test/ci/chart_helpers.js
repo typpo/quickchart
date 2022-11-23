@@ -158,7 +158,7 @@ const CHART_PROGRESSBAR = {
   data: {
     datasets: [
       {
-        data: [50],
+        data: [95],
       },
       {
         data: [100],
