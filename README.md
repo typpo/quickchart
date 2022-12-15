@@ -42,9 +42,9 @@ The chart configuration object is based on the popular Chart.js API.  Check out 
 
 QuickChart includes many Chart.js plugins that allow you to add chart annotations, data labels, and more: `chartjs-plugin-datalabels`, `chartjs-plugin-annotation`, `chartjs-plugin-piechart-outlabels`, `chartjs-chart-radial-gauge`, `chartjs-chart-box-and-violin-plot `, `chartjs-plugin-doughnutlabel`, and `chartjs-plugin-colorschemes`.
 
-### Chart.js v3
+### Chart.js versions
 
-Chart.js v3 is supported via the `version` parameter ([documentation](https://quickchart.io/documentation/) to read more about parameters).  Custom chart plugins such as annotations and outlabels are disabled for >= 3.0.0 due to lack of support.
+Chart.js v3 and v4 are supported via the `version` parameter ([documentation](https://quickchart.io/documentation/) to read more about parameters).  Custom chart plugins such as annotations and outlabels currently not available for >= 3.0.0.
 
 Each QuickChart instance should use 1 specific version of the Chart.js library.  Mixing and matching versions (e.g., rendering a v2 chart followed by a v3 chart) is not well supported.
 
