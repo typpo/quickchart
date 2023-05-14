@@ -19,7 +19,7 @@ const app = express();
 
 const isDev = app.get('env') === 'development' || app.get('env') === 'test';
 
-app.set('query parser', str =>
+app.set('query parser', (str) =>
   qs.parse(str, {
     decode(s) {
       // Default express implementation replaces '+' with space. We don't want
@@ -46,10 +46,10 @@ if (process.env.RATE_LIMIT_PER_MIN) {
     max: limitMax,
     message:
       'Please slow down your requests! This is a shared public endpoint. Email support@quickchart.io or go to https://quickchart.io/pricing/ for rate limit exceptions or to purchase a commercial license.',
-    onLimitReached: req => {
+    onLimitReached: (req) => {
       logger.info('User hit rate limit!', req.ip);
     },
-    keyGenerator: req => {
+    keyGenerator: (req) => {
       return req.headers['x-forwarded-for'] || req.ip;
     },
   });
@@ -77,10 +77,26 @@ app.post('/telemetry', (req, res) => {
   res.send({ success: true });
 });
 
+function utf8ToAscii(str) {
+  const enc = new TextEncoder();
+  const u8s = enc.encode(str);
+
+  return Array.from(u8s)
+    .map((v) => String.fromCharCode(v))
+    .join('');
+}
+
+function sanitizeErrorHeader(msg) {
+  if (typeof msg === 'string') {
+    return utf8ToAscii(msg).replace(/\r?\n|\r/g, '');
+  }
+  return '';
+}
+
 function failPng(res, msg, statusCode = 500) {
   res.writeHead(statusCode, {
     'Content-Type': 'image/png',
-    'X-quickchart-error': msg,
+    'X-quickchart-error': sanitizeErrorHeader(msg),
   });
   res.end(
     text2png(`Chart Error: ${msg}`, {
@@ -93,7 +109,7 @@ function failPng(res, msg, statusCode = 500) {
 function failSvg(res, msg, statusCode = 500) {
   res.writeHead(statusCode, {
     'Content-Type': 'image/svg+xml',
-    'X-quickchart-error': msg,
+    'X-quickchart-error': sanitizeErrorHeader(msg),
   });
   res.end(`
 <svg viewBox="0 0 240 80" xmlns="http://www.w3.org/2000/svg">
@@ -113,14 +129,14 @@ async function failPdf(res, msg) {
   const buf = await getPdfBufferWithText(msg);
   res.writeHead(500, {
     'Content-Type': 'application/pdf',
-    'X-quickchart-error': msg,
+    'X-quickchart-error': sanitizeErrorHeader(msg),
   });
   res.end(buf);
 }
 
 function renderChartToPng(req, res, opts) {
   opts.failFn = failPng;
-  opts.onRenderHandler = buf => {
+  opts.onRenderHandler = (buf) => {
     res
       .type('image/png')
       .set({
@@ -135,7 +151,7 @@ function renderChartToPng(req, res, opts) {
 
 function renderChartToSvg(req, res, opts) {
   opts.failFn = failSvg;
-  opts.onRenderHandler = buf => {
+  opts.onRenderHandler = (buf) => {
     res
       .type('image/svg+xml')
       .set({
@@ -150,7 +166,7 @@ function renderChartToSvg(req, res, opts) {
 
 async function renderChartToPdf(req, res, opts) {
   opts.failFn = failPdf;
-  opts.onRenderHandler = async buf => {
+  opts.onRenderHandler = async (buf) => {
     const pdfBuf = await getPdfBufferFromPng(buf);
 
     res.writeHead(200, {
@@ -196,7 +212,7 @@ function doChartjsRender(req, res, opts) {
     untrustedInput,
   )
     .then(opts.onRenderHandler)
-    .catch(err => {
+    .catch((err) => {
       logger.warn('Chart error', err);
       opts.failFn(res, err);
     });
@@ -251,7 +267,7 @@ function handleGChart(req, res) {
     const format = 'png';
     const encoding = 'UTF-8';
     renderQr(format, encoding, qrData, qrOpts)
-      .then(buf => {
+      .then((buf) => {
         res.writeHead(200, {
           'Content-Type': format === 'png' ? 'image/png' : 'image/svg+xml',
           'Content-Length': buf.length,
@@ -261,7 +277,7 @@ function handleGChart(req, res) {
         });
         res.end(buf);
       })
-      .catch(err => {
+      .catch((err) => {
         failPng(res, err);
       });
 
@@ -295,7 +311,7 @@ function handleGChart(req, res) {
     '2.9.4' /* version */,
     undefined /* format */,
     converted.chart,
-  ).then(buf => {
+  ).then((buf) => {
     res.writeHead(200, {
       'Content-Type': 'image/png',
       'Content-Length': buf.length,
@@ -396,7 +412,7 @@ app.get('/qr', (req, res) => {
   };
 
   renderQr(format, mode, qrText, qrOpts)
-    .then(buf => {
+    .then((buf) => {
       res.writeHead(200, {
         'Content-Type': format === 'png' ? 'image/png' : 'image/svg+xml',
         'Content-Length': buf.length,
@@ -406,7 +422,7 @@ app.get('/qr', (req, res) => {
       });
       res.end(buf);
     })
-    .catch(err => {
+    .catch((err) => {
       failPng(res, err);
     });
 
