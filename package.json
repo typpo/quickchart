@@ -48,8 +48,7 @@
     "qs": "^6.7.0",
     "sharp": "^0.30.5",
     "text2png": "^2.1.0",
-    "viz.js": "^2.1.2",
-    "vm2": "^3.9.17"
+    "viz.js": "^2.1.2"
   },
   "devDependencies": {
     "@arkweid/lefthook": "^0.6.3",

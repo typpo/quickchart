@@ -120,6 +120,10 @@ Clicking the following will execute the Docker build on a remote machine and dep
 
 [![Run on Google Cloud](https://storage.googleapis.com/cloudrun/button.svg)](https://console.cloud.google.com/cloudshell/editor?shellonly=true&cloudshell_image=gcr.io/cloudrun/button&cloudshell_git_repo=https://github.com/typpo/quickchart)
 
+## Securing your self-hosted instance
+
+This server assumes all Javascript sent in the config object is friendly.  If you are hosting QuickChart youself, take care not to expose the service to untrusted parties.  Because Chart.js configs may contain arbitrary Javascript, it is necessary to properly sandbox your QuickChart instance if you are exposing it to the outside world.
+
 ## Health and Monitoring
 
 QuickChart has two API endpoints to determine the health of the service.
@@ -131,6 +135,8 @@ A second endpoint, `/healthcheck/chart` returns a 302 status code and redirects 
 The hosted QuickChart service uses [monit](https://mmonit.com/monit/) to make sure the service is online and restart it if not.  An example monit config is in `test/monit`.
 
 ## Limitations
+
+If you are self-hosting QuickChart, each QuickChart instance should use a single version of the Chart.js library.  Mixing and matching versions (e.g., rendering a v2 chart followed by a v3 chart) is not well supported.
 
 This self-hosted QuickChart implementation currently supports the `/chart`, `/qr`, and `/graphviz` endpoints.  Other endpoints such as `/wordcloud`, `watermark`, `/chart/create` are not available in this version due to non-OSS 3rd-party dependencies.
 
