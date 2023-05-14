@@ -42,9 +42,9 @@ The chart configuration object is based on the popular Chart.js API.  Check out 
 
 QuickChart includes many Chart.js plugins that allow you to add chart annotations, data labels, and more: `chartjs-plugin-datalabels`, `chartjs-plugin-annotation`, `chartjs-plugin-piechart-outlabels`, `chartjs-chart-radial-gauge`, `chartjs-chart-box-and-violin-plot `, `chartjs-plugin-doughnutlabel`, and `chartjs-plugin-colorschemes`.
 
-### Chart.js v3
+### Chart.js versions
 
-Chart.js v3 is supported via the `version` parameter ([documentation](https://quickchart.io/documentation/) to read more about parameters).  Custom chart plugins such as annotations and outlabels are disabled for >= 3.0.0 due to lack of support.
+Chart.js v3 and v4 are supported via the `version` parameter ([documentation](https://quickchart.io/documentation/) to read more about parameters).  Custom chart plugins such as annotations and outlabels currently not available for >= 3.0.0.
 
 Each QuickChart instance should use 1 specific version of the Chart.js library.  Mixing and matching versions (e.g., rendering a v2 chart followed by a v3 chart) is not well supported.
 
@@ -108,6 +108,10 @@ docker run -p 8080:3400 ianw/quickchart
 
 The production service on QuickChart.io runs behind an NGINX reverse proxy via the config available in `nginx/`.  You should modify this for your own purposes or use a docker image such as [nginx-proxy](https://github.com/jwilder/nginx-proxy).  Of course, you can always serve traffic directly from Node, but it is generally best practice to put something in front of it.
 
+#### Securing your self-hosted instance
+
+If you are hosting QuickChart youself, take care not to expose the service to untrusted parties.  Because Chart.js configs may contain arbitrary Javascript, it is necessary to properly sandbox your QuickChart instance.
+
 ## Deploy
 
 By following the **Docker** instructions above, you can deploy the service to any platform that supports running containers.
@@ -130,11 +134,11 @@ A second endpoint, `/healthcheck/chart` returns a 302 status code and redirects 
 
 The hosted QuickChart service uses [monit](https://mmonit.com/monit/) to make sure the service is online and restart it if not.  An example monit config is in `test/monit`.
 
-## Chart.js v3
-
-Chart.js v3 is supported via the `version` parameter (see [documentation](https://quickchart.io/documentation/) to read more about the version parameter).  Some custom chart plugins are disabled for >= 3.0.0 due to lack of support.
+## Limitations
 
 If you are self-hosting QuickChart, each QuickChart instance should use a single version of the Chart.js library.  Mixing and matching versions (e.g., rendering a v2 chart followed by a v3 chart) is not well supported.
+
+This self-hosted QuickChart implementation currently supports the `/chart`, `/qr`, and `/graphviz` endpoints.  Other endpoints such as `/wordcloud`, `watermark`, `/chart/create` are not available in this version due to non-OSS 3rd-party dependencies.
 
 ## License
 
