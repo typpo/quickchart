@@ -116,6 +116,10 @@ Clicking the following will execute the Docker build on a remote machine and dep
 
 [![Run on Google Cloud](https://storage.googleapis.com/cloudrun/button.svg)](https://console.cloud.google.com/cloudshell/editor?shellonly=true&cloudshell_image=gcr.io/cloudrun/button&cloudshell_git_repo=https://github.com/typpo/quickchart)
 
+## Securing your self-hosted instance
+
+This server assumes all Javascript sent in the config object is friendly.  If you are hosting QuickChart youself, take care not to expose the service to untrusted parties.  Because Chart.js configs may contain arbitrary Javascript, it is necessary to properly sandbox your QuickChart instance if you are exposing it to the outside world.
+
 ## Health and Monitoring
 
 QuickChart has two API endpoints to determine the health of the service.
@@ -131,10 +135,6 @@ The hosted QuickChart service uses [monit](https://mmonit.com/monit/) to make su
 Chart.js v3 is supported via the `version` parameter (see [documentation](https://quickchart.io/documentation/) to read more about the version parameter).  Some custom chart plugins are disabled for >= 3.0.0 due to lack of support.
 
 If you are self-hosting QuickChart, each QuickChart instance should use a single version of the Chart.js library.  Mixing and matching versions (e.g., rendering a v2 chart followed by a v3 chart) is not well supported.
-
-## Securing your self-hosted instance
-
-If you are hosting QuickChart youself, take care not to expose the service to untrusted parties.  Because Chart.js configs may contain arbitrary Javascript, it is necessary to properly sandbox your QuickChart instance.
 
 ## License
 
