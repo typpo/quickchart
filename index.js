@@ -50,7 +50,8 @@ if (process.env.RATE_LIMIT_PER_MIN) {
   const limiter = rateLimit({
     windowMs: 60 * 1000,
     max: limitMax,
-    message: 'Please slow down your requests! This is a shared public endpoint.',
+    message:
+      'Please slow down your requests! This is a shared public endpoint. Email support@quickchart.io or go to https://quickchart.io/pricing/ for rate limit exceptions or to purchase a commercial license.',
     onLimitReached: req => {
       logger.info('User hit rate limit!', req.ip);
     },
@@ -82,10 +83,26 @@ app.post('/telemetry', (req, res) => {
   });
 });
 
+function utf8ToAscii(str) {
+  const enc = new TextEncoder();
+  const u8s = enc.encode(str);
+
+  return Array.from(u8s)
+    .map(v => String.fromCharCode(v))
+    .join('');
+}
+
+function sanitizeErrorHeader(msg) {
+  if (typeof msg === 'string') {
+    return utf8ToAscii(msg).replace(/\r?\n|\r/g, '');
+  }
+  return '';
+}
+
 function failPng(res, msg, statusCode = 500) {
   res.writeHead(statusCode, {
     'Content-Type': 'image/png',
-    'X-quickchart-error': msg,
+    'X-quickchart-error': sanitizeErrorHeader(msg),
   });
   res.end(
     text2png(`Chart Error: ${msg}`, {
@@ -98,7 +115,7 @@ function failPng(res, msg, statusCode = 500) {
 function failSvg(res, msg, statusCode = 500) {
   res.writeHead(statusCode, {
     'Content-Type': 'image/svg+xml',
-    'X-quickchart-error': msg,
+    'X-quickchart-error': sanitizeErrorHeader(msg),
   });
   res.end(`
 <svg viewBox="0 0 240 80" xmlns="http://www.w3.org/2000/svg">
@@ -118,16 +135,31 @@ async function failPdf(res, msg) {
   const buf = await getPdfBufferWithText(msg);
   res.writeHead(500, {
     'Content-Type': 'application/pdf',
-    'X-quickchart-error': msg,
+    'X-quickchart-error': sanitizeErrorHeader(msg),
   });
   res.end(buf);
 }
 
-function renderChartToImage(req, res, opts) {
+function renderChartToPng(req, res, opts) {
   opts.failFn = failPng;
   opts.onRenderHandler = buf => {
     res
-      .type('png')
+      .type('image/png')
+      .set({
+        // 1 week cache
+        'Cache-Control': isDev ? 'no-cache' : 'public, max-age=604800',
+      })
+      .send(buf)
+      .end();
+  };
+  doChartjsRender(req, res, opts);
+}
+
+function renderChartToSvg(req, res, opts) {
+  opts.failFn = failSvg;
+  opts.onRenderHandler = buf => {
+    res
+      .type('image/svg+xml')
       .set({
         // 1 week cache
         'Cache-Control': isDev ? 'no-cache' : 'public, max-age=604800',
@@ -176,7 +208,15 @@ function doChartjsRender(req, res, opts) {
     }
   }
 
-  renderChartJs(width, height, opts.backgroundColor, opts.devicePixelRatio, untrustedInput)
+  renderChartJs(
+    width,
+    height,
+    opts.backgroundColor,
+    opts.devicePixelRatio,
+    opts.version || '2.9.4',
+    opts.format,
+    untrustedInput,
+  )
     .then(
       (onRenderHandler = async buf => {
         let chart = await loadImage(buf);
@@ -332,6 +372,8 @@ function handleGChart(req, res) {
     converted.height,
     converted.backgroundColor,
     1.0 /* devicePixelRatio */,
+    '2.9.4' /* version */,
+    undefined /* format */,
     converted.chart,
   ).then(buf => {
     res.writeHead(200, {
@@ -353,21 +395,24 @@ app.get('/chart', (req, res) => {
     return;
   }
 
+  const outputFormat = (req.query.f || req.query.format || 'png').toLowerCase();
   const opts = {
     chart: req.query.c || req.query.chart,
     height: req.query.h || req.query.height,
     width: req.query.w || req.query.width,
     backgroundColor: req.query.backgroundColor || req.query.bkg,
     devicePixelRatio: req.query.devicePixelRatio,
+    version: req.query.v || req.query.version,
     encoding: req.query.encoding || 'url',
+    format: outputFormat,
   };
-
-  const outputFormat = (req.query.f || req.query.format || '').toLowerCase();
 
   if (outputFormat === 'pdf') {
     renderChartToPdf(req, res, opts);
+  } else if (outputFormat === 'svg') {
+    renderChartToSvg(req, res, opts);
   } else if (!outputFormat || outputFormat === 'png') {
-    renderChartToImage(req, res, opts);
+    renderChartToPng(req, res, opts);
   } else {
     logger.error(`Request for unsupported format ${outputFormat}`);
     res.status(500).end(`Unsupported format ${outputFormat}`);
@@ -377,20 +422,24 @@ app.get('/chart', (req, res) => {
 });
 
 app.post('/chart', (req, res) => {
+  const outputFormat = (req.body.f || req.body.format || 'png').toLowerCase();
   const opts = {
     chart: req.body.c || req.body.chart,
     height: req.body.h || req.body.height,
     width: req.body.w || req.body.width,
     backgroundColor: req.body.backgroundColor || req.body.bkg,
     devicePixelRatio: req.body.devicePixelRatio,
+    version: req.body.v || req.body.version,
     encoding: req.body.encoding || 'url',
+    format: outputFormat,
   };
-  const outputFormat = (req.body.f || req.body.format || '').toLowerCase();
 
   if (outputFormat === 'pdf') {
     renderChartToPdf(req, res, opts);
+  } else if (outputFormat === 'svg') {
+    renderChartToSvg(req, res, opts);
   } else {
-    renderChartToImage(req, res, opts);
+    renderChartToPng(req, res, opts);
   }
 
   telemetry.count('chartCount');

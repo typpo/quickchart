@@ -3,7 +3,7 @@
 const assert = require('assert');
 const crypto = require('crypto');
 
-const ColorThief = require('color-thief');
+const getColors = require('get-image-colors');
 const imageSize = require('image-size');
 const request = require('supertest');
 
@@ -11,8 +11,6 @@ const app = require('../../index');
 const { BASIC_CHART, JS_CHART } = require('./chart_helpers');
 const { assertSimilarRgb } = require('./color_helpers');
 const { getQrValue } = require('./qr_helpers');
-
-const colorThief = new ColorThief();
 
 describe('chart request', () => {
   it('returns a basic chart via GET', done => {
@@ -65,8 +63,8 @@ describe('chart request', () => {
       )
       .expect('Content-Type', 'image/png')
       .expect(200)
-      .end((err, res) => {
-        const rgb = colorThief.getColor(res.body);
+      .end(async (err, res) => {
+        const rgb = (await getColors(res.body, 'image/png'))[0].rgb();
         assertSimilarRgb([249, 193, 202], rgb);
 
         const dimensions = imageSize(res.body);
@@ -137,8 +135,8 @@ describe('chart request', () => {
       })
       .expect('Content-Type', 'image/png')
       .expect(200)
-      .end((err, res) => {
-        const rgb = colorThief.getColor(res.body);
+      .end(async (err, res) => {
+        const rgb = (await getColors(res.body, 'image/png'))[0].rgb();
         assertSimilarRgb([90, 80, 70], rgb);
 
         const dimensions = imageSize(res.body);
@@ -161,8 +159,8 @@ describe('chart request', () => {
       })
       .expect('Content-Type', 'image/png')
       .expect(200)
-      .end((err, res) => {
-        const rgb = colorThief.getColor(res.body);
+      .end(async (err, res) => {
+        const rgb = (await getColors(res.body, 'image/png'))[0].rgb();
         assertSimilarRgb([190, 180, 170], rgb);
 
         const dimensions = imageSize(res.body);
@@ -181,8 +179,8 @@ describe('chart request', () => {
       })
       .expect('Content-Type', 'image/png')
       .expect(200)
-      .end((err, res) => {
-        const rgb = colorThief.getColor(res.body);
+      .end(async (err, res) => {
+        const rgb = (await getColors(res.body, 'image/png'))[0].rgb();
         // Image is transparent by default - expect dominant color to be blue
         // bars.
         assertSimilarRgb([76, 124, 164], rgb);
