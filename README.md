@@ -120,6 +120,10 @@ Clicking the following will execute the Docker build on a remote machine and dep
 
 [![Run on Google Cloud](https://storage.googleapis.com/cloudrun/button.svg)](https://console.cloud.google.com/cloudshell/editor?shellonly=true&cloudshell_image=gcr.io/cloudrun/button&cloudshell_git_repo=https://github.com/typpo/quickchart)
 
+Clicking on folling will create a VM on Elestio with cloud service provider of your choice and configure the VM for you based on the Docker instructions. You can optionally attach loadbalancers or ultilize monitoring service for your instance
+
+[![Deploy](https://pub-da36157c854648669813f3f76c526c2b.r2.dev/deploy-on-elestio-black.png)](https://elest.io/open-source/quickchart)
+
 ## Securing your self-hosted instance
 
 This server assumes all Javascript sent in the config object is friendly.  If you are hosting QuickChart youself, take care not to expose the service to untrusted parties.  Because Chart.js configs may contain arbitrary Javascript, it is necessary to properly sandbox your QuickChart instance if you are exposing it to the outside world.
