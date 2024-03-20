@@ -15,6 +15,7 @@ RUN apk add --no-cache --virtual .runtime-deps graphviz
 
 COPY package*.json .
 COPY yarn.lock .
+RUN yarn global add node-gyp
 RUN yarn install --production
 
 RUN apk update

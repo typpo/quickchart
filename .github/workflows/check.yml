@@ -1,0 +1,20 @@
+name: CI Checks
+
+on:
+  pull_request:
+    branches: [master]
+
+jobs:
+  build_image:
+    name: Build Docker image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+
+      - name: Build Docker image
+        uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
+        with:
+          context: .
+          file: ./Dockerfile
+          push: false
