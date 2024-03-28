@@ -37,7 +37,7 @@
     "chartjs-plugin-doughnutlabel": "^2.0.3",
     "chartjs-plugin-piechart-outlabels": "^0.1.4",
     "deepmerge": "^4.2.2",
-    "express": "^4.16.4",
+    "express": "^4.19.2",
     "express-rate-limit": "^5.0.0",
     "get-image-colors": "^4.0.1",
     "javascript-stringify": "^2.0.0",
