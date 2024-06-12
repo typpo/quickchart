@@ -990,13 +990,13 @@ canvas-5-polyfill@^0.1.5:
   resolved "https://registry.yarnpkg.com/canvas-5-polyfill/-/canvas-5-polyfill-0.1.5.tgz#2bc0a2c6b6da5fcd7f42aebc9566a1354c78ea14"
   integrity sha1-K8CixrbaX81/Qq68lWahNUx46hQ=
 
-canvas@2.9.3, canvas@^2.6.0, canvas@^2.6.1:
-  version "2.9.3"
-  resolved "https://registry.yarnpkg.com/canvas/-/canvas-2.9.3.tgz#8723c4f970442d4cdcedba5221579f9660a58bdb"
-  integrity sha512-WOUM7ghii5TV2rbhaZkh1youv/vW1/Canev6Yx6BG2W+1S07w8jKZqKkPnbiPpQEDsnJdN8ouDd7OvQEGXDcUw==
+canvas@2.11.2, canvas@^2.6.0, canvas@^2.8.0:
+  version "2.11.2"
+  resolved "https://registry.yarnpkg.com/canvas/-/canvas-2.11.2.tgz#553d87b1e0228c7ac0fc72887c3adbac4abbd860"
+  integrity sha512-ItanGBMrmRV7Py2Z+Xhs7cT+FNt5K0vPL4p9EZ/UX/Mu7hFbkxSjKF2KVtPwX7UYWp7dRKnrTvReflgrItJbdw==
   dependencies:
     "@mapbox/node-pre-gyp" "^1.0.0"
-    nan "^2.15.0"
+    nan "^2.17.0"
     simple-get "^3.0.3"
 
 capture-stack-trace@^1.0.0:
@@ -1089,13 +1089,13 @@ chartjs-color@^2.1.0:
     chartjs-color-string "^0.6.0"
     color-convert "^1.9.3"
 
-chartjs-node-canvas@^3.0.6:
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/chartjs-node-canvas/-/chartjs-node-canvas-3.2.0.tgz#876deff999e3be1a3c182b30c9bafd9dfdd00901"
-  integrity sha512-MT0K28VG8BXwCdh5BdRXNw4nzJWKzcN3t/xgTr8zJ8M6uOXl7hRdtIW8rEUcylkLED8LGsnJmSkcnqlhPy841g==
+chartjs-node-canvas@^4.1.3:
+  version "4.1.6"
+  resolved "https://registry.yarnpkg.com/chartjs-node-canvas/-/chartjs-node-canvas-4.1.6.tgz#034b0428a8accfa4963dd681497f00f900fefc81"
+  integrity sha512-UQJbPWrvqB/FoLclGA9BaLQmZbzSYlujF4w8NZd6Xzb+sqgACBb2owDX6m7ifCXLjUW5Nz0Qx0qqrTtQkkSoYw==
   dependencies:
-    canvas "^2.6.1"
-    tslib "^1.14.1"
+    canvas "^2.8.0"
+    tslib "^2.3.1"
 
 chartjs-plugin-annotation@^0.5.7:
   version "0.5.7"
@@ -3930,10 +3930,15 @@ mv@~2:
     ncp "~2.0.0"
     rimraf "~2.4.0"
 
-nan@^2.14.0, nan@^2.15.0:
+nan@^2.14.0:
   version "2.17.0"
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.17.0.tgz#c0150a2368a182f033e9aa5195ec76ea41a199cb"
   integrity sha512-2ZTgtl0nJsO0KQCjEpxcIr5D+Yv90plTitZt9JBfQvVJDS5seMl3FOvsh3+9CoYWXf/1l5OaZzzF6nDm4cagaQ==
+
+nan@^2.17.0:
+  version "2.20.0"
+  resolved "https://registry.yarnpkg.com/nan/-/nan-2.20.0.tgz#08c5ea813dd54ed16e5bd6505bf42af4f7838ca3"
+  integrity sha512-bk3gXBZDGILuuo/6sKtr0DQmSThYHLtNCdSdXk9YkxD/jK6X2vmCyyXBBxyqZ4XcnzTyYEAThfX3DCEnLf6igw==
 
 nanotimer@0.3.14:
   version "0.3.14"
@@ -5513,11 +5518,6 @@ tsconfig-paths@^3.14.1:
     minimist "^1.2.6"
     strip-bom "^3.0.0"
 
-tslib@^1.14.1:
-  version "1.14.1"
-  resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.14.1.tgz#cf2d38bdc34a134bcaf1091c41f6619e2f672d00"
-  integrity sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==
-
 tslib@^1.9.0:
   version "1.13.0"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.13.0.tgz#c881e13cc7015894ed914862d276436fa9a47043"
@@ -5527,6 +5527,11 @@ tslib@^2.2.0:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.3.1.tgz#e8a335add5ceae51aa261d32a490158ef042ef01"
   integrity sha512-77EbyPPpMz+FRFRuAFlWMtmgUWGe9UOG2Z25NqCwiIjRhOf5iKGuzSe5P2w1laq+FkRy4p+PCuVkJSGkzTEKVw==
+
+tslib@^2.3.1:
+  version "2.6.3"
+  resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.6.3.tgz#0438f810ad7a9edcde7a241c3d80db693c8cbfe0"
+  integrity sha512-xNvxJEOUiWPGhUuUdQgAJPKOOJfGnIyKySOc09XkKsgdUV/3E2zvwZYdejjmRgPCgcym1juLH3226yA7sEFJKQ==
 
 tunnel-agent@^0.6.0:
   version "0.6.0"
