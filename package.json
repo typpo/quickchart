@@ -15,14 +15,14 @@
     "test:watch": "PORT=2998 NODE_ENV=test chokidar '**/*.js' --initial --ignore node_modules -c 'mocha --exit --recursive test/'"
   },
   "overrides": {
-    "canvas": "2.9.3"
+    "canvas": "2.11.2"
   },
   "resolutions": {
-    "canvas": "2.9.3"
+    "canvas": "2.11.2"
   },
   "dependencies": {
     "bunyan": "^1.8.12",
-    "canvas": "2.9.3",
+    "canvas": "2.11.2",
     "canvas-5-polyfill": "^0.1.5",
     "chart.js": "^2.9.4",
     "chart.js-v3": "npm:chart.js@3.9.1",
@@ -30,7 +30,7 @@
     "chartjs-adapter-moment": "https://github.com/typpo/chartjs-adapter-moment.git#e9bc92ab6e0e500c91c4a9871db7b14d15b5c2e7",
     "chartjs-chart-box-and-violin-plot": "^2.4.0",
     "chartjs-chart-radial-gauge": "^1.0.3",
-    "chartjs-node-canvas": "^3.0.6",
+    "chartjs-node-canvas": "^4.1.3",
     "chartjs-plugin-annotation": "^0.5.7",
     "chartjs-plugin-colorschemes": "https://github.com/typpo/chartjs-plugin-colorschemes.git#979ef8e599265f65c85d5dae90b543d5589c734a",
     "chartjs-plugin-datalabels": "^0.5.0",
