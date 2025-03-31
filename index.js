@@ -15,11 +15,13 @@ const { renderGraphviz } = require('./lib/graphviz');
 const { toChartJs, parseSize } = require('./lib/google_image_charts');
 const { renderQr, DEFAULT_QR_SIZE } = require('./lib/qr');
 
+const db = require('./lib/db');
+
 const app = express();
 
 const isDev = app.get('env') === 'development' || app.get('env') === 'test';
 
-app.set('query parser', (str) =>
+app.set('query parser', str =>
   qs.parse(str, {
     decode(s) {
       // Default express implementation replaces '+' with space. We don't want
@@ -46,10 +48,10 @@ if (process.env.RATE_LIMIT_PER_MIN) {
     max: limitMax,
     message:
       'Please slow down your requests! This is a shared public endpoint. Email support@quickchart.io or go to https://quickchart.io/pricing/ for rate limit exceptions or to purchase a commercial license.',
-    onLimitReached: (req) => {
+    onLimitReached: req => {
       logger.info('User hit rate limit!', req.ip);
     },
-    keyGenerator: (req) => {
+    keyGenerator: req => {
       return req.headers['x-forwarded-for'] || req.ip;
     },
   });
@@ -82,7 +84,7 @@ function utf8ToAscii(str) {
   const u8s = enc.encode(str);
 
   return Array.from(u8s)
-    .map((v) => String.fromCharCode(v))
+    .map(v => String.fromCharCode(v))
     .join('');
 }
 
@@ -136,7 +138,7 @@ async function failPdf(res, msg) {
 
 function renderChartToPng(req, res, opts) {
   opts.failFn = failPng;
-  opts.onRenderHandler = (buf) => {
+  opts.onRenderHandler = buf => {
     res
       .type('image/png')
       .set({
@@ -151,7 +153,7 @@ function renderChartToPng(req, res, opts) {
 
 function renderChartToSvg(req, res, opts) {
   opts.failFn = failSvg;
-  opts.onRenderHandler = (buf) => {
+  opts.onRenderHandler = buf => {
     res
       .type('image/svg+xml')
       .set({
@@ -166,7 +168,7 @@ function renderChartToSvg(req, res, opts) {
 
 async function renderChartToPdf(req, res, opts) {
   opts.failFn = failPdf;
-  opts.onRenderHandler = async (buf) => {
+  opts.onRenderHandler = async buf => {
     const pdfBuf = await getPdfBufferFromPng(buf);
 
     res.writeHead(200, {
@@ -212,7 +214,7 @@ function doChartjsRender(req, res, opts) {
     untrustedInput,
   )
     .then(opts.onRenderHandler)
-    .catch((err) => {
+    .catch(err => {
       logger.warn('Chart error', err);
       opts.failFn(res, err);
     });
@@ -267,7 +269,7 @@ function handleGChart(req, res) {
     const format = 'png';
     const encoding = 'UTF-8';
     renderQr(format, encoding, qrData, qrOpts)
-      .then((buf) => {
+      .then(buf => {
         res.writeHead(200, {
           'Content-Type': format === 'png' ? 'image/png' : 'image/svg+xml',
           'Content-Length': buf.length,
@@ -277,7 +279,7 @@ function handleGChart(req, res) {
         });
         res.end(buf);
       })
-      .catch((err) => {
+      .catch(err => {
         failPng(res, err);
       });
 
@@ -311,7 +313,7 @@ function handleGChart(req, res) {
     '2.9.4' /* version */,
     undefined /* format */,
     converted.chart,
-  ).then((buf) => {
+  ).then(buf => {
     res.writeHead(200, {
       'Content-Type': 'image/png',
       'Content-Length': buf.length,
@@ -412,7 +414,7 @@ app.get('/qr', (req, res) => {
   };
 
   renderQr(format, mode, qrText, qrOpts)
-    .then((buf) => {
+    .then(buf => {
       res.writeHead(200, {
         'Content-Type': format === 'png' ? 'image/png' : 'image/svg+xml',
         'Content-Length': buf.length,
@@ -422,7 +424,7 @@ app.get('/qr', (req, res) => {
       });
       res.end(buf);
     })
-    .catch((err) => {
+    .catch(err => {
       failPng(res, err);
     });
 
@@ -453,6 +455,116 @@ app.get('/healthcheck/chart', (req, res) => {
 `;
   res.redirect(`/chart?c=${template}`);
 });
+
+app.post('/chart/create', (req, res) => {
+  const { neverExpire = false } = req.body;
+  const outputFormat = (req.body.f || req.body.format || 'png').toLowerCase();
+  const config = {
+    chart: req.body.c || req.body.chart,
+    height: req.body.h || req.body.height,
+    width: req.body.w || req.body.width,
+    backgroundColor: req.body.backgroundColor || req.body.bkg,
+    devicePixelRatio: req.body.devicePixelRatio,
+    version: req.body.v || req.body.version,
+    encoding: req.body.encoding || 'url',
+    format: outputFormat,
+  };
+
+  if (!config.chart) {
+    return res.status(400).json({ error: 'Chart config is required' });
+  }
+
+  const id = crypto.randomUUID();
+  const expiresAt = neverExpire
+    ? null
+    : new Date(Date.now() + 6 * 30 * 24 * 60 * 60 * 1000).toISOString();
+  const configStr = JSON.stringify(config);
+  db.run(
+    'INSERT INTO charts (id, config, expires_at) VALUES (?, ?, ?)',
+    [id, configStr, expiresAt],
+    err => {
+      if (err) {
+        return res.status(500).json({ error: 'Failed to store chart' });
+      }
+      res.json({ success: true, url: `${req.protocol}://${req.get('host')}/chart/render/${id}` });
+    },
+  );
+});
+
+function applyTemplateOverrides(chartConfig, params) {
+  if (params.title) {
+    chartConfig.chart.options = chartConfig.chart.options || {};
+    chartConfig.chart.options.title = chartConfig.chart.options.title || {};
+    chartConfig.chart.options.title.text = params.title;
+    chartConfig.chart.options.title.display = true;
+  }
+
+  if (params.labels) {
+    chartConfig.chart.data.labels = params.labels.split(',');
+  }
+
+  Object.keys(params).forEach(paramKey => {
+    const dataMatch = paramKey.match(/^data(\d+)$/);
+    if (dataMatch) {
+      const index = parseInt(dataMatch[1], 10) - 1;
+      if (chartConfig.chart.data.datasets[index]) {
+        chartConfig.chart.data.datasets[index].data = params[paramKey].split(',').map(Number);
+      }
+    }
+    const backgroundColorMatch = paramKey.match(/^backgroundColor(\d+)$/);
+    if (backgroundColorMatch) {
+      const index = parseInt(backgroundColorMatch[1], 10) - 1;
+      if (chartConfig.chart.data.datasets[index]) {
+        chartConfig.chart.data.datasets[index].backgroundColor = params[paramKey]
+          .split(',')
+          .map(Number);
+      }
+    }
+    const borderColorMatch = paramKey.match(/^borderColor(\d+)$/);
+    if (borderColorMatch) {
+      const index = parseInt(borderColorMatch[1], 10) - 1;
+      if (chartConfig.chart.data.datasets[index]) {
+        chartConfig.chart.data.datasets[index].borderColor = params[paramKey]
+          .split(',')
+          .map(Number);
+      }
+    }
+  });
+  return chartConfig;
+}
+
+app.get('/chart/render/:key', async (req, res) => {
+  const { key } = req.params;
+
+  db.get('SELECT config FROM charts WHERE id = ?', [key], function(err, row) {
+    if (err) {
+      res.status(500).json({ error: err.message });
+    }
+
+    if (!row) {
+      return res.status(404).json({ error: 'Template not found' });
+    }
+    //return res.status(200).json({status: 'success'});
+    let chartConfig = JSON.parse(row.config);
+    chartConfig = applyTemplateOverrides(chartConfig, req.query);
+    if (chartConfig.format === 'pdf') {
+      renderChartToPdf(req, res, chartConfig);
+    } else if (chartConfig.format === 'svg') {
+      renderChartToSvg(req, res, chartConfig);
+    } else if (!chartConfig.format || chartConfig.format === 'png') {
+      renderChartToPng(req, res, chartConfig);
+    } else {
+      logger.error(`Request for unsupported format ${outputFormat}`);
+      res.status(500).end(`Unsupported format ${outputFormat}`);
+    }
+
+    telemetry.count('chartCount');
+  });
+});
+
+setInterval(() => {
+  db.run("DELETE FROM charts WHERE expires_at IS NOT NULL AND expires_at < datetime('now')");
+}, 24 * 60 * 60 * 1000);
 
 const port = process.env.PORT || 3400;
 const server = app.listen(port);
