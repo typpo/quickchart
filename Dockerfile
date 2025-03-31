@@ -12,6 +12,7 @@ RUN apk add --no-cache --repository https://dl-cdn.alpinelinux.org/alpine/edge/c
 RUN apk add --no-cache libimagequant-dev
 RUN apk add --no-cache vips-dev
 RUN apk add --no-cache --virtual .runtime-deps graphviz
+RUN apk add --no-cache sqlite
 
 COPY package*.json .
 COPY yarn.lock .
@@ -25,7 +26,7 @@ RUN apk del .build-deps
 COPY *.js ./
 COPY lib/*.js lib/
 COPY LICENSE .
-
+VOLUME /var/lib/db/
 EXPOSE 3400
 
-ENTRYPOINT ["node", "--max-http-header-size=65536", "index.js"]
+ENTRYPOINT ["node", "--max-http-header-size=65536", "--experimental-global-webcrypto", "index.js"]
