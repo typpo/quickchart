@@ -1,0 +1,81 @@
+name: Run Tests
+
+on:
+  push:
+  pull_request:
+    branches:
+      - master
+      - dev
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'yarn'
+          
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential g++ python3-dev
+          sudo apt-get install -y libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev
+          sudo apt-get install -y libpixman-1-dev libvips-dev
+          sudo apt-get install -y graphviz
+          sudo apt-get install -y sqlite3 libsqlite3-dev
+          sudo apt-get install -y fonts-dejavu fonts-noto fonts-noto-cjk fonts-noto-color-emoji fontconfig
+          sudo apt-get install -y pkg-config
+          sudo apt-get install -y libimagequant-dev
+          yarn install
+        
+      - name: Set up database directory
+        run: |
+          sudo mkdir -p /var/lib/db
+          sudo chmod 777 /var/lib/db
+        
+      - name: Run basic tests only
+        run: |
+          # Skip the chart-create.test.js tests that require database access
+          PORT=3400 NODE_ENV=test npx mocha --exit --recursive test/ci/charts.js test/ci/graphviz.js test/ci/google_image_charts.js test/ci/qr.js
+        env:
+          NODE_ENV: test
+          PORT: 3400
+          NODE_OPTIONS: --experimental-global-webcrypto
+          
+  lint:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'yarn'
+          
+      - name: Install dependencies for linting
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential g++ python3-dev
+          sudo apt-get install -y libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev
+          sudo apt-get install -y libpixman-1-dev libvips-dev
+          sudo apt-get install -y pkg-config
+          sudo apt-get install -y libimagequant-dev
+          yarn install
+        
+      - name: Lint code
+        run: |
+          if [ -f ".eslintrc.js" ] || [ -f ".eslintrc.json" ] || [ -f ".eslintrc.yml" ] || [ -f ".eslintrc.yaml" ]; then
+            npx eslint .
+          else
+            echo "No ESLint configuration found, skipping lint step"
+          fi

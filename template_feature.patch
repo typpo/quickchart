@@ -1,0 +1,490 @@
+Subject: [PATCH] template feature
+---
+Index: Dockerfile
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/Dockerfile b/Dockerfile
+--- a/Dockerfile	(revision 9c31a0bf89ad0e0ed534f90907658e4b03dab044)
++++ b/Dockerfile	(revision 6a9e5fb3a7eacf880277526915987847fa300a68)
+@@ -12,6 +12,7 @@
+ RUN apk add --no-cache libimagequant-dev
+ RUN apk add --no-cache vips-dev
+ RUN apk add --no-cache --virtual .runtime-deps graphviz
++RUN apk add --no-cache sqlite
+ 
+ COPY package*.json .
+ COPY yarn.lock .
+@@ -25,7 +26,7 @@
+ COPY *.js ./
+ COPY lib/*.js lib/
+ COPY LICENSE .
+-
++VOLUME /var/lib/db/
+ EXPOSE 3400
+ 
+-ENTRYPOINT ["node", "--max-http-header-size=65536", "index.js"]
++ENTRYPOINT ["node", "--max-http-header-size=65536", "--experimental-global-webcrypto", "index.js"]
+Index: Dockerfile.test
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/Dockerfile.test b/Dockerfile.test
+new file mode 100644
+--- /dev/null	(revision 6a9e5fb3a7eacf880277526915987847fa300a68)
++++ b/Dockerfile.test	(revision 6a9e5fb3a7eacf880277526915987847fa300a68)
+@@ -0,0 +1,34 @@
++FROM node:18-alpine3.17
++
++ENV NODE_ENV test
++ENV NODE_OPTIONS --experimental-global-webcrypto
++WORKDIR /quickchart
++
++RUN apk add --upgrade apk-tools
++RUN apk add --no-cache --virtual .build-deps yarn git build-base g++ python3
++RUN apk add --no-cache --virtual .npm-deps cairo-dev pango-dev libjpeg-turbo-dev librsvg-dev
++RUN apk add --no-cache --virtual .fonts libmount ttf-dejavu ttf-droid ttf-freefont ttf-liberation font-noto font-noto-emoji fontconfig
++RUN apk add --no-cache --repository https://dl-cdn.alpinelinux.org/alpine/edge/community font-wqy-zenhei
++RUN apk add --no-cache libimagequant-dev
++RUN apk add --no-cache vips-dev
++RUN apk add --no-cache --virtual .runtime-deps graphviz
++RUN apk add --no-cache sqlite
++RUN npm install -g mocha
++
++COPY package*.json .
++COPY yarn.lock .
++RUN yarn install --development
++
++RUN apk update
++RUN rm -rf /var/cache/apk/* && \
++    rm -rf /tmp/*
++RUN apk del .build-deps
++
++COPY *.js ./
++COPY lib/*.js lib/
++COPY test/ test/
++COPY LICENSE .
++EXPOSE 3401
++VOLUME /var/lib/db/
++ENTRYPOINT ["npm"   , "run", "test"]
++
+Index: README.md
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/README.md b/README.md
+--- a/README.md	(revision 9c31a0bf89ad0e0ed534f90907658e4b03dab044)
++++ b/README.md	(revision 6a9e5fb3a7eacf880277526915987847fa300a68)
+@@ -140,6 +140,42 @@
+ 
+ This self-hosted QuickChart implementation currently supports the `/chart`, `/qr`, and `/graphviz` endpoints.  Other endpoints such as `/wordcloud`, `watermark`, `/chart/create` are not available in this version due to non-OSS 3rd-party dependencies.
+ 
++**Note:** This release adds `/chart/create/` and `/chart/render/` functionality. For data storage, sqlite db is used.
++It supports functionality as described [here](https://quickchart.io/documentation/usage/short-urls-and-templates/#short-urls) and [here](https://quickchart.io/documentation/usage/short-urls-and-templates/#templates)
++Example body for `/chart/create/`:
++
++```json
++{
++  "chart": {
++    "options": {
++      "title": {
++        "display": true,
++        "text": "Chart Title"
++      }
++    },
++    "type": "bar",
++    "data": {
++      "labels": [
++        "A",
++        "B"
++      ],
++      "datasets": [
++        {
++          "data": [
++            10,
++            20
++          ]
++        }
++      ]
++    }
++  },
++  "neverExpire": true
++}
++```
++
++The **neverExpire** parameter allows you to control the expiration time of the saved chart. 
++If **"neverExpire": true**, then the chart has no storage time restrictions, otherwise, if this parameter is not specified or is false, then the expiraton time will be set to 6 months.
++
+ ## License
+ 
+ QuickChart is open source, licensed under version 3 of the GNU AGPL.  If you would like to modify this project for commercial purposes (and not release the source code), please [contact me](https://www.ianww.com/).
+Index: index.js
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/index.js b/index.js
+--- a/index.js	(revision 9c31a0bf89ad0e0ed534f90907658e4b03dab044)
++++ b/index.js	(revision 6a9e5fb3a7eacf880277526915987847fa300a68)
+@@ -15,11 +15,13 @@
+ const { toChartJs, parseSize } = require('./lib/google_image_charts');
+ const { renderQr, DEFAULT_QR_SIZE } = require('./lib/qr');
+ 
++const db = require('./lib/db');
++
+ const app = express();
+ 
+ const isDev = app.get('env') === 'development' || app.get('env') === 'test';
+ 
+-app.set('query parser', (str) =>
++app.set('query parser', str =>
+   qs.parse(str, {
+     decode(s) {
+       // Default express implementation replaces '+' with space. We don't want
+@@ -46,10 +48,10 @@
+     max: limitMax,
+     message:
+       'Please slow down your requests! This is a shared public endpoint. Email support@quickchart.io or go to https://quickchart.io/pricing/ for rate limit exceptions or to purchase a commercial license.',
+-    onLimitReached: (req) => {
++    onLimitReached: req => {
+       logger.info('User hit rate limit!', req.ip);
+     },
+-    keyGenerator: (req) => {
++    keyGenerator: req => {
+       return req.headers['x-forwarded-for'] || req.ip;
+     },
+   });
+@@ -82,7 +84,7 @@
+   const u8s = enc.encode(str);
+ 
+   return Array.from(u8s)
+-    .map((v) => String.fromCharCode(v))
++    .map(v => String.fromCharCode(v))
+     .join('');
+ }
+ 
+@@ -136,7 +138,7 @@
+ 
+ function renderChartToPng(req, res, opts) {
+   opts.failFn = failPng;
+-  opts.onRenderHandler = (buf) => {
++  opts.onRenderHandler = buf => {
+     res
+       .type('image/png')
+       .set({
+@@ -151,7 +153,7 @@
+ 
+ function renderChartToSvg(req, res, opts) {
+   opts.failFn = failSvg;
+-  opts.onRenderHandler = (buf) => {
++  opts.onRenderHandler = buf => {
+     res
+       .type('image/svg+xml')
+       .set({
+@@ -166,7 +168,7 @@
+ 
+ async function renderChartToPdf(req, res, opts) {
+   opts.failFn = failPdf;
+-  opts.onRenderHandler = async (buf) => {
++  opts.onRenderHandler = async buf => {
+     const pdfBuf = await getPdfBufferFromPng(buf);
+ 
+     res.writeHead(200, {
+@@ -212,7 +214,7 @@
+     untrustedInput,
+   )
+     .then(opts.onRenderHandler)
+-    .catch((err) => {
++    .catch(err => {
+       logger.warn('Chart error', err);
+       opts.failFn(res, err);
+     });
+@@ -267,7 +269,7 @@
+     const format = 'png';
+     const encoding = 'UTF-8';
+     renderQr(format, encoding, qrData, qrOpts)
+-      .then((buf) => {
++      .then(buf => {
+         res.writeHead(200, {
+           'Content-Type': format === 'png' ? 'image/png' : 'image/svg+xml',
+           'Content-Length': buf.length,
+@@ -277,7 +279,7 @@
+         });
+         res.end(buf);
+       })
+-      .catch((err) => {
++      .catch(err => {
+         failPng(res, err);
+       });
+ 
+@@ -311,7 +313,7 @@
+     '2.9.4' /* version */,
+     undefined /* format */,
+     converted.chart,
+-  ).then((buf) => {
++  ).then(buf => {
+     res.writeHead(200, {
+       'Content-Type': 'image/png',
+       'Content-Length': buf.length,
+@@ -412,7 +414,7 @@
+   };
+ 
+   renderQr(format, mode, qrText, qrOpts)
+-    .then((buf) => {
++    .then(buf => {
+       res.writeHead(200, {
+         'Content-Type': format === 'png' ? 'image/png' : 'image/svg+xml',
+         'Content-Length': buf.length,
+@@ -422,7 +424,7 @@
+       });
+       res.end(buf);
+     })
+-    .catch((err) => {
++    .catch(err => {
+       failPng(res, err);
+     });
+ 
+@@ -454,6 +456,116 @@
+   res.redirect(`/chart?c=${template}`);
+ });
+ 
++app.post('/chart/create', (req, res) => {
++  const { neverExpire = false } = req.body;
++  const outputFormat = (req.body.f || req.body.format || 'png').toLowerCase();
++  const config = {
++    chart: req.body.c || req.body.chart,
++    height: req.body.h || req.body.height,
++    width: req.body.w || req.body.width,
++    backgroundColor: req.body.backgroundColor || req.body.bkg,
++    devicePixelRatio: req.body.devicePixelRatio,
++    version: req.body.v || req.body.version,
++    encoding: req.body.encoding || 'url',
++    format: outputFormat,
++  };
++
++  if (!config.chart) {
++    return res.status(400).json({ error: 'Chart config is required' });
++  }
++
++  const id = crypto.randomUUID();
++  const expiresAt = neverExpire
++    ? null
++    : new Date(Date.now() + 6 * 30 * 24 * 60 * 60 * 1000).toISOString();
++  const configStr = JSON.stringify(config);
++  db.run(
++    'INSERT INTO charts (id, config, expires_at) VALUES (?, ?, ?)',
++    [id, configStr, expiresAt],
++    err => {
++      if (err) {
++        return res.status(500).json({ error: 'Failed to store chart' });
++      }
++      res.json({ success: true, url: `${req.protocol}://${req.get('host')}/chart/render/${id}` });
++    },
++  );
++});
++
++function applyTemplateOverrides(chartConfig, params) {
++  if (params.title) {
++    chartConfig.chart.options = chartConfig.chart.options || {};
++    chartConfig.chart.options.title = chartConfig.chart.options.title || {};
++    chartConfig.chart.options.title.text = params.title;
++    chartConfig.chart.options.title.display = true;
++  }
++
++  if (params.labels) {
++    chartConfig.chart.data.labels = params.labels.split(',');
++  }
++
++  Object.keys(params).forEach(paramKey => {
++    const dataMatch = paramKey.match(/^data(\d+)$/);
++    if (dataMatch) {
++      const index = parseInt(dataMatch[1], 10) - 1;
++      if (chartConfig.chart.data.datasets[index]) {
++        chartConfig.chart.data.datasets[index].data = params[paramKey].split(',').map(Number);
++      }
++    }
++    const backgroundColorMatch = paramKey.match(/^backgroundColor(\d+)$/);
++    if (backgroundColorMatch) {
++      const index = parseInt(backgroundColorMatch[1], 10) - 1;
++      if (chartConfig.chart.data.datasets[index]) {
++        chartConfig.chart.data.datasets[index].backgroundColor = params[paramKey]
++          .split(',')
++          .map(Number);
++      }
++    }
++    const borderColorMatch = paramKey.match(/^borderColor(\d+)$/);
++    if (borderColorMatch) {
++      const index = parseInt(borderColorMatch[1], 10) - 1;
++      if (chartConfig.chart.data.datasets[index]) {
++        chartConfig.chart.data.datasets[index].borderColor = params[paramKey]
++          .split(',')
++          .map(Number);
++      }
++    }
++  });
++  return chartConfig;
++}
++
++app.get('/chart/render/:key', async (req, res) => {
++  const { key } = req.params;
++
++  db.get('SELECT config FROM charts WHERE id = ?', [key], function(err, row) {
++    if (err) {
++      res.status(500).json({ error: err.message });
++    }
++
++    if (!row) {
++      return res.status(404).json({ error: 'Template not found' });
++    }
++    //return res.status(200).json({status: 'success'});
++    let chartConfig = JSON.parse(row.config);
++    chartConfig = applyTemplateOverrides(chartConfig, req.query);
++    if (chartConfig.format === 'pdf') {
++      renderChartToPdf(req, res, chartConfig);
++    } else if (chartConfig.format === 'svg') {
++      renderChartToSvg(req, res, chartConfig);
++    } else if (!chartConfig.format || chartConfig.format === 'png') {
++      renderChartToPng(req, res, chartConfig);
++    } else {
++      logger.error(`Request for unsupported format ${outputFormat}`);
++      res.status(500).end(`Unsupported format ${outputFormat}`);
++    }
++
++    telemetry.count('chartCount');
++  });
++});
++
++setInterval(() => {
++  db.run("DELETE FROM charts WHERE expires_at IS NOT NULL AND expires_at < datetime('now')");
++}, 24 * 60 * 60 * 1000);
++
+ const port = process.env.PORT || 3400;
+ const server = app.listen(port);
+ 
+Index: lib/db.js
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/lib/db.js b/lib/db.js
+new file mode 100644
+--- /dev/null	(revision 6a9e5fb3a7eacf880277526915987847fa300a68)
++++ b/lib/db.js	(revision 6a9e5fb3a7eacf880277526915987847fa300a68)
+@@ -0,0 +1,20 @@
++const sqlite3 = require('sqlite3').verbose();
++
++const db = new sqlite3.Database('/var/lib/db/charts.db', err => {
++  if (err) {
++    console.error('Error connecting to database:', err.message);
++  } else {
++    console.log('Connected to SQLite database.');
++  }
++});
++
++db.run(`
++  CREATE TABLE IF NOT EXISTS charts (
++    id TEXT PRIMARY KEY,
++    config TEXT NOT NULL,
++    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
++    expires_at TIMESTAMP
++  )
++`);
++
++module.exports = db;
+Index: package.json
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/package.json b/package.json
+--- a/package.json	(revision 9c31a0bf89ad0e0ed534f90907658e4b03dab044)
++++ b/package.json	(revision 6a9e5fb3a7eacf880277526915987847fa300a68)
+@@ -11,7 +11,8 @@
+   "scripts": {
+     "start": "node --max-http-header-size=65536 index.js",
+     "format": "prettier --write \"**/*.js\"",
+-    "test": "PORT=3401 NODE_ENV=test mocha --exit --recursive test/ci/",
++    "test": "PORT=3401 NODE_ENV=test mocha --exit --recursive test/ci",
++    "test-chart-create": "PORT=3401 NODE_ENV=test mocha --exit test/**/*.test.js",
+     "test:watch": "PORT=2998 NODE_ENV=test chokidar '**/*.js' --initial --ignore node_modules -c 'mocha --exit --recursive test/'"
+   },
+   "overrides": {
+@@ -47,6 +48,7 @@
+     "qrcode": "^1.3.3",
+     "qs": "^6.7.0",
+     "sharp": "^0.32.6",
++    "sqlite3": "^5.1.7",
+     "text2png": "^2.1.0",
+     "viz.js": "^2.1.2"
+   },
+Index: test/ci/chart-create.test.js
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/test/ci/chart-create.test.js b/test/ci/chart-create.test.js
+new file mode 100644
+--- /dev/null	(revision 6a9e5fb3a7eacf880277526915987847fa300a68)
++++ b/test/ci/chart-create.test.js	(revision 6a9e5fb3a7eacf880277526915987847fa300a68)
+@@ -0,0 +1,58 @@
++const request = require('supertest');
++const assert = require('assert');
++const db = require('../../lib/db');
++const app = require('../../index');
++describe('Chart API Tests', function() {
++  this.timeout(6000);
++  let chartId;
++
++  it('should create a new chart', function(done) {
++    request(app)
++      .post('/chart/create')
++      .send({
++        chart: {
++          options: { title: { display: true, text: 'Chart Title' } },
++          type: 'bar',
++          data: {
++            labels: ['A', 'B'],
++            datasets: [{ data: [10, 20] }],
++          },
++        },
++        neverExpire: true,
++      })
++      .expect(200)
++      .end((err, res) => {
++        if (err) {
++          console.error(err);
++          return done(err);
++        }
++
++        assert.strictEqual(res.body.success, true);
++        chartId = res.body.url.split('/').pop(); // Витягуємо ID графіка
++        done();
++      });
++  });
++
++  it('should retrieve the created chart', function(done) {
++    request(app)
++      .get(`/chart/render/${chartId}`)
++      .expect(200, done);
++  });
++
++  it('should return 404 for non-existent chart', function(done) {
++    request(app)
++      .get('/chart/render/nonexistent-id')
++      .expect(404, done);
++  });
++
++  it('should apply template overrides', function(done) {
++    request(app)
++      .get(`/chart/render/${chartId}?title=TestTitle&labels=X,Y&data1=30,40`)
++      .expect(200, done);
++  });
++
++  after(function(done) {
++    db.run('DELETE FROM charts WHERE id = ?', [chartId]);
++    db.close(done);
++  });
++});
