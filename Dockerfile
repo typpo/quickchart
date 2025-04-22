@@ -1,10 +1,12 @@
-FROM node:18-alpine3.17
+FROM node:18-alpine
 
-ENV NODE_ENV production
+ENV NODE_ENV=production
 
 WORKDIR /quickchart
 
-RUN apk add --upgrade apk-tools
+# Update Alpine package index and upgrade all packages to the latest versions
+RUN apk update && apk add --upgrade apk-tools && apk upgrade --no-cache
+
 RUN apk add --no-cache --virtual .build-deps yarn git build-base g++ python3
 RUN apk add --no-cache --virtual .npm-deps cairo-dev pango-dev libjpeg-turbo-dev librsvg-dev
 RUN apk add --no-cache --virtual .fonts libmount ttf-dejavu ttf-droid ttf-freefont ttf-liberation font-noto font-noto-emoji fontconfig
