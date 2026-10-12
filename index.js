@@ -11,6 +11,7 @@ const telemetry = require('./telemetry');
 const { getPdfBufferFromPng, getPdfBufferWithText } = require('./lib/pdf');
 const { logger } = require('./logging');
 const { renderChartJs } = require('./lib/charts');
+const { ChartConfigError } = require('./lib/chart_config');
 const { renderGraphviz } = require('./lib/graphviz');
 const { toChartJs, parseSize } = require('./lib/google_image_charts');
 const { renderQr, DEFAULT_QR_SIZE } = require('./lib/qr');
@@ -120,14 +121,17 @@ function failSvg(res, msg, statusCode = 500) {
   </style>
   <foreignObject width="240" height="80"
    requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
-    <p xmlns="http://www.w3.org/1999/xhtml">${msg}</p>
+    <p xmlns="http://www.w3.org/1999/xhtml">${String(msg)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')}</p>
   </foreignObject>
 </svg>`);
 }
 
-async function failPdf(res, msg) {
+async function failPdf(res, msg, statusCode = 500) {
   const buf = await getPdfBufferWithText(msg);
-  res.writeHead(500, {
+  res.writeHead(statusCode, {
     'Content-Type': 'application/pdf',
     'X-quickchart-error': sanitizeErrorHeader(msg),
   });
@@ -183,7 +187,7 @@ async function renderChartToPdf(req, res, opts) {
 
 function doChartjsRender(req, res, opts) {
   if (!opts.chart) {
-    opts.failFn(res, 'You are missing variable `c` or `chart`');
+    opts.failFn(res, 'You are missing variable `c` or `chart`', 400);
     return;
   }
 
@@ -192,12 +196,15 @@ function doChartjsRender(req, res, opts) {
 
   let untrustedInput = opts.chart;
   if (opts.encoding === 'base64') {
+    if (typeof untrustedInput !== 'string') {
+      opts.failFn(res, 'Base64 chart configuration must be a string', 400);
+      return;
+    }
     // TODO(ian): Move this decoding up the call stack.
     try {
       untrustedInput = Buffer.from(opts.chart, 'base64').toString('utf8');
     } catch (err) {
-      logger.warn('base64 malformed', err);
-      opts.failFn(res, err);
+      opts.failFn(res, 'Invalid base64 chart configuration', 400);
       return;
     }
   }
@@ -213,8 +220,14 @@ function doChartjsRender(req, res, opts) {
   )
     .then(opts.onRenderHandler)
     .catch((err) => {
-      logger.warn('Chart error', err);
-      opts.failFn(res, err);
+      if (err instanceof ChartConfigError) {
+        // Do not log input, Error objects, or stacks for expected client failures.
+        logger.info({ code: 'INVALID_CHART_CONFIG' }, 'Chart configuration rejected');
+        opts.failFn(res, err.message, 400);
+      } else {
+        logger.error(err, 'Chart rendering failed');
+        opts.failFn(res, err);
+      }
     });
 }
 
